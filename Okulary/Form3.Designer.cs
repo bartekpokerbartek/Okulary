@@ -206,6 +206,7 @@
             this.RodzajOprawekDalCena.Name = "RodzajOprawekDalCena";
             this.RodzajOprawekDalCena.Size = new System.Drawing.Size(100, 20);
             this.RodzajOprawekDalCena.TabIndex = 12;
+            this.RodzajOprawekDalCena.Enter += new System.EventHandler(this.RodzajOprawekDalCena_Enter);
             this.RodzajOprawekDalCena.Leave += new System.EventHandler(this.RodzajOprawekDalCena_Leave);
             this.RodzajOprawekDalCena.Validating += new System.ComponentModel.CancelEventHandler(this.RodzajOprawekDalCena_Validating);
             // 

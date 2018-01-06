@@ -249,6 +249,7 @@ namespace Okulary
             else
             {
                 _context.SaveChanges();
+                this.Close();
             }
                 
         }
@@ -536,6 +537,11 @@ namespace Okulary
         private void zadatek_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+        }
+
+        private void RodzajOprawekDalCena_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

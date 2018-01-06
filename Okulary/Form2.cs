@@ -53,6 +53,7 @@ namespace Okulary
             }
 
             dataGridView1.Columns["BuyDate"].Visible = true;
+            dataGridView1.Columns["BuyDate"].HeaderText = "Data zakupu";
 
             if (!dataGridView1.Columns.Contains("ZakupCol"))
             {
@@ -65,6 +66,7 @@ namespace Okulary
             }
 
             dataGridView1.Columns["ZakupCol"].Visible = true;
+            dataGridView1.Columns["ZakupCol"].HeaderText = "Zakup";
 
             if (!dataGridView1.Columns.Contains("UsunCol"))
             {
@@ -77,6 +79,7 @@ namespace Okulary
             }
 
             dataGridView1.Columns["UsunCol"].Visible = true;
+            dataGridView1.Columns["UsunCol"].HeaderText = "Usuń";
         }
 
         private void button1_Click(object sender, EventArgs e)

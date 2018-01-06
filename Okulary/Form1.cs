@@ -97,6 +97,12 @@ namespace Okulary
 
             dataGridView1.DataSource = personList;
             dataGridView1.Columns["Binocles"].Visible = false;
+            dataGridView1.Columns["PersonId"].Visible = false;
+
+            dataGridView1.Columns["FirstName"].HeaderText = "Imię";
+            dataGridView1.Columns["LastName"].HeaderText = "Nazwisko";
+            dataGridView1.Columns["Address"].HeaderText = "Adres";
+            dataGridView1.Columns["BirthDate"].HeaderText = "Data urodzenia";
 
             if (!dataGridView1.Columns.Contains("ZamowieniaNazwa"))
             {
@@ -104,6 +110,7 @@ namespace Okulary
                 col.UseColumnTextForButtonValue = true;
                 col.Text = "Zamowienia";
                 col.Name = "ZamowieniaNazwa";
+                col.HeaderText = "Zamówienia";
                 dataGridView1.Columns.Add(col);
             }
         }
