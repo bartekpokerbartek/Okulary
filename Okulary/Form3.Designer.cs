@@ -208,6 +208,8 @@
             this.RodzajOprawekDalCena.TabIndex = 12;
             this.RodzajOprawekDalCena.Enter += new System.EventHandler(this.RodzajOprawekDalCena_Enter);
             this.RodzajOprawekDalCena.Leave += new System.EventHandler(this.RodzajOprawekDalCena_Leave);
+            this.RodzajOprawekDalCena.MouseLeave += new System.EventHandler(this.RodzajOprawekDalCena_MouseLeave);
+            this.RodzajOprawekDalCena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RodzajOprawekDalCena_MouseUp);
             this.RodzajOprawekDalCena.Validating += new System.ComponentModel.CancelEventHandler(this.RodzajOprawekDalCena_Validating);
             // 
             // RodzajOprawekBlizCena
@@ -216,14 +218,16 @@
             this.RodzajOprawekBlizCena.Name = "RodzajOprawekBlizCena";
             this.RodzajOprawekBlizCena.Size = new System.Drawing.Size(100, 20);
             this.RodzajOprawekBlizCena.TabIndex = 13;
+            this.RodzajOprawekBlizCena.Enter += new System.EventHandler(this.RodzajOprawekBlizCena_Enter);
             this.RodzajOprawekBlizCena.Leave += new System.EventHandler(this.RodzajOprawekBlizCena_Leave);
+            this.RodzajOprawekBlizCena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RodzajOprawekBlizCena_MouseUp);
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(503, 450);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 14;
+            this.button1.TabIndex = 114;
             this.button1.Text = "Zapisz";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -233,7 +237,7 @@
             this.button2.Location = new System.Drawing.Point(604, 450);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 15;
+            this.button2.TabIndex = 115;
             this.button2.Text = "Zamknij";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -253,7 +257,9 @@
             this.robocizna.Name = "robocizna";
             this.robocizna.Size = new System.Drawing.Size(100, 20);
             this.robocizna.TabIndex = 17;
+            this.robocizna.Enter += new System.EventHandler(this.robocizna_Enter);
             this.robocizna.Leave += new System.EventHandler(this.robocizna_Leave);
+            this.robocizna.MouseUp += new System.Windows.Forms.MouseEventHandler(this.robocizna_MouseUp);
             // 
             // label8
             // 
@@ -793,6 +799,9 @@
             this.dalOPCylinder.Name = "dalOPCylinder";
             this.dalOPCylinder.Size = new System.Drawing.Size(69, 20);
             this.dalOPCylinder.TabIndex = 34;
+            this.dalOPCylinder.Enter += new System.EventHandler(this.dalOPCylinder_Enter);
+            this.dalOPCylinder.Leave += new System.EventHandler(this.dalOPCylinder_Leave);
+            this.dalOPCylinder.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOPCylinder_MouseUp);
             // 
             // dalOLCylinder
             // 
@@ -800,6 +809,9 @@
             this.dalOLCylinder.Name = "dalOLCylinder";
             this.dalOLCylinder.Size = new System.Drawing.Size(70, 20);
             this.dalOLCylinder.TabIndex = 35;
+            this.dalOLCylinder.Enter += new System.EventHandler(this.dalOLCylinder_Enter);
+            this.dalOLCylinder.Leave += new System.EventHandler(this.dalOLCylinder_Leave);
+            this.dalOLCylinder.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOLCylinder_MouseUp);
             // 
             // blizOPCylinder
             // 
@@ -807,6 +819,10 @@
             this.blizOPCylinder.Name = "blizOPCylinder";
             this.blizOPCylinder.Size = new System.Drawing.Size(70, 20);
             this.blizOPCylinder.TabIndex = 36;
+            this.blizOPCylinder.TextChanged += new System.EventHandler(this.blizOPCylinder_TextChanged);
+            this.blizOPCylinder.Enter += new System.EventHandler(this.blizOPCylinder_Enter);
+            this.blizOPCylinder.Leave += new System.EventHandler(this.blizOPCylinder_Leave);
+            this.blizOPCylinder.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOPCylinder_MouseUp);
             // 
             // blizOLCylinder
             // 
@@ -814,6 +830,9 @@
             this.blizOLCylinder.Name = "blizOLCylinder";
             this.blizOLCylinder.Size = new System.Drawing.Size(70, 20);
             this.blizOLCylinder.TabIndex = 37;
+            this.blizOLCylinder.Enter += new System.EventHandler(this.blizOLCylinder_Enter);
+            this.blizOLCylinder.Leave += new System.EventHandler(this.blizOLCylinder_Leave);
+            this.blizOLCylinder.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOLCylinder_MouseUp);
             // 
             // dalOPOs
             // 
@@ -821,6 +840,9 @@
             this.dalOPOs.Name = "dalOPOs";
             this.dalOPOs.Size = new System.Drawing.Size(62, 20);
             this.dalOPOs.TabIndex = 38;
+            this.dalOPOs.Enter += new System.EventHandler(this.dalOPOs_Enter);
+            this.dalOPOs.Leave += new System.EventHandler(this.dalOPOs_Leave);
+            this.dalOPOs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOPOs_MouseUp);
             // 
             // dalOLOs
             // 
@@ -828,6 +850,9 @@
             this.dalOLOs.Name = "dalOLOs";
             this.dalOLOs.Size = new System.Drawing.Size(62, 20);
             this.dalOLOs.TabIndex = 39;
+            this.dalOLOs.Enter += new System.EventHandler(this.dalOLOs_Enter);
+            this.dalOLOs.Leave += new System.EventHandler(this.dalOLOs_Leave);
+            this.dalOLOs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOLOs_MouseUp);
             // 
             // blizOPOs
             // 
@@ -835,6 +860,9 @@
             this.blizOPOs.Name = "blizOPOs";
             this.blizOPOs.Size = new System.Drawing.Size(62, 20);
             this.blizOPOs.TabIndex = 40;
+            this.blizOPOs.Enter += new System.EventHandler(this.blizOPOs_Enter);
+            this.blizOPOs.Leave += new System.EventHandler(this.blizOPOs_Leave);
+            this.blizOPOs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOPOs_MouseUp);
             // 
             // blizOLOs
             // 
@@ -843,6 +871,9 @@
             this.blizOLOs.Size = new System.Drawing.Size(62, 20);
             this.blizOLOs.TabIndex = 41;
             this.blizOLOs.TextChanged += new System.EventHandler(this.blizOLOs_TextChanged);
+            this.blizOLOs.Enter += new System.EventHandler(this.blizOLOs_Enter);
+            this.blizOLOs.Leave += new System.EventHandler(this.blizOLOs_Leave);
+            this.blizOLOs.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOLOs_MouseUp);
             // 
             // dalOPPryzma
             // 
@@ -878,6 +909,9 @@
             this.dalOPOdl.Name = "dalOPOdl";
             this.dalOPOdl.Size = new System.Drawing.Size(65, 20);
             this.dalOPOdl.TabIndex = 46;
+            this.dalOPOdl.Enter += new System.EventHandler(this.dalOPOdl_Enter);
+            this.dalOPOdl.Leave += new System.EventHandler(this.dalOPOdl_Leave);
+            this.dalOPOdl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOPOdl_MouseUp);
             // 
             // dalOLOdl
             // 
@@ -885,6 +919,9 @@
             this.dalOLOdl.Name = "dalOLOdl";
             this.dalOLOdl.Size = new System.Drawing.Size(64, 20);
             this.dalOLOdl.TabIndex = 47;
+            this.dalOLOdl.Enter += new System.EventHandler(this.dalOLOdl_Enter);
+            this.dalOLOdl.Leave += new System.EventHandler(this.dalOLOdl_Leave);
+            this.dalOLOdl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOLOdl_MouseUp);
             // 
             // blizOPOdl
             // 
@@ -892,6 +929,9 @@
             this.blizOPOdl.Name = "blizOPOdl";
             this.blizOPOdl.Size = new System.Drawing.Size(65, 20);
             this.blizOPOdl.TabIndex = 48;
+            this.blizOPOdl.Enter += new System.EventHandler(this.blizOPOdl_Enter);
+            this.blizOPOdl.Leave += new System.EventHandler(this.blizOPOdl_Leave);
+            this.blizOPOdl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOPOdl_MouseUp);
             // 
             // blizOLOdl
             // 
@@ -899,6 +939,9 @@
             this.blizOLOdl.Name = "blizOLOdl";
             this.blizOLOdl.Size = new System.Drawing.Size(66, 20);
             this.blizOLOdl.TabIndex = 49;
+            this.blizOLOdl.Enter += new System.EventHandler(this.blizOLOdl_Enter);
+            this.blizOLOdl.Leave += new System.EventHandler(this.blizOLOdl_Leave);
+            this.blizOLOdl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOLOdl_MouseUp);
             // 
             // dalOPH
             // 
@@ -944,7 +987,9 @@
             this.dalOPCena.Name = "dalOPCena";
             this.dalOPCena.Size = new System.Drawing.Size(100, 20);
             this.dalOPCena.TabIndex = 55;
+            this.dalOPCena.Enter += new System.EventHandler(this.dalOPCena_Enter);
             this.dalOPCena.Leave += new System.EventHandler(this.dalOPCena_Leave);
+            this.dalOPCena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOPCena_MouseUp);
             // 
             // dalOLCena
             // 
@@ -952,7 +997,9 @@
             this.dalOLCena.Name = "dalOLCena";
             this.dalOLCena.Size = new System.Drawing.Size(100, 20);
             this.dalOLCena.TabIndex = 56;
+            this.dalOLCena.Enter += new System.EventHandler(this.dalOLCena_Enter);
             this.dalOLCena.Leave += new System.EventHandler(this.dalOLCena_Leave);
+            this.dalOLCena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.dalOLCena_MouseUp);
             // 
             // blizOPCena
             // 
@@ -960,7 +1007,9 @@
             this.blizOPCena.Name = "blizOPCena";
             this.blizOPCena.Size = new System.Drawing.Size(100, 20);
             this.blizOPCena.TabIndex = 57;
+            this.blizOPCena.Enter += new System.EventHandler(this.blizOPCena_Enter);
             this.blizOPCena.Leave += new System.EventHandler(this.blizOPCena_Leave);
+            this.blizOPCena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOPCena_MouseUp);
             // 
             // blizOLCena
             // 
@@ -968,7 +1017,9 @@
             this.blizOLCena.Name = "blizOLCena";
             this.blizOLCena.Size = new System.Drawing.Size(100, 20);
             this.blizOLCena.TabIndex = 58;
+            this.blizOLCena.Enter += new System.EventHandler(this.blizOLCena_Enter);
             this.blizOLCena.Leave += new System.EventHandler(this.blizOLCena_Leave);
+            this.blizOLCena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.blizOLCena_MouseUp);
             // 
             // label21
             // 
@@ -1053,7 +1104,9 @@
             this.refundacja.Name = "refundacja";
             this.refundacja.Size = new System.Drawing.Size(100, 20);
             this.refundacja.TabIndex = 68;
+            this.refundacja.Enter += new System.EventHandler(this.refundacja_Enter);
             this.refundacja.Leave += new System.EventHandler(this.refundacja_Leave);
+            this.refundacja.MouseUp += new System.Windows.Forms.MouseEventHandler(this.refundacja_MouseUp);
             // 
             // suma
             // 
@@ -1069,7 +1122,9 @@
             this.zadatek.Name = "zadatek";
             this.zadatek.Size = new System.Drawing.Size(100, 20);
             this.zadatek.TabIndex = 70;
+            this.zadatek.Enter += new System.EventHandler(this.zadatek_Enter);
             this.zadatek.Leave += new System.EventHandler(this.zadatek_Leave);
+            this.zadatek.MouseUp += new System.Windows.Forms.MouseEventHandler(this.zadatek_MouseUp);
             // 
             // doZaplaty
             // 

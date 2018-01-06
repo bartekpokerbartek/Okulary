@@ -18,6 +18,27 @@ namespace Okulary
         int _personId;
         MineContext _context;
         Binocle _zakup;
+        bool _rodzajOprawekDalCenaFocused;
+        private bool _rodzajOprawekBlizCenaFocused;
+        private bool _robociznaFocused;
+        private bool _dalOPCylinderFocused;
+        private bool _dalOLCylinderFocused;
+        private bool _blizOLOdlFocused;
+        private bool _blizOLVylinderFocused;
+        private bool _dalOPOsFocused;
+        private bool _dalOLOsFocused;
+        private bool _blizOPOsFocused;
+        private bool _blizOLOsFocused;
+        private bool _dalOPOdlFocused;
+        private bool _dalOLOdlFocused;
+        private bool _blizOPOdlFocused;
+        private bool _dalOPCenaFocused;
+        private bool _dalOLCenaFocused;
+        private bool _blizOPCenaFocused;
+        private bool _blizOLCenaFocused;
+        private bool _refundacjaFocused;
+        private bool _zadatekFocused;
+        private bool _blizOPCylinderFocused;
 
         public Form3()
         {
@@ -497,51 +518,503 @@ namespace Okulary
         private void RodzajOprawekDalCena_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _rodzajOprawekDalCenaFocused = false;
         }
 
         private void RodzajOprawekBlizCena_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _rodzajOprawekBlizCenaFocused = false;
         }
 
         private void robocizna_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _robociznaFocused = false;
         }
 
         private void dalOPCena_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _dalOPCenaFocused = false;
         }
 
         private void dalOLCena_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _dalOLCenaFocused = false;
         }
 
         private void blizOPCena_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _blizOPCenaFocused = false;
         }
 
         private void blizOLCena_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _blizOLCenaFocused = false;
         }
 
         private void refundacja_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _refundacjaFocused = false;
         }
 
         private void zadatek_Leave(object sender, EventArgs e)
         {
             UpdateSuma();
+            _zadatekFocused = false;
         }
 
         private void RodzajOprawekDalCena_Enter(object sender, EventArgs e)
         {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.RodzajOprawekDalCena.SelectAll();
+                _rodzajOprawekDalCenaFocused = true;
+            }
+        }
 
+        private void RodzajOprawekDalCena_MouseLeave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RodzajOprawekDalCena_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_rodzajOprawekDalCenaFocused && this.RodzajOprawekDalCena.SelectionLength == 0)
+            {
+                _rodzajOprawekDalCenaFocused = true;
+                this.RodzajOprawekDalCena.SelectAll();
+            }
+        }
+
+        private void RodzajOprawekBlizCena_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_rodzajOprawekBlizCenaFocused && this.RodzajOprawekBlizCena.SelectionLength == 0)
+            {
+                _rodzajOprawekBlizCenaFocused = true;
+                this.RodzajOprawekBlizCena.SelectAll();
+            }
+        }
+
+        private void RodzajOprawekBlizCena_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.RodzajOprawekBlizCena.SelectAll();
+                _rodzajOprawekBlizCenaFocused = true;
+            }
+        }
+
+        private void robocizna_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_robociznaFocused && this.robocizna.SelectionLength == 0)
+            {
+                _robociznaFocused = true;
+                this.robocizna.SelectAll();
+            }
+        }
+
+        private void dalOPCylinder_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOPCylinderFocused && this.dalOPCylinder.SelectionLength == 0)
+            {
+                _dalOPCylinderFocused = true;
+                this.dalOPCylinder.SelectAll();
+            }
+        }
+
+        private void dalOLCylinder_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOLCylinderFocused && this.dalOLCylinder.SelectionLength == 0)
+            {
+                _dalOLCylinderFocused = true;
+                this.dalOLCylinder.SelectAll();
+            }
+        }
+
+        private void blizOPCylinder_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void blizOPCylinder_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOPCylinderFocused && this.blizOPCylinder.SelectionLength == 0)
+            {
+                _blizOPCylinderFocused = true;
+                this.blizOPCylinder.SelectAll();
+            }
+        }
+
+        private void blizOLCylinder_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOLVylinderFocused && this.blizOLCylinder.SelectionLength == 0)
+            {
+                _blizOLVylinderFocused = true;
+                this.blizOLCylinder.SelectAll();
+            }
+        }
+
+        private void dalOPOs_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOPOsFocused && this.dalOPOs.SelectionLength == 0)
+            {
+                _dalOPOsFocused = true;
+                this.dalOPOs.SelectAll();
+            }
+        }
+
+        private void dalOLOs_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOLOsFocused && this.dalOLOs.SelectionLength == 0)
+            {
+                _dalOLOsFocused = true;
+                this.dalOLOs.SelectAll();
+            }
+        }
+
+        private void blizOPOs_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOPOsFocused && this.blizOPOs.SelectionLength == 0)
+            {
+                _blizOPOsFocused = true;
+                this.blizOPOs.SelectAll();
+            }
+        }
+
+        private void blizOLOs_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOLOsFocused && this.blizOLOs.SelectionLength == 0)
+            {
+                _blizOLOsFocused = true;
+                this.blizOLOs.SelectAll();
+            }
+        }
+
+        private void dalOPOdl_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOPOdlFocused && this.dalOPOdl.SelectionLength == 0)
+            {
+                _dalOPOdlFocused = true;
+                this.dalOPOdl.SelectAll();
+            }
+        }
+
+        private void dalOLOdl_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOLOdlFocused && this.dalOLOdl.SelectionLength == 0)
+            {
+                _dalOLOdlFocused = true;
+                this.dalOLOdl.SelectAll();
+            }
+        }
+
+        private void blizOPOdl_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOPOdlFocused && this.blizOPOdl.SelectionLength == 0)
+            {
+                _blizOPOdlFocused = true;
+                this.blizOPOdl.SelectAll();
+            }
+        }
+
+        private void blizOLOdl_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOLOdlFocused && this.blizOLOdl.SelectionLength == 0)
+            {
+                _blizOLOdlFocused = true;
+                this.blizOLOdl.SelectAll();
+            }
+        }
+
+        private void dalOPCena_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOPCenaFocused && this.dalOPCena.SelectionLength == 0)
+            {
+                _dalOPCenaFocused = true;
+                this.dalOPCena.SelectAll();
+            }
+        }
+
+        private void dalOLCena_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_dalOLCenaFocused && this.dalOLCena.SelectionLength == 0)
+            {
+                _dalOLCenaFocused = true;
+                this.dalOLCena.SelectAll();
+            }
+        }
+
+        private void blizOPCena_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOPCenaFocused && this.blizOPCena.SelectionLength == 0)
+            {
+                _blizOPCenaFocused = true;
+                this.blizOPCena.SelectAll();
+            }
+        }
+
+        private void blizOLCena_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_blizOLCenaFocused && this.blizOLCena.SelectionLength == 0)
+            {
+                _blizOLCenaFocused = true;
+                this.blizOLCena.SelectAll();
+            }
+        }
+
+        private void refundacja_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_refundacjaFocused && this.refundacja.SelectionLength == 0)
+            {
+                _refundacjaFocused = true;
+                this.refundacja.SelectAll();
+            }
+        }
+
+        private void zadatek_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!_zadatekFocused && this.zadatek.SelectionLength == 0)
+            {
+                _zadatekFocused = true;
+                this.zadatek.SelectAll();
+            }
+        }
+
+        private void dalOPCylinder_Leave(object sender, EventArgs e)
+        {
+            _dalOPCylinderFocused = false;
+        }
+
+        private void dalOLCylinder_Leave(object sender, EventArgs e)
+        {
+            _dalOLCylinderFocused = false;
+        }
+
+        private void blizOPCylinder_Leave(object sender, EventArgs e)
+        {
+            _blizOPCylinderFocused = false;
+        }
+
+        private void blizOLCylinder_Leave(object sender, EventArgs e)
+        {
+            _blizOLVylinderFocused = false;
+        }
+
+        private void dalOPOs_Leave(object sender, EventArgs e)
+        {
+            _dalOPOsFocused = false;
+        }
+
+        private void dalOLOs_Leave(object sender, EventArgs e)
+        {
+            _dalOLOsFocused = false;
+        }
+
+        private void blizOPOs_Leave(object sender, EventArgs e)
+        {
+            _blizOPOsFocused = false;
+        }
+
+        private void blizOLOs_Leave(object sender, EventArgs e)
+        {
+            _blizOLOsFocused = false;
+        }
+
+        private void dalOPOdl_Leave(object sender, EventArgs e)
+        {
+            _dalOPOdlFocused = false;
+        }
+
+        private void dalOLOdl_Leave(object sender, EventArgs e)
+        {
+            _dalOLOdlFocused = false;
+        }
+
+        private void blizOPOdl_Leave(object sender, EventArgs e)
+        {
+            _blizOPOdlFocused = false;
+        }
+
+        private void blizOLOdl_Leave(object sender, EventArgs e)
+        {
+            _blizOLOdlFocused = false;
+        }
+
+        private void robocizna_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.robocizna.SelectAll();
+                _robociznaFocused = true;
+            }
+        }
+
+        private void dalOPCylinder_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOPCylinder.SelectAll();
+                _dalOPCylinderFocused = true;
+            }
+        }
+
+        private void dalOLCylinder_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOLCylinder.SelectAll();
+                _dalOLCylinderFocused = true;
+            }
+        }
+
+        private void blizOPCylinder_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOPCylinder.SelectAll();
+                _blizOPCylinderFocused = true;
+            }
+        }
+
+        private void blizOLCylinder_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOLCylinder.SelectAll();
+                _blizOLVylinderFocused = true;
+            }
+        }
+
+        private void dalOPOs_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOPOs.SelectAll();
+                _dalOPOsFocused = true;
+            }
+        }
+
+        private void dalOLOs_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOLOs.SelectAll();
+                _dalOLOsFocused = true;
+            }
+        }
+
+        private void blizOPOs_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOPOs.SelectAll();
+                _blizOPOsFocused = true;
+            }
+        }
+
+        private void blizOLOs_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOLOs.SelectAll();
+                _blizOLOsFocused = true;
+            }
+        }
+
+        private void dalOPOdl_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOPOdl.SelectAll();
+                _dalOPOdlFocused = true;
+            }
+        }
+
+        private void dalOLOdl_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOLOdl.SelectAll();
+                _dalOLOdlFocused = true;
+            }
+        }
+
+        private void blizOPOdl_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOPOdl.SelectAll();
+                _blizOPOdlFocused = true;
+            }
+        }
+
+        private void blizOLOdl_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOLOdl.SelectAll();
+                _blizOLOdlFocused = true;
+            }
+        }
+
+        private void dalOPCena_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOPCena.SelectAll();
+                _dalOPCenaFocused = true;
+            }
+        }
+
+        private void dalOLCena_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.dalOLCena.SelectAll();
+                _dalOLCenaFocused = true;
+            }
+        }
+
+        private void blizOPCena_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOPCena.SelectAll();
+                _blizOPCenaFocused = true;
+            }
+        }
+
+        private void blizOLCena_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.blizOLCena.SelectAll();
+                _blizOLCenaFocused = true;
+            }
+        }
+
+        private void refundacja_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.refundacja.SelectAll();
+                _refundacjaFocused = true;
+            }
+        }
+
+        private void zadatek_Enter(object sender, EventArgs e)
+        {
+            if (MouseButtons == MouseButtons.None)
+            {
+                this.zadatek.SelectAll();
+                _zadatekFocused = true;
+            }
         }
     }
 }
