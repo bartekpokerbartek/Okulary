@@ -146,9 +146,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(16, 40);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
+            this.label3.Size = new System.Drawing.Size(79, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Numer zlecenia";
+            this.label3.Text = "Numer telefonu";
             // 
             // label4
             // 
@@ -371,6 +371,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.FormatString = "N2";
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "-12,00",
@@ -471,12 +472,14 @@
             "+11,75",
             "+12,00"});
             this.comboBox1.Location = new System.Drawing.Point(74, 190);
+            this.comboBox1.MaxDropDownItems = 15;
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(54, 21);
             this.comboBox1.TabIndex = 30;
             // 
             // comboBox2
             // 
+            this.comboBox2.FormatString = "N2";
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "-12,00",
@@ -583,6 +586,7 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.FormatString = "N2";
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
             "-12,00",
@@ -689,6 +693,7 @@
             // 
             // comboBox4
             // 
+            this.comboBox4.FormatString = "N2";
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Items.AddRange(new object[] {
             "-12,00",

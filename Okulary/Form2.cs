@@ -73,7 +73,7 @@ namespace Okulary
                 DataGridViewButtonColumn col = new DataGridViewButtonColumn();
                 col.UseColumnTextForButtonValue = true;
                 col.Visible = true;
-                col.Text = "Usun";
+                col.Text = "Usuń";
                 col.Name = "UsunCol";
                 dataGridView1.Columns.Add(col);
             }
