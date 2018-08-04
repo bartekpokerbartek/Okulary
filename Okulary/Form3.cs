@@ -1,5 +1,7 @@
-﻿using Okulary.Model;
+﻿using Okulary.Helpers;
+using Okulary.Model;
 using Okulary.Repo;
+using Okulary.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,8 +18,10 @@ namespace Okulary
     {
         int _binocleId;
         int _personId;
+        Person _person;
         MineContext _context;
         Binocle _zakup;
+        PriceHelper _priceHelper;
         bool _rodzajOprawekDalCenaFocused;
         private bool _rodzajOprawekBlizCenaFocused;
         private bool _robociznaFocused;
@@ -51,6 +55,8 @@ namespace Okulary
             _personId = personId;
             InitializeComponent();
             _context = new MineContext();
+            _person = _context.Persons.First(x => x.PersonId == _personId);
+            _priceHelper = new PriceHelper();
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -74,17 +80,6 @@ namespace Okulary
             
             _zakup = _context.Binocles.Where(x => x.BinocleId == _binocleId).FirstOrDefault();
             Mapuj();
-        }
-
-        private decimal DajSume()
-        {
-            return _zakup.Robocizna + _zakup.DalOP.Cena + _zakup.DalOL.Cena + _zakup.BlizOP.Cena +
-                _zakup.BlizOL.Cena + _zakup.CenaOprawekBliz + _zakup.CenaOprawekDal - _zakup.Refundacja;
-        }
-
-        private decimal DajDoZaplaty()
-        {
-            return DajSume() - _zakup.Zadatek;
         }
 
         private void Mapuj()
@@ -135,9 +130,9 @@ namespace Okulary
             rodzajSoczewek2.Text = _zakup.RodzajSoczewek2;
 
             refundacja.Text = _zakup.Refundacja.ToString();
-            suma.Text = DajSume().ToString();
+            suma.Text = _priceHelper.DajSume(_zakup).ToString();
             zadatek.Text = _zakup.Zadatek.ToString();
-            doZaplaty.Text = DajDoZaplaty().ToString();
+            doZaplaty.Text = _priceHelper.DajDoZaplaty(_zakup).ToString();
 
             uwagi.Text = _zakup.Description;
         }
@@ -165,6 +160,11 @@ namespace Okulary
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+            Zapisz();
+        }
+
+        private void Zapisz()
         {
             var bledy = new List<string>();
             _zakup.BuyDate = dataZakupu.Value;
@@ -226,7 +226,7 @@ namespace Okulary
             var soczewkiBlizOPCena = BlizOPMap(bledy);
             var soczewkiBlizOLCena = BlizOLMap(bledy);
 
-            
+
             _zakup.RodzajSoczewek1 = rodzajSoczewek1.Text;
             _zakup.RodzajSoczewek2 = rodzajSoczewek2.Text;
 
@@ -261,18 +261,17 @@ namespace Okulary
             if (bledy.Any())
             {
                 var opis = string.Empty;
-                foreach(var blad in bledy)
+                foreach (var blad in bledy)
                 {
                     opis += blad + Environment.NewLine;
                 }
-                MessageBox.Show("Skoryguj następujące błędy i spróbuj zapisać jeszcze raz: " + Environment.NewLine + opis);
+                MessageBox.Show("Skoryguj następujące błędy: " + Environment.NewLine + opis);
             }
             else
             {
                 _context.SaveChanges();
                 this.Close();
             }
-                
         }
 
         private decimal DalOPMap(List<string> bledy)
@@ -1015,6 +1014,13 @@ namespace Okulary
                 this.zadatek.SelectAll();
                 _zadatekFocused = true;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Zapisz();
+            var pdfGenerator = new PDFGenerator();
+            pdfGenerator.Generate(_zakup, _person);
         }
     }
 }
