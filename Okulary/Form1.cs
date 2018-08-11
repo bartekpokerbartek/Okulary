@@ -63,6 +63,10 @@ namespace Okulary
 
             Search();
 
+            textBox1.Text = string.Empty;
+            textBox2.Text = string.Empty;
+            textBox3.Text = string.Empty;
+
             button1.Enabled = true;
             button2.Enabled = true;
         }

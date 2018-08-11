@@ -20,6 +20,8 @@ namespace Okulary.Model
 
         public DateTime DataOdbioru { get; set; }
 
+        public bool IsDataOdbioru { get; set; }
+
         public decimal Zadatek { get; set; }
 
         public string RodzajOprawekDal { get; set; }

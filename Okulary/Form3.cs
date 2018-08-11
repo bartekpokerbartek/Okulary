@@ -82,19 +82,29 @@ namespace Okulary
             Mapuj();
         }
 
+        private string MapujDodatnie(decimal value)
+        {
+            if (value > 0)
+                return "+" + value.ToString();
+            return value.ToString();
+        }
+
         private void Mapuj()
         {
             dataZakupu.Value = _zakup.BuyDate;
+            checkBox1.Checked = _zakup.IsDataOdbioru;
+            SetCheckbox();
+
             dataOdbioru.Value = _zakup.DataOdbioru;
             NumerZlecenia.Text = _zakup.NumerZlecenia;
             RodzajOprawekDal.Text = _zakup.RodzajOprawekDal;
             RodzajOprawekBliz.Text = _zakup.RodzajOprawekBliz;
             RodzajOprawekBlizCena.Text = _zakup.CenaOprawekBliz.ToString();
             RodzajOprawekDalCena.Text = _zakup.CenaOprawekDal.ToString();
-            comboBox1.Text = _zakup.DalOP.Sfera.ToString();
-            comboBox2.Text = _zakup.DalOL.Sfera.ToString();
-            comboBox3.Text = _zakup.BlizOP.Sfera.ToString();
-            comboBox4.Text = _zakup.BlizOL.Sfera.ToString();
+            comboBox1.Text = MapujDodatnie(_zakup.DalOP.Sfera);
+            comboBox2.Text = MapujDodatnie(_zakup.DalOL.Sfera);
+            comboBox3.Text = MapujDodatnie(_zakup.BlizOP.Sfera);
+            comboBox4.Text = MapujDodatnie(_zakup.BlizOL.Sfera);
 
             robocizna.Text = _zakup.Robocizna.ToString();
 
@@ -168,6 +178,7 @@ namespace Okulary
         {
             var bledy = new List<string>();
             _zakup.BuyDate = dataZakupu.Value;
+            _zakup.IsDataOdbioru = checkBox1.Checked;
             _zakup.DataOdbioru = dataOdbioru.Value;
             _zakup.NumerZlecenia = NumerZlecenia.Text;
             _zakup.RodzajOprawekDal = RodzajOprawekDal.Text;
@@ -298,7 +309,11 @@ namespace Okulary
                 _zakup.DalOP.OdlegloscZrenic = wynik;
             }
             else
-                bledy.Add("Złe pole dal OP odl.");
+            {
+                //bledy.Add("Złe pole dal OP odl.");
+                _zakup.DalOP.OdlegloscZrenic = 0.0M;
+            }
+                
 
             _zakup.DalOP.H = dalOPH.Text;
 
@@ -336,7 +351,11 @@ namespace Okulary
                 _zakup.DalOL.OdlegloscZrenic = wynik;
             }
             else
-                bledy.Add("Złe pole dal OL odl.");
+            {
+                _zakup.DalOL.OdlegloscZrenic = 0.0M;
+                //bledy.Add("Złe pole dal OL odl.");
+            }
+                
 
             _zakup.DalOL.H = dalOLH.Text;
 
@@ -374,7 +393,11 @@ namespace Okulary
                 _zakup.BlizOP.OdlegloscZrenic = wynik;
             }
             else
-                bledy.Add("Złe pole bliz OP odl.");
+            {
+                //bledy.Add("Złe pole bliz OP odl.");
+                _zakup.BlizOP.OdlegloscZrenic = 0.0M;
+            }
+                
 
             _zakup.BlizOP.H = blizOPH.Text;
 
@@ -412,7 +435,11 @@ namespace Okulary
                 _zakup.BlizOL.OdlegloscZrenic = wynik;
             }
             else
-                bledy.Add("Złe pole bliz OL odl.");
+            {
+                //bledy.Add("Złe pole bliz OL odl.");
+                _zakup.BlizOL.OdlegloscZrenic = 0.0M;
+            }
+                
 
             _zakup.BlizOL.H = blizOLH.Text;
 
@@ -1021,6 +1048,19 @@ namespace Okulary
             Zapisz();
             var pdfGenerator = new PDFGenerator();
             pdfGenerator.Generate(_zakup, _person);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            SetCheckbox();
+        }
+
+        private void SetCheckbox()
+        {
+            if (checkBox1.Checked)
+                dataOdbioru.Enabled = true;
+            else
+                dataOdbioru.Enabled = false;
         }
     }
 }

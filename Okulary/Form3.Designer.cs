@@ -31,7 +31,6 @@
             this.NumerZlecenia = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dataZakupu = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
             this.dataOdbioru = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -101,6 +100,7 @@
             this.zadatek = new System.Windows.Forms.TextBox();
             this.doZaplaty = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // NumerZlecenia
@@ -126,18 +126,9 @@
             this.dataZakupu.Size = new System.Drawing.Size(200, 20);
             this.dataZakupu.TabIndex = 2;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(304, 8);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Data odbioru";
-            // 
             // dataOdbioru
             // 
-            this.dataOdbioru.Location = new System.Drawing.Point(378, 5);
+            this.dataOdbioru.Location = new System.Drawing.Point(453, 5);
             this.dataOdbioru.Name = "dataOdbioru";
             this.dataOdbioru.Size = new System.Drawing.Size(200, 20);
             this.dataOdbioru.TabIndex = 4;
@@ -1150,11 +1141,23 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(360, 8);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(87, 17);
+            this.checkBox1.TabIndex = 117;
+            this.checkBox1.Text = "Data odbioru";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(691, 485);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.doZaplaty);
             this.Controls.Add(this.zadatek);
@@ -1224,7 +1227,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dataOdbioru);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.dataZakupu);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.NumerZlecenia);
@@ -1242,7 +1244,6 @@
         private System.Windows.Forms.TextBox NumerZlecenia;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dataZakupu;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dataOdbioru;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -1312,5 +1313,6 @@
         private System.Windows.Forms.TextBox zadatek;
         private System.Windows.Forms.TextBox doZaplaty;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

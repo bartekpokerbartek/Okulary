@@ -5,6 +5,7 @@ using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
 using iText.IO.Util;
+using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
@@ -41,10 +42,10 @@ namespace Okulary.Services
             //Initialize PDF document
             PdfDocument pdf = new PdfDocument(writer);
             // Initialize document
-            Document document = new Document(pdf, PageSize.A4);
-            ////Document document = new Document(pdf, new PageSize(623, 1058));
+            //Document document = new Document(pdf, PageSize.A4);
+            Document document = new Document(pdf, new PageSize(623, 1058));
 
-            document.SetMargins(20, 20, 20, 50);
+            document.SetMargins(50, 20, 20, 40);
             //document.SetMargins(0, 0, 0, 0);
 
             //BaseFont courier = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.EMBEDDED);
@@ -93,7 +94,7 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph("Podpis i pieczęć zleceniobiorcy").SetFont(font)));
 
             table.AddCell(new Cell().Add(new Paragraph(osoba.FirstName + " " + osoba.LastName).SetFont(font)));
-            table.AddCell(new Cell(2, 1).Add(new Paragraph("Grzegorz Szafran").SetFont(font)));
+            table.AddCell(new Cell(2, 1).Add(new Paragraph("").SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph("Oświadczam, że zapoznałem(am) się z instrukcją użytkownika wyrobu i akceptuję warunki umowy. Swoje dane osobowe przekazuję dobrowolnie i jednocześnie zastrzegam sobie prawo do ich sprawdzania i poprawiania.").SetFont(font).SetFontSize(8)));
 
             document.Add(table);
@@ -246,6 +247,8 @@ namespace Okulary.Services
 
         private void DrawHeader(Document document, PdfFont font, Binocle okulary)
         {
+            PdfFont whiteFont = PdfFontFactory.CreateFont(StandardFonts.TIMES_ROMAN, PdfEncodings.CP1250, true);
+            
             var table = new Table(new UnitValue[]
             {
                 new UnitValue(UnitValue.PERCENT, 32),
@@ -268,7 +271,13 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
             table.AddCell(new Cell().Add(new Paragraph(okulary.NumerZlecenia).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
             table.AddCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DataOdbioru.ToString(format)).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
+            var dataOdbioru = okulary.IsDataOdbioru ? okulary.DataOdbioru.ToString(format) : "Brak";
+            //var fontColor = new ColorConstants.
+            if (okulary.IsDataOdbioru)
+                table.AddCell(new Cell().Add(new Paragraph(dataOdbioru).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
+            else
+                table.AddCell(new Cell().Add(new Paragraph(dataOdbioru).SetFont(font).SetFontColor(ColorConstants.WHITE).SetTextAlignment(TextAlignment.CENTER)));
+
 
             table.AddCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
             table.AddCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
@@ -286,7 +295,16 @@ namespace Okulary.Services
 
             document.Add(new Paragraph());
             document.Add(new Paragraph("-----------------------------------------------------------------------------------------------------------------------------------"));
-
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
+            document.Add(new Paragraph());
             //document.Add(new Paragraph("Test")).SetFixedPosition(10, 150, 100);
 
             document.Add(new Paragraph());

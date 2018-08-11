@@ -124,6 +124,10 @@
     <Compile Include="Migrations\201712090709061_BinoclesExtendedFix.Designer.cs">
       <DependentUpon>201712090709061_BinoclesExtendedFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808110421485_Pole IsDataOdbioru.cs" />
+    <Compile Include="Migrations\201808110421485_Pole IsDataOdbioru.Designer.cs">
+      <DependentUpon>201808110421485_Pole IsDataOdbioru.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Person.cs" />
@@ -152,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712090709061_BinoclesExtendedFix.resx">
       <DependentUpon>201712090709061_BinoclesExtendedFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808110421485_Pole IsDataOdbioru.resx">
+      <DependentUpon>201808110421485_Pole IsDataOdbioru.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
