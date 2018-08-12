@@ -18,9 +18,11 @@ namespace Okulary
     {
         int _binocleId;
         int _personId;
+        string osFormat = "N0";
         Person _person;
         MineContext _context;
         Binocle _zakup;
+        Mapper _mapper;
         PriceHelper _priceHelper;
         bool _rodzajOprawekDalCenaFocused;
         private bool _rodzajOprawekBlizCenaFocused;
@@ -57,6 +59,7 @@ namespace Okulary
             _context = new MineContext();
             _person = _context.Persons.First(x => x.PersonId == _personId);
             _priceHelper = new PriceHelper();
+            _mapper = new Mapper();
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -82,13 +85,6 @@ namespace Okulary
             Mapuj();
         }
 
-        private string MapujDodatnie(decimal value)
-        {
-            if (value > 0)
-                return "+" + value.ToString();
-            return value.ToString();
-        }
-
         private void Mapuj()
         {
             dataZakupu.Value = _zakup.BuyDate;
@@ -101,36 +97,36 @@ namespace Okulary
             RodzajOprawekBliz.Text = _zakup.RodzajOprawekBliz;
             RodzajOprawekBlizCena.Text = _zakup.CenaOprawekBliz.ToString();
             RodzajOprawekDalCena.Text = _zakup.CenaOprawekDal.ToString();
-            comboBox1.Text = MapujDodatnie(_zakup.DalOP.Sfera);
-            comboBox2.Text = MapujDodatnie(_zakup.DalOL.Sfera);
-            comboBox3.Text = MapujDodatnie(_zakup.BlizOP.Sfera);
-            comboBox4.Text = MapujDodatnie(_zakup.BlizOL.Sfera);
+            comboBox1.Text = _mapper.MapujDodatnie(_zakup.DalOP.Sfera);
+            comboBox2.Text = _mapper.MapujDodatnie(_zakup.DalOL.Sfera);
+            comboBox3.Text = _mapper.MapujDodatnie(_zakup.BlizOP.Sfera);
+            comboBox4.Text = _mapper.MapujDodatnie(_zakup.BlizOL.Sfera);
 
             robocizna.Text = _zakup.Robocizna.ToString();
 
-            dalOPCylinder.Text = _zakup.DalOP.Cylinder.ToString();
-            dalOPOs.Text = _zakup.DalOP.Os.ToString();
+            dalOPCylinder.Text = _mapper.MapujDodatnie(_zakup.DalOP.Cylinder);
+            dalOPOs.Text = _zakup.DalOP.Os.ToString(osFormat);
             dalOPPryzma.Text = _zakup.DalOP.Pryzma;
             dalOPOdl.Text = _zakup.DalOP.OdlegloscZrenic.ToString();
             dalOPH.Text = _zakup.DalOP.H;
             dalOPCena.Text = _zakup.DalOP.Cena.ToString();
 
-            dalOLCylinder.Text = _zakup.DalOL.Cylinder.ToString();
-            dalOLOs.Text = _zakup.DalOL.Os.ToString();
+            dalOLCylinder.Text = _mapper.MapujDodatnie(_zakup.DalOL.Cylinder);
+            dalOLOs.Text = _zakup.DalOL.Os.ToString(osFormat);
             dalOLPryzma.Text = _zakup.DalOL.Pryzma;
             dalOLOdl.Text = _zakup.DalOL.OdlegloscZrenic.ToString();
             dalOLH.Text = _zakup.DalOL.H;
             dalOLCena.Text = _zakup.DalOL.Cena.ToString();
 
-            blizOPCylinder.Text = _zakup.BlizOP.Cylinder.ToString();
-            blizOPOs.Text = _zakup.BlizOP.Os.ToString();
+            blizOPCylinder.Text = _mapper.MapujDodatnie(_zakup.BlizOP.Cylinder);
+            blizOPOs.Text = _zakup.BlizOP.Os.ToString(osFormat);
             blizOPPryzma.Text = _zakup.BlizOP.Pryzma;
             blizOPOdl.Text = _zakup.BlizOP.OdlegloscZrenic.ToString();
             blizOPH.Text = _zakup.BlizOP.H;
             blizOPCena.Text = _zakup.BlizOP.Cena.ToString();
 
-            blizOLCylinder.Text = _zakup.BlizOL.Cylinder.ToString();
-            blizOLOs.Text = _zakup.BlizOL.Os.ToString();
+            blizOLCylinder.Text = _mapper.MapujDodatnie(_zakup.BlizOL.Cylinder);
+            blizOLOs.Text = _zakup.BlizOL.Os.ToString(osFormat);
             blizOLPryzma.Text = _zakup.BlizOL.Pryzma;
             blizOLOdl.Text = _zakup.BlizOL.OdlegloscZrenic.ToString();
             blizOLH.Text = _zakup.BlizOL.H;

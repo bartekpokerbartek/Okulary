@@ -21,8 +21,10 @@ namespace Okulary.Services
     public class PDFGenerator
     {
         public readonly PriceHelper _priceHelper = new PriceHelper();
+        public readonly Mapper _mapper = new Mapper();
 
         public string format = "dd.MM.yyyy";
+        public string osFormat = "N0";
 
         public void Generate(Binocle okulary, Person osoba)
         {
@@ -45,7 +47,7 @@ namespace Okulary.Services
             //Document document = new Document(pdf, PageSize.A4);
             Document document = new Document(pdf, new PageSize(623, 1058));
 
-            document.SetMargins(50, 20, 20, 40);
+            document.SetMargins(20, 20, 20, 40);
             //document.SetMargins(0, 0, 0, 0);
 
             //BaseFont courier = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.EMBEDDED);
@@ -62,7 +64,7 @@ namespace Okulary.Services
             ////document.Add(new Paragraph("Testing").SetFixedPosition(20, 100, 50));
             ////document.Add(new Paragraph("Testing").SetFixedPosition(70, 100, 50));
 
-            DrawHeader(document, font, okulary);
+            DrawHeader(document, font, okulary, osoba);
 
             DrawSection1(document, font, okulary, osoba);
 
@@ -245,7 +247,7 @@ namespace Okulary.Services
             document.Add(new Paragraph());
         }
 
-        private void DrawHeader(Document document, PdfFont font, Binocle okulary)
+        private void DrawHeader(Document document, PdfFont font, Binocle okulary, Person person)
         {
             PdfFont whiteFont = PdfFontFactory.CreateFont(StandardFonts.TIMES_ROMAN, PdfEncodings.CP1250, true);
             
@@ -261,6 +263,7 @@ namespace Okulary.Services
             table.SetWidth(new UnitValue(UnitValue.PERCENT, 100));
 
             //table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)));
+            document.Add(new Paragraph(person.FirstName + " " + person.LastName).SetTextAlignment(TextAlignment.CENTER));
             table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderBottom(Border.NO_BORDER));
             table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
             table.AddHeaderCell(new Cell().Add(new Paragraph("Numer telefonu").SetFont(font)));
@@ -338,9 +341,9 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph("Cena socz.").SetFont(font)));
 
             table.AddCell(new Cell().Add(new Paragraph("Dal OP").SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.Sfera.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.Cylinder.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.Os.ToString()).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.DalOP.Sfera)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.DalOP.Cylinder)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.Os.ToString(osFormat)).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.Pryzma.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.OdlegloscZrenic.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.H).SetFont(font)));
@@ -348,9 +351,9 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOP.Cena.ToString()).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
 
             table.AddCell(new Cell().Add(new Paragraph("Dal OL").SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.Sfera.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.Cylinder.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.Os.ToString()).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.DalOL.Sfera)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.DalOL.Cylinder)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.Os.ToString(osFormat)).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.Pryzma.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.OdlegloscZrenic.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.H).SetFont(font)));
@@ -358,9 +361,9 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph(okulary.DalOL.Cena.ToString()).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
 
             table.AddCell(new Cell().Add(new Paragraph("Bliż OP").SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.Sfera.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.Cylinder.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.Os.ToString()).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.BlizOP.Sfera)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.BlizOP.Cylinder)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.Os.ToString(osFormat)).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.Pryzma.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.OdlegloscZrenic.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.H).SetFont(font)));
@@ -368,9 +371,9 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOP.Cena.ToString()).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
 
             table.AddCell(new Cell().Add(new Paragraph("Bliż OL").SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.Sfera.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.Cylinder.ToString()).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.Os.ToString()).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.BlizOL.Sfera)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(_mapper.MapujDodatnie(okulary.BlizOL.Cylinder)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.Os.ToString(osFormat)).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.Pryzma.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.OdlegloscZrenic.ToString()).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.BlizOL.H).SetFont(font)));
