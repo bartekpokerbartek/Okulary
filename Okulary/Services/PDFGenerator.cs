@@ -263,7 +263,7 @@ namespace Okulary.Services
             table.SetWidth(new UnitValue(UnitValue.PERCENT, 100));
 
             //table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)));
-            document.Add(new Paragraph(person.FirstName + " " + person.LastName).SetTextAlignment(TextAlignment.CENTER));
+            document.Add(new Paragraph(person.FirstName + " " + person.LastName).SetFont(font).SetTextAlignment(TextAlignment.CENTER));
             table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderBottom(Border.NO_BORDER));
             table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
             table.AddHeaderCell(new Cell().Add(new Paragraph("Numer telefonu").SetFont(font)));
