@@ -12,5 +12,7 @@ namespace Okulary.Repo
         public DbSet<Person> Persons { get; set; }
 
         public DbSet<Binocle> Binocles { get; set; }
+
+        //public DbSet<Element> Elements { get; set; }
     }
 }

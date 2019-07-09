@@ -259,5 +259,12 @@ namespace Okulary
         {
             MessageBox.Show("Popraw lokalizację!", "OK", MessageBoxButtons.OK);
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var childForm = new Sprzedaz();
+            //childForm.FormClosing += new FormClosingEventHandler();
+            childForm.Show();
+        }
     }
 }
