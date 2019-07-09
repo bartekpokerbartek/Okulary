@@ -10,7 +10,17 @@ namespace Okulary.Helpers
                 return "Dynów";
             else if (lokalizacja == Lokalizacja.Dubiecko)
                 return "Dubiecko";
-            else return "Obydwie";
+            else return "Wszystkie";
+        }
+
+        public static Lokalizacja DajLokalizacjaEnum(string lokaliacja)
+        {
+            if (lokaliacja == "Dynów")
+                return Lokalizacja.Dynow;
+            else if (lokaliacja == "Dubiecko")
+                return Lokalizacja.Dubiecko;
+            else return Lokalizacja.Nieznana;
+
         }
     }
 }

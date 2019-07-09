@@ -20,18 +20,18 @@ namespace Okulary
 
         private void StartupFormForm_Load(object sender, EventArgs e)
         {
-            comboBox1.SelectedItem = "Obydwie";
+            comboBox1.SelectedItem = "Wszystkie";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var lokalizacja = Lokalizacja.Obydwie;
+            var lokalizacja = Lokalizacja.Wszystkie;
             if (comboBox1.SelectedItem.ToString() == "Dynów")
                 lokalizacja = Lokalizacja.Dynow;
             else if (comboBox1.SelectedItem.ToString() == "Dubiecko")
                 lokalizacja = Lokalizacja.Dubiecko;
             else
-                lokalizacja = Lokalizacja.Obydwie;
+                lokalizacja = Lokalizacja.Wszystkie;
 
             var childForm = new Form1(lokalizacja);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Okulary.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace Okulary.Model
@@ -20,5 +21,7 @@ namespace Okulary.Model
         public DateTime BirthDate { get; set; }
 
         public ICollection<Binocle> Binocles { get; set; }
+
+        public Lokalizacja Lokalizacja { get; set; }
     }
 }

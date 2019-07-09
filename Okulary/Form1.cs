@@ -59,7 +59,8 @@ namespace Okulary
                             LastName = lastName,
                             BirthDate = birthDate,
                             Address = address,
-                            Binocles = new List<Binocle>()
+                            Binocles = new List<Binocle>(),
+                            Lokalizacja = _lokalizacja
                         });
 
                         ctx.SaveChanges();
@@ -124,9 +125,25 @@ namespace Okulary
             var firstName = textBox1.Text;
             var lastName = textBox2.Text;
 
+            List<Lokalizacja> lokalizacje;
+
+            if (_lokalizacja == Lokalizacja.Wszystkie)
+                lokalizacje = new List<Lokalizacja>
+                {
+                    Lokalizacja.Dynow,
+                    Lokalizacja.Dubiecko,
+                    Lokalizacja.Wszystkie
+                };
+            else
+                lokalizacje = new List<Lokalizacja>
+                {
+                    _lokalizacja,
+                    Lokalizacja.Wszystkie
+                };
+
             using (var ctx = new MineContext())
             {
-                personList = ctx.Persons.Where(x => (string.IsNullOrEmpty(firstName) || x.FirstName.Contains(firstName)) && (string.IsNullOrEmpty(lastName) || x.LastName.Contains(lastName))).ToList();
+                personList = ctx.Persons.Where(x => (string.IsNullOrEmpty(firstName) || x.FirstName.Contains(firstName)) && (string.IsNullOrEmpty(lastName) || x.LastName.Contains(lastName)) && (lokalizacje.Contains(x.Lokalizacja))).ToList();
             }
 
             dataGridView1.DataSource = personList;
@@ -139,6 +156,15 @@ namespace Okulary
             dataGridView1.Columns["Address"].HeaderText = "Adres";
             dataGridView1.Columns["Address"].Width = 240;
             dataGridView1.Columns["BirthDate"].HeaderText = "Data urodzenia";
+            dataGridView1.Columns["Lokalizacja"].Width = 75;
+
+            //DODANIE KOLUMNY Z COMBO!!!
+            //var column = new DataGridViewComboBoxColumn();
+            //var lista = Enum.GetNames(typeof(Lokalizacja)).ToList();
+            //column.DataSource = lista;
+            //dataGridView1.Columns.Add(column);
+
+            //dataGridView1.Columns["Lokalizacja"].
 
             if (!dataGridView1.Columns.Contains("ZamowieniaNazwa"))
             {
@@ -195,6 +221,7 @@ namespace Okulary
                     person.FirstName = (string)dataGridView1["FirstName", e.RowIndex].Value;
                     person.LastName = (string)dataGridView1["LastName", e.RowIndex].Value;
                     person.BirthDate = (DateTime)dataGridView1["BirthDate", e.RowIndex].Value;
+                    person.Lokalizacja = (Lokalizacja)dataGridView1["Lokalizacja", e.RowIndex].Value;
                     ctx.SaveChanges();
                     //Search();
                 }
@@ -209,6 +236,7 @@ namespace Okulary
                     dataGridView1["FirstName", e.RowIndex].Value = person.FirstName;
                     dataGridView1["LastName", e.RowIndex].Value = person.LastName;
                     dataGridView1["BirthDate", e.RowIndex].Value = person.BirthDate;
+                    dataGridView1["Lokalizacja", e.RowIndex].Value = person.Lokalizacja;
                     ctx.SaveChanges();
                     //Search();
                 }
@@ -225,6 +253,11 @@ namespace Okulary
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show("Popraw lokalizację!", "OK", MessageBoxButtons.OK);
         }
     }
 }

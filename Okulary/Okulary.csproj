@@ -131,6 +131,10 @@
     <Compile Include="Migrations\201808110421485_Pole IsDataOdbioru.Designer.cs">
       <DependentUpon>201808110421485_Pole IsDataOdbioru.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907091543409_lokalizacjaMigracja.cs" />
+    <Compile Include="Migrations\201907091543409_lokalizacjaMigracja.Designer.cs">
+      <DependentUpon>201907091543409_lokalizacjaMigracja.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Person.cs" />
@@ -168,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808110421485_Pole IsDataOdbioru.resx">
       <DependentUpon>201808110421485_Pole IsDataOdbioru.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907091543409_lokalizacjaMigracja.resx">
+      <DependentUpon>201907091543409_lokalizacjaMigracja.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

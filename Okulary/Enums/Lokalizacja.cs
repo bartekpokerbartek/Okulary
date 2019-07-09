@@ -2,8 +2,9 @@
 {
     public enum Lokalizacja
     {
-        Obydwie = 0,
+        Wszystkie = 0,
         Dynow = 1,
-        Dubiecko = 2
+        Dubiecko = 2,
+        Nieznana = 3
     }
 }
