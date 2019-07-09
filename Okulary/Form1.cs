@@ -1,22 +1,28 @@
-﻿using Okulary.Model;
+﻿using Okulary.Enums;
+using Okulary.Helpers;
+using Okulary.Model;
 using Okulary.Repo;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Okulary
 {
     public partial class Form1 : Form
     {
+        private Lokalizacja _lokalizacja;
         public Form1()
         {
             InitializeComponent();
+            //this.dataGridView1.Columns["Binocles"].Visible = false;
+        }
+
+        public Form1(Lokalizacja lokalizacja)
+        {
+            InitializeComponent();
+            _lokalizacja = lokalizacja;
             //this.dataGridView1.Columns["Binocles"].Visible = false;
         }
 
@@ -209,6 +215,16 @@ namespace Okulary
             }
 
             //Search();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            label6.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
