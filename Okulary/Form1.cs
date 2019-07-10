@@ -125,21 +125,7 @@ namespace Okulary
             var firstName = textBox1.Text;
             var lastName = textBox2.Text;
 
-            List<Lokalizacja> lokalizacje;
-
-            if (_lokalizacja == Lokalizacja.Wszystkie)
-                lokalizacje = new List<Lokalizacja>
-                {
-                    Lokalizacja.Dynow,
-                    Lokalizacja.Dubiecko,
-                    Lokalizacja.Wszystkie
-                };
-            else
-                lokalizacje = new List<Lokalizacja>
-                {
-                    _lokalizacja,
-                    Lokalizacja.Wszystkie
-                };
+            var lokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
             using (var ctx = new MineContext())
             {
@@ -262,7 +248,7 @@ namespace Okulary
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var childForm = new Sprzedaz();
+            var childForm = new Sprzedaz(_lokalizacja);
             //childForm.FormClosing += new FormClosingEventHandler();
             childForm.Show();
         }

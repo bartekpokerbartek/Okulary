@@ -1,4 +1,8 @@
-﻿using Okulary.Enums;
+﻿using System.Collections.Generic;
+
+using iText.Layout.Element;
+
+using Okulary.Enums;
 
 namespace Okulary.Helpers
 {
@@ -8,9 +12,11 @@ namespace Okulary.Helpers
         {
             if (lokalizacja == Lokalizacja.Dynow)
                 return "Dynów";
-            else if (lokalizacja == Lokalizacja.Dubiecko)
+
+            if (lokalizacja == Lokalizacja.Dubiecko)
                 return "Dubiecko";
-            else return "Wszystkie";
+
+            return "Wszystkie";
         }
 
         public static Lokalizacja DajLokalizacjaEnum(string lokaliacja)
@@ -20,7 +26,27 @@ namespace Okulary.Helpers
             else if (lokaliacja == "Dubiecko")
                 return Lokalizacja.Dubiecko;
             else return Lokalizacja.Nieznana;
+        }
 
+        public static List<Lokalizacja> DajDozwoloneLokalizacje(Lokalizacja lokalizacja)
+        {
+            List<Lokalizacja> lokalizacje;
+
+            if (lokalizacja == Lokalizacja.Wszystkie)
+                lokalizacje = new List<Lokalizacja>
+                                  {
+                                      Lokalizacja.Dynow,
+                                      Lokalizacja.Dubiecko,
+                                      Lokalizacja.Wszystkie
+                                  };
+            else
+                lokalizacje = new List<Lokalizacja>
+                                  {
+                                      lokalizacja,
+                                      Lokalizacja.Wszystkie
+                                  };
+
+            return lokalizacje;
         }
     }
 }

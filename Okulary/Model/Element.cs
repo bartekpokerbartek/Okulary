@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Okulary.Enums;
+
 namespace Okulary.Model
 {
     public class Element
@@ -7,6 +9,8 @@ namespace Okulary.Model
         public Element()
         {
         }
+
+        public int ElementId { get; set; }
 
         public string Nazwa { get; set; }
 
@@ -17,5 +21,9 @@ namespace Okulary.Model
         public DateTime DataSprzedazy { get; set; }
 
         public DateTime DataUtworzenia { get; set; }
+
+        public Lokalizacja Lokalizacja { get; set; }
+
+        public bool CannotEdit { get; set; }
     }
 }
