@@ -121,6 +121,36 @@ namespace Okulary
             }
 
             label3.Text = suma.ToString();
+
+            var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+
+            var okularyMonthly = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && x.Zadatek > 0).ToList();
+            var dodatkoweElementyMonthly = new List<Element>();
+
+            foreach (var okular in okularyMonthly)
+            {
+                //var person = _context.Persons.FirstOrDefault(x => x.PersonId == okular.Person_PersonId && dozwoloneLokalizacje.Contains(x.Lokalizacja));
+
+                //if (person == null)
+                //    continue;
+
+                dodatkoweElementyMonthly.Add(new Element
+                                          {
+                                              DataSprzedazy = data,
+                                              Cena = okular.Zadatek,
+                                              Ilosc = 1
+                                          });
+            }
+
+            elementListMonthly.AddRange(dodatkoweElementyMonthly);
+
+            decimal sumaMonthly = 0.0M;
+            foreach (var element in elementListMonthly)
+            {
+                sumaMonthly += element.Cena * element.Ilosc;
+            }
+
+            label7.Text = sumaMonthly.ToString();
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
