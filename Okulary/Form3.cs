@@ -82,11 +82,16 @@ namespace Okulary
             }
             
             _zakup = _context.Binocles.Where(x => x.BinocleId == _binocleId).FirstOrDefault();
+
             Mapuj();
         }
 
         private void Mapuj()
         {
+            checkBox2.Checked = _context.Doplaty.Any(x => x.Binocle_BinocleId == _binocleId);
+            checkBox2.Enabled = false;
+            checkBox2.Visible = checkBox2.Checked;
+
             dataZakupu.Value = _zakup.BuyDate;
             checkBox1.Checked = _zakup.IsDataOdbioru;
             SetCheckbox();
@@ -141,6 +146,8 @@ namespace Okulary
             doZaplaty.Text = _priceHelper.DajDoZaplaty(_zakup).ToString();
 
             uwagi.Text = _zakup.Description;
+
+            UpdateSuma();
         }
 
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
@@ -529,12 +536,22 @@ namespace Okulary
                 dobraSuma = false;
             }
 
-            var doZaplatyCena = sumka - zadatekCena;
+            var help = _context.Doplaty.Where(x => x.Binocle_BinocleId == _binocleId);
+            decimal doplaty;
+            if (help.Any())
+                doplaty = help.Sum(x => x.Kwota);
+            else
+                doplaty = 0.0M;
+
+            var doZaplatyCena = sumka - zadatekCena - doplaty;
 
             if (dobraSuma)
                 doZaplaty.Text = doZaplatyCena.ToString();
             else
                 doZaplaty.Text = "Błąd";
+
+            if (doZaplatyCena < 0)
+                MessageBox.Show("Ujemna kwota do zapłaty. Zweryfikuj czy wszystko jest w porządku.");
         }
 
         private void RodzajOprawekDalCena_Leave(object sender, EventArgs e)
@@ -1057,6 +1074,19 @@ namespace Okulary
                 dataOdbioru.Enabled = true;
             else
                 dataOdbioru.Enabled = false;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var childForm = new Doplaty(_binocleId);
+
+            childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
+            childForm.Show();
+        }
+
+        private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
+        {
+            Mapuj();
         }
     }
 }

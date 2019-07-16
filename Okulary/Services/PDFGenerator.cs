@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using iText.IO.Font;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
@@ -15,6 +16,7 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using Okulary.Helpers;
 using Okulary.Model;
+using Okulary.Repo;
 
 namespace Okulary.Services
 {
@@ -22,12 +24,18 @@ namespace Okulary.Services
     {
         public readonly PriceHelper _priceHelper = new PriceHelper();
         public readonly Mapper _mapper = new Mapper();
+        private bool _czySaDoplaty;
 
         public string format = "dd.MM.yyyy";
         public string osFormat = "N0";
 
         public void Generate(Binocle okulary, Person osoba)
         {
+            using (var context = new MineContext())
+            {
+                _czySaDoplaty = context.Doplaty.Any(x => x.Binocle_BinocleId == okulary.BinocleId);
+            }
+
             var DEST = ConfigurationManager.AppSettings["PdfFolder"].ToString() + osoba.LastName + "_" + osoba.FirstName + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".pdf";
 
             FileInfo file = new FileInfo(DEST);
@@ -120,7 +128,11 @@ namespace Okulary.Services
 
             table.AddCell(new Cell().Add(new Paragraph("Zadatek").SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.Zadatek.ToString()).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
-            table.AddCell(new Cell().Add(new Paragraph("Do zapłaty").SetFont(font)));
+            var doZaplatyText = "Do zapłaty";
+            if (_czySaDoplaty)
+                doZaplatyText += " (są dopłaty)";
+
+            table.AddCell(new Cell().Add(new Paragraph(doZaplatyText).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(_priceHelper.DajDoZaplaty(okulary).ToString()).SetFont(font).SetTextAlignment(TextAlignment.CENTER)));
 
             document.Add(table);
@@ -243,7 +255,7 @@ namespace Okulary.Services
             table2.AddCell(new Cell().Add(new Paragraph(osoba.Address ?? "Brak").SetFont(font)));
 
             document.Add(table2);
-
+            
             document.Add(new Paragraph());
         }
 
@@ -287,7 +299,12 @@ namespace Okulary.Services
             table.AddCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
             table.AddCell(new Cell().Add(new Paragraph("Zadatek").SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
-            table.AddCell(new Cell().Add(new Paragraph("Do zapłaty").SetFont(font)));
+
+            var doZaplatyText = "Do zapłaty";
+            if (_czySaDoplaty)
+                doZaplatyText += " (są dopłaty)";
+
+            table.AddCell(new Cell().Add(new Paragraph(doZaplatyText).SetFont(font)));
 
             table.AddCell(new Cell().SetHeight(20).Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER));
             table.AddCell(new Cell().SetHeight(20).Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));

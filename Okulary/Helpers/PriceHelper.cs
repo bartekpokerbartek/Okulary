@@ -1,4 +1,6 @@
 ﻿using Okulary.Model;
+using Okulary.Repo;
+using System.Linq;
 
 namespace Okulary.Helpers
 {
@@ -12,7 +14,18 @@ namespace Okulary.Helpers
 
         public decimal DajDoZaplaty(Binocle _zakup)
         {
-            return DajSume(_zakup) - _zakup.Zadatek;
+            decimal doplaty;
+            using (var _context = new MineContext())
+            {
+                var help = _context.Doplaty.Where(x => x.Binocle_BinocleId == _zakup.BinocleId);
+
+                if (help.Any())
+                    doplaty = help.Sum(x => x.Kwota);
+                else
+                    doplaty = 0.0M;
+            }
+
+            return DajSume(_zakup) - _zakup.Zadatek - doplaty;
         }
     }
 }

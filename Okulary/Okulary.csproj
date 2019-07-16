@@ -89,11 +89,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DodajDoplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DodajDoplate.Designer.cs">
+      <DependentUpon>DodajDoplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="DodajElement.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DodajElement.Designer.cs">
       <DependentUpon>DodajElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Doplaty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Doplaty.Designer.cs">
+      <DependentUpon>Doplaty.cs</DependentUpon>
     </Compile>
     <Compile Include="Enums\Lokalizacja.cs" />
     <Compile Include="Form1.cs">
@@ -158,8 +170,25 @@
     <Compile Include="Migrations\201907100802414_AddCannotEdit.Designer.cs">
       <DependentUpon>201907100802414_AddCannotEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907111936171_Doplaty.cs" />
+    <Compile Include="Migrations\201907111936171_Doplaty.Designer.cs">
+      <DependentUpon>201907111936171_Doplaty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907111945032_UpdateBinocle.cs" />
+    <Compile Include="Migrations\201907111945032_UpdateBinocle.Designer.cs">
+      <DependentUpon>201907111945032_UpdateBinocle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907112008527_Migracja.cs" />
+    <Compile Include="Migrations\201907112008527_Migracja.Designer.cs">
+      <DependentUpon>201907112008527_Migracja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907112012446_Kolejna.cs" />
+    <Compile Include="Migrations\201907112012446_Kolejna.Designer.cs">
+      <DependentUpon>201907112012446_Kolejna.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
+    <Compile Include="Model\Doplata.cs" />
     <Compile Include="Model\Element.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Soczewka.cs" />
@@ -179,8 +208,14 @@
     <Compile Include="StartupFormForm.Designer.cs">
       <DependentUpon>StartupFormForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DodajDoplate.resx">
+      <DependentUpon>DodajDoplate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DodajElement.resx">
       <DependentUpon>DodajElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Doplaty.resx">
+      <DependentUpon>Doplaty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -220,6 +255,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907100802414_AddCannotEdit.resx">
       <DependentUpon>201907100802414_AddCannotEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907111936171_Doplaty.resx">
+      <DependentUpon>201907111936171_Doplaty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907111945032_UpdateBinocle.resx">
+      <DependentUpon>201907111945032_UpdateBinocle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907112008527_Migracja.resx">
+      <DependentUpon>201907112008527_Migracja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907112012446_Kolejna.resx">
+      <DependentUpon>201907112012446_Kolejna.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

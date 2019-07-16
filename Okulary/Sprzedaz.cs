@@ -43,7 +43,7 @@ namespace Okulary
             var dozwoloneLokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
             elementList = _context.Elements.Where(x => x.DataSprzedazy == data && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
-
+            
             var okulary = _context.Binocles.Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data && x.Zadatek > 0).ToList();
             var dodatkoweElementy = new List<Element>();
 
@@ -64,8 +64,36 @@ namespace Okulary
                                               CannotEdit = true
                                           });
             }
-            
+
+            var dodatkoweDoplaty = new List<Element>();
+
+            var doplaty = _context.Doplaty.Where(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data).ToList();
+
+            foreach (var doplata in doplaty)
+            {
+                var okular = _context.Binocles.FirstOrDefault(x => x.BinocleId == doplata.Binocle_BinocleId);
+
+                if (okular == null)
+                    continue;
+
+                var person = _context.Persons.FirstOrDefault(x => x.PersonId == okular.Person_PersonId && dozwoloneLokalizacje.Contains(x.Lokalizacja));
+
+                if (person == null)
+                    continue;
+
+                dodatkoweDoplaty.Add(new Element
+                {
+                    DataSprzedazy = data,
+                    Cena = doplata.Kwota,
+                    Ilosc = 1,
+                    Nazwa = $"Dopłata {person.FirstName} {person.LastName}",
+                    Lokalizacja = person.Lokalizacja,
+                    CannotEdit = true
+                });
+            }
+
             elementList.AddRange(dodatkoweElementy);
+            elementList.AddRange(dodatkoweDoplaty);
 
             dataGridView1.DataSource = elementList;
 
@@ -122,17 +150,22 @@ namespace Okulary
 
             label3.Text = suma.ToString();
 
+            //TODO: zmiana lokalizacji osoby powinna zmienić lokalizację w ELEMENCIE!!!??? Chyba nie, bo elementy były dodane bezpośrednio do tabeli, a te obliczone z zadatków będą miały wartości jak person.Lokalizacja
             var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
 
+            //TODO: dodać filtr na lokalizację? Done niżej!?
             var okularyMonthly = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && x.Zadatek > 0).ToList();
             var dodatkoweElementyMonthly = new List<Element>();
 
+            var personyIdsMiesiac = okularyMonthly.Select(x => x.Person_PersonId).ToList();
+            var persony = _context.Persons.Where(x => personyIdsMiesiac.Contains(x.PersonId) && dozwoloneLokalizacje.Contains(x.Lokalizacja));
+
             foreach (var okular in okularyMonthly)
             {
-                //var person = _context.Persons.FirstOrDefault(x => x.PersonId == okular.Person_PersonId && dozwoloneLokalizacje.Contains(x.Lokalizacja));
+                var person = persony.FirstOrDefault(x => x.PersonId == okular.Person_PersonId);
 
-                //if (person == null)
-                //    continue;
+                if (person == null)
+                    continue;
 
                 dodatkoweElementyMonthly.Add(new Element
                                           {
@@ -142,6 +175,44 @@ namespace Okulary
                                           });
             }
 
+            // miesięczne dopłaty
+            var doplatyMonthly = _context.Doplaty.Where(x => x.DataDoplaty.Year == data.Year && x.DataDoplaty.Month == data.Month).ToList();
+            var dodatkoweDoplatyMonthly = new List<Element>();
+
+            var okularyPersonyIdsMiesiac = doplatyMonthly.Select(x => x.Binocle_BinocleId);
+            var binoklePersonyIdsMiesiac = _context.Binocles.Where(x => okularyPersonyIdsMiesiac.Contains(x.BinocleId));
+            var personyPersonyIdsMiesiac = binoklePersonyIdsMiesiac.Select(x => x.Person_PersonId).ToList();
+
+            var personyZDoplat = _context.Persons.Where(x => personyPersonyIdsMiesiac.Contains(x.PersonId) && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+            
+            foreach(var doplata in doplatyMonthly)
+            {
+                var okularkiId = okularyPersonyIdsMiesiac.FirstOrDefault(x => x == doplata.Binocle_BinocleId);
+
+                if (okularkiId == null)
+                    continue;
+
+                var personkaId = binoklePersonyIdsMiesiac.FirstOrDefault(x => x.BinocleId == okularkiId);
+
+                if (personkaId == null)
+                    continue;
+
+                var personka = personyZDoplat.Any(x => x.PersonId == personkaId.Person_PersonId);
+
+                if (!personka)
+                    continue;
+
+                dodatkoweDoplatyMonthly.Add(new Element
+                {
+                    DataSprzedazy = doplata.DataDoplaty,
+                    Cena = doplata.Kwota,
+                    Ilosc = 1
+                });
+            }
+
+            //
+
+            elementListMonthly.AddRange(dodatkoweDoplatyMonthly);
             elementListMonthly.AddRange(dodatkoweElementyMonthly);
 
             decimal sumaMonthly = 0.0M;

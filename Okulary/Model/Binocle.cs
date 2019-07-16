@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Okulary.Model
 {
@@ -6,6 +7,7 @@ namespace Okulary.Model
     {
         public Binocle()
         {
+            Doplaty = new List<Doplata>();
         }
 
         public int BinocleId { get; set; }
@@ -47,5 +49,7 @@ namespace Okulary.Model
         public string RodzajSoczewek2 { get; set; }
 
         public decimal Refundacja { get; set; }
+
+        public List<Doplata> Doplaty { get; set; }
     }
 }

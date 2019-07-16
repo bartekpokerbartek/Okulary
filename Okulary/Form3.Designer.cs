@@ -101,6 +101,8 @@
             this.doZaplaty = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // NumerZlecenia
@@ -216,7 +218,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(550, 450);
+            this.button1.Location = new System.Drawing.Point(550, 470);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(63, 23);
             this.button1.TabIndex = 114;
@@ -226,7 +228,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(619, 450);
+            this.button2.Location = new System.Drawing.Point(619, 470);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(60, 23);
             this.button2.TabIndex = 115;
@@ -1072,7 +1074,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(490, 419);
+            this.label25.Location = new System.Drawing.Point(490, 445);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(59, 13);
             this.label25.TabIndex = 65;
@@ -1126,14 +1128,14 @@
             // doZaplaty
             // 
             this.doZaplaty.Enabled = false;
-            this.doZaplaty.Location = new System.Drawing.Point(553, 416);
+            this.doZaplaty.Location = new System.Drawing.Point(553, 442);
             this.doZaplaty.Name = "doZaplaty";
             this.doZaplaty.Size = new System.Drawing.Size(100, 20);
             this.doZaplaty.TabIndex = 71;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(472, 450);
+            this.button3.Location = new System.Drawing.Point(472, 470);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(72, 23);
             this.button3.TabIndex = 116;
@@ -1152,11 +1154,32 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(553, 413);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(100, 23);
+            this.button4.TabIndex = 118;
+            this.button4.Text = "Dopłaty";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(657, 418);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(15, 14);
+            this.checkBox2.TabIndex = 119;
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 485);
+            this.ClientSize = new System.Drawing.Size(691, 508);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.doZaplaty);
@@ -1314,5 +1337,7 @@
         private System.Windows.Forms.TextBox doZaplaty;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
