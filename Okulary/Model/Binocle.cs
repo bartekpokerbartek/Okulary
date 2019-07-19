@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Okulary.Model
 {
@@ -51,5 +52,8 @@ namespace Okulary.Model
         public decimal Refundacja { get; set; }
 
         public List<Doplata> Doplaty { get; set; }
+
+        [ForeignKey(nameof(Person_PersonId))]
+        public Person Person { get; set; }
     }
 }
