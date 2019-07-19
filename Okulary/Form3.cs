@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Okulary.Enums;
+
 namespace Okulary
 {
     public partial class Form3 : Form
@@ -60,6 +62,7 @@ namespace Okulary
             _person = _context.Persons.First(x => x.PersonId == _personId);
             _priceHelper = new PriceHelper();
             _mapper = new Mapper();
+            comboBox5.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -91,6 +94,8 @@ namespace Okulary
             checkBox2.Checked = _context.Doplaty.Any(x => x.Binocle_BinocleId == _binocleId);
             checkBox2.Enabled = false;
             checkBox2.Visible = checkBox2.Checked;
+
+            comboBox5.SelectedItem = _zakup.FormaPlatnosci;
 
             dataZakupu.Value = _zakup.BuyDate;
             checkBox1.Checked = _zakup.IsDataOdbioru;
@@ -271,6 +276,9 @@ namespace Okulary
             suma.Text = (sumka).ToString();
             doZaplaty.Text = (sumka - zadatekCena).ToString();
 
+            FormaPlatnosci formaPlatnosci;
+            Enum.TryParse(comboBox5.SelectedValue.ToString(), out formaPlatnosci);
+            _zakup.FormaPlatnosci = formaPlatnosci;
 
             if (bledy.Any())
             {

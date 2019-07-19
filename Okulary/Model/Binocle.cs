@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using Okulary.Enums;
+
 namespace Okulary.Model
 {
     public class Binocle
@@ -55,5 +57,7 @@ namespace Okulary.Model
 
         [ForeignKey(nameof(Person_PersonId))]
         public Person Person { get; set; }
+
+        public FormaPlatnosci FormaPlatnosci { get; set; }
     }
 }

@@ -35,14 +35,12 @@ namespace Okulary
         {
             label5.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
 
-            var elementList = new List<Element>();
-
             var data = dateTimePicker1.Value.Date;
             _dataSelectora = data;
 
             var dozwoloneLokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
-            elementList = _context.Elements.Where(x => x.DataSprzedazy == data && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+            var elementList = _context.Elements.Where(x => x.DataSprzedazy == data && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
             
             var okulary = _context.Binocles.Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data && x.Zadatek > 0).ToList();
             var dodatkoweElementy = new List<Element>();
@@ -62,7 +60,7 @@ namespace Okulary
                                               Nazwa = $"Zadatek {person.FirstName} {person.LastName}",
                                               Lokalizacja = person.Lokalizacja,
                                               CannotEdit = true,
-                                              //FormaPlatnosci = //Do dodania
+                                              FormaPlatnosci = okular.FormaPlatnosci
                                           });
             }
 
@@ -76,7 +74,7 @@ namespace Okulary
 
                 if (okular == null)
                     continue;
-
+                
                 var person = _context.Persons.FirstOrDefault(x => x.PersonId == okular.Person_PersonId && dozwoloneLokalizacje.Contains(x.Lokalizacja));
 
                 if (person == null)

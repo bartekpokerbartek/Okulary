@@ -103,102 +103,116 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button4 = new System.Windows.Forms.Button();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // NumerZlecenia
             // 
-            this.NumerZlecenia.Location = new System.Drawing.Point(102, 37);
+            this.NumerZlecenia.Location = new System.Drawing.Point(136, 46);
+            this.NumerZlecenia.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.NumerZlecenia.Name = "NumerZlecenia";
-            this.NumerZlecenia.Size = new System.Drawing.Size(100, 20);
+            this.NumerZlecenia.Size = new System.Drawing.Size(132, 22);
             this.NumerZlecenia.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 9);
+            this.label1.Location = new System.Drawing.Point(17, 11);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.Size = new System.Drawing.Size(88, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Data zakupu";
             // 
             // dataZakupu
             // 
-            this.dataZakupu.Location = new System.Drawing.Point(87, 5);
+            this.dataZakupu.Location = new System.Drawing.Point(116, 6);
+            this.dataZakupu.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataZakupu.Name = "dataZakupu";
-            this.dataZakupu.Size = new System.Drawing.Size(200, 20);
+            this.dataZakupu.Size = new System.Drawing.Size(265, 22);
             this.dataZakupu.TabIndex = 2;
             // 
             // dataOdbioru
             // 
-            this.dataOdbioru.Location = new System.Drawing.Point(453, 5);
+            this.dataOdbioru.Location = new System.Drawing.Point(604, 6);
+            this.dataOdbioru.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataOdbioru.Name = "dataOdbioru";
-            this.dataOdbioru.Size = new System.Drawing.Size(200, 20);
+            this.dataOdbioru.Size = new System.Drawing.Size(265, 22);
             this.dataOdbioru.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 40);
+            this.label3.Location = new System.Drawing.Point(21, 49);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(79, 13);
+            this.label3.Size = new System.Drawing.Size(105, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "Numer telefonu";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(16, 86);
+            this.label4.Location = new System.Drawing.Point(21, 106);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(84, 13);
+            this.label4.Size = new System.Drawing.Size(109, 17);
             this.label4.TabIndex = 6;
             this.label4.Text = "Rodzaj oprawek";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(102, 71);
+            this.label5.Location = new System.Drawing.Point(136, 87);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(23, 13);
+            this.label5.Size = new System.Drawing.Size(29, 17);
             this.label5.TabIndex = 7;
             this.label5.Text = "Dal";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(102, 99);
+            this.label6.Location = new System.Drawing.Point(136, 122);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(23, 13);
+            this.label6.Size = new System.Drawing.Size(30, 17);
             this.label6.TabIndex = 8;
             this.label6.Text = "Bliż";
             // 
             // RodzajOprawekDal
             // 
-            this.RodzajOprawekDal.Location = new System.Drawing.Point(132, 68);
+            this.RodzajOprawekDal.Location = new System.Drawing.Point(176, 84);
+            this.RodzajOprawekDal.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RodzajOprawekDal.Name = "RodzajOprawekDal";
-            this.RodzajOprawekDal.Size = new System.Drawing.Size(354, 20);
+            this.RodzajOprawekDal.Size = new System.Drawing.Size(471, 22);
             this.RodzajOprawekDal.TabIndex = 9;
             // 
             // RodzajOprawekBliz
             // 
-            this.RodzajOprawekBliz.Location = new System.Drawing.Point(132, 99);
+            this.RodzajOprawekBliz.Location = new System.Drawing.Point(176, 122);
+            this.RodzajOprawekBliz.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RodzajOprawekBliz.Name = "RodzajOprawekBliz";
-            this.RodzajOprawekBliz.Size = new System.Drawing.Size(354, 20);
+            this.RodzajOprawekBliz.Size = new System.Drawing.Size(471, 22);
             this.RodzajOprawekBliz.TabIndex = 10;
             // 
             // Cena
             // 
             this.Cena.AutoSize = true;
-            this.Cena.Location = new System.Drawing.Point(515, 86);
+            this.Cena.Location = new System.Drawing.Point(687, 106);
+            this.Cena.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Cena.Name = "Cena";
-            this.Cena.Size = new System.Drawing.Size(32, 13);
+            this.Cena.Size = new System.Drawing.Size(41, 17);
             this.Cena.TabIndex = 11;
             this.Cena.Text = "Cena";
             // 
             // RodzajOprawekDalCena
             // 
-            this.RodzajOprawekDalCena.Location = new System.Drawing.Point(553, 68);
+            this.RodzajOprawekDalCena.Location = new System.Drawing.Point(737, 84);
+            this.RodzajOprawekDalCena.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RodzajOprawekDalCena.Name = "RodzajOprawekDalCena";
-            this.RodzajOprawekDalCena.Size = new System.Drawing.Size(100, 20);
+            this.RodzajOprawekDalCena.Size = new System.Drawing.Size(132, 22);
             this.RodzajOprawekDalCena.TabIndex = 12;
             this.RodzajOprawekDalCena.Enter += new System.EventHandler(this.RodzajOprawekDalCena_Enter);
             this.RodzajOprawekDalCena.Leave += new System.EventHandler(this.RodzajOprawekDalCena_Leave);
@@ -208,9 +222,10 @@
             // 
             // RodzajOprawekBlizCena
             // 
-            this.RodzajOprawekBlizCena.Location = new System.Drawing.Point(553, 99);
+            this.RodzajOprawekBlizCena.Location = new System.Drawing.Point(737, 122);
+            this.RodzajOprawekBlizCena.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RodzajOprawekBlizCena.Name = "RodzajOprawekBlizCena";
-            this.RodzajOprawekBlizCena.Size = new System.Drawing.Size(100, 20);
+            this.RodzajOprawekBlizCena.Size = new System.Drawing.Size(132, 22);
             this.RodzajOprawekBlizCena.TabIndex = 13;
             this.RodzajOprawekBlizCena.Enter += new System.EventHandler(this.RodzajOprawekBlizCena_Enter);
             this.RodzajOprawekBlizCena.Leave += new System.EventHandler(this.RodzajOprawekBlizCena_Leave);
@@ -218,9 +233,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(550, 470);
+            this.button1.Location = new System.Drawing.Point(733, 629);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(63, 23);
+            this.button1.Size = new System.Drawing.Size(84, 28);
             this.button1.TabIndex = 114;
             this.button1.Text = "Zapisz";
             this.button1.UseVisualStyleBackColor = true;
@@ -228,9 +244,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(619, 470);
+            this.button2.Location = new System.Drawing.Point(825, 629);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(60, 23);
+            this.button2.Size = new System.Drawing.Size(80, 28);
             this.button2.TabIndex = 115;
             this.button2.Text = "Zamknij";
             this.button2.UseVisualStyleBackColor = true;
@@ -239,17 +256,19 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(489, 136);
+            this.label7.Location = new System.Drawing.Point(652, 167);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.Size = new System.Drawing.Size(75, 17);
             this.label7.TabIndex = 16;
             this.label7.Text = "Robocizna";
             // 
             // robocizna
             // 
-            this.robocizna.Location = new System.Drawing.Point(553, 133);
+            this.robocizna.Location = new System.Drawing.Point(737, 164);
+            this.robocizna.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.robocizna.Name = "robocizna";
-            this.robocizna.Size = new System.Drawing.Size(100, 20);
+            this.robocizna.Size = new System.Drawing.Size(132, 22);
             this.robocizna.TabIndex = 17;
             this.robocizna.Enter += new System.EventHandler(this.robocizna_Enter);
             this.robocizna.Leave += new System.EventHandler(this.robocizna_Leave);
@@ -258,108 +277,120 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(19, 207);
+            this.label8.Location = new System.Drawing.Point(25, 255);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(23, 13);
+            this.label8.Size = new System.Drawing.Size(29, 17);
             this.label8.TabIndex = 18;
             this.label8.Text = "Dal";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(49, 194);
+            this.label9.Location = new System.Drawing.Point(65, 239);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(22, 13);
+            this.label9.Size = new System.Drawing.Size(28, 17);
             this.label9.TabIndex = 19;
             this.label9.Text = "OP";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(49, 221);
+            this.label10.Location = new System.Drawing.Point(65, 272);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(21, 13);
+            this.label10.Size = new System.Drawing.Size(27, 17);
             this.label10.TabIndex = 20;
             this.label10.Text = "OL";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(49, 284);
+            this.label11.Location = new System.Drawing.Point(65, 350);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(21, 13);
+            this.label11.Size = new System.Drawing.Size(27, 17);
             this.label11.TabIndex = 23;
             this.label11.Text = "OL";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(49, 257);
+            this.label12.Location = new System.Drawing.Point(65, 316);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(22, 13);
+            this.label12.Size = new System.Drawing.Size(28, 17);
             this.label12.TabIndex = 22;
             this.label12.Text = "OP";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(19, 270);
+            this.label13.Location = new System.Drawing.Point(25, 332);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(23, 13);
+            this.label13.Size = new System.Drawing.Size(30, 17);
             this.label13.TabIndex = 21;
             this.label13.Text = "Bliż";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(87, 174);
+            this.label14.Location = new System.Drawing.Point(116, 214);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(32, 13);
+            this.label14.Size = new System.Drawing.Size(42, 17);
             this.label14.TabIndex = 24;
             this.label14.Text = "Sfera";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(148, 174);
+            this.label15.Location = new System.Drawing.Point(197, 214);
+            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(44, 13);
+            this.label15.Size = new System.Drawing.Size(59, 17);
             this.label15.TabIndex = 25;
             this.label15.Text = "Cylinder";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(230, 174);
+            this.label16.Location = new System.Drawing.Point(307, 214);
+            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(20, 13);
+            this.label16.Size = new System.Drawing.Size(26, 17);
             this.label16.TabIndex = 26;
             this.label16.Text = "Oś";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(290, 174);
+            this.label17.Location = new System.Drawing.Point(387, 214);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(41, 13);
+            this.label17.Size = new System.Drawing.Size(55, 17);
             this.label17.TabIndex = 27;
             this.label17.Text = "Pryzma";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(375, 174);
+            this.label18.Location = new System.Drawing.Point(500, 214);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(26, 13);
+            this.label18.Size = new System.Drawing.Size(34, 17);
             this.label18.TabIndex = 28;
             this.label18.Text = "Odl.";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(450, 174);
+            this.label19.Location = new System.Drawing.Point(600, 214);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(15, 13);
+            this.label19.Size = new System.Drawing.Size(18, 17);
             this.label19.TabIndex = 29;
             this.label19.Text = "H";
             // 
@@ -465,10 +496,11 @@
             "+11,50",
             "+11,75",
             "+12,00"});
-            this.comboBox1.Location = new System.Drawing.Point(74, 190);
+            this.comboBox1.Location = new System.Drawing.Point(99, 234);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox1.MaxDropDownItems = 15;
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(54, 21);
+            this.comboBox1.Size = new System.Drawing.Size(71, 24);
             this.comboBox1.TabIndex = 30;
             // 
             // comboBox2
@@ -573,9 +605,10 @@
             "+11,50",
             "+11,75",
             "+12,00"});
-            this.comboBox2.Location = new System.Drawing.Point(74, 217);
+            this.comboBox2.Location = new System.Drawing.Point(99, 267);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(54, 21);
+            this.comboBox2.Size = new System.Drawing.Size(71, 24);
             this.comboBox2.TabIndex = 31;
             // 
             // comboBox3
@@ -680,9 +713,10 @@
             "+11,50",
             "+11,75",
             "+12,00"});
-            this.comboBox3.Location = new System.Drawing.Point(74, 254);
+            this.comboBox3.Location = new System.Drawing.Point(99, 313);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(54, 21);
+            this.comboBox3.Size = new System.Drawing.Size(71, 24);
             this.comboBox3.TabIndex = 32;
             // 
             // comboBox4
@@ -787,16 +821,18 @@
             "+11,50",
             "+11,75",
             "+12,00"});
-            this.comboBox4.Location = new System.Drawing.Point(74, 281);
+            this.comboBox4.Location = new System.Drawing.Point(99, 346);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(54, 21);
+            this.comboBox4.Size = new System.Drawing.Size(71, 24);
             this.comboBox4.TabIndex = 33;
             // 
             // dalOPCylinder
             // 
-            this.dalOPCylinder.Location = new System.Drawing.Point(133, 190);
+            this.dalOPCylinder.Location = new System.Drawing.Point(177, 234);
+            this.dalOPCylinder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOPCylinder.Name = "dalOPCylinder";
-            this.dalOPCylinder.Size = new System.Drawing.Size(69, 20);
+            this.dalOPCylinder.Size = new System.Drawing.Size(91, 22);
             this.dalOPCylinder.TabIndex = 34;
             this.dalOPCylinder.Enter += new System.EventHandler(this.dalOPCylinder_Enter);
             this.dalOPCylinder.Leave += new System.EventHandler(this.dalOPCylinder_Leave);
@@ -804,9 +840,10 @@
             // 
             // dalOLCylinder
             // 
-            this.dalOLCylinder.Location = new System.Drawing.Point(132, 217);
+            this.dalOLCylinder.Location = new System.Drawing.Point(176, 267);
+            this.dalOLCylinder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOLCylinder.Name = "dalOLCylinder";
-            this.dalOLCylinder.Size = new System.Drawing.Size(70, 20);
+            this.dalOLCylinder.Size = new System.Drawing.Size(92, 22);
             this.dalOLCylinder.TabIndex = 35;
             this.dalOLCylinder.Enter += new System.EventHandler(this.dalOLCylinder_Enter);
             this.dalOLCylinder.Leave += new System.EventHandler(this.dalOLCylinder_Leave);
@@ -814,9 +851,10 @@
             // 
             // blizOPCylinder
             // 
-            this.blizOPCylinder.Location = new System.Drawing.Point(132, 254);
+            this.blizOPCylinder.Location = new System.Drawing.Point(176, 313);
+            this.blizOPCylinder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOPCylinder.Name = "blizOPCylinder";
-            this.blizOPCylinder.Size = new System.Drawing.Size(70, 20);
+            this.blizOPCylinder.Size = new System.Drawing.Size(92, 22);
             this.blizOPCylinder.TabIndex = 36;
             this.blizOPCylinder.TextChanged += new System.EventHandler(this.blizOPCylinder_TextChanged);
             this.blizOPCylinder.Enter += new System.EventHandler(this.blizOPCylinder_Enter);
@@ -825,9 +863,10 @@
             // 
             // blizOLCylinder
             // 
-            this.blizOLCylinder.Location = new System.Drawing.Point(132, 281);
+            this.blizOLCylinder.Location = new System.Drawing.Point(176, 346);
+            this.blizOLCylinder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOLCylinder.Name = "blizOLCylinder";
-            this.blizOLCylinder.Size = new System.Drawing.Size(70, 20);
+            this.blizOLCylinder.Size = new System.Drawing.Size(92, 22);
             this.blizOLCylinder.TabIndex = 37;
             this.blizOLCylinder.Enter += new System.EventHandler(this.blizOLCylinder_Enter);
             this.blizOLCylinder.Leave += new System.EventHandler(this.blizOLCylinder_Leave);
@@ -835,9 +874,10 @@
             // 
             // dalOPOs
             // 
-            this.dalOPOs.Location = new System.Drawing.Point(208, 190);
+            this.dalOPOs.Location = new System.Drawing.Point(277, 234);
+            this.dalOPOs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOPOs.Name = "dalOPOs";
-            this.dalOPOs.Size = new System.Drawing.Size(62, 20);
+            this.dalOPOs.Size = new System.Drawing.Size(81, 22);
             this.dalOPOs.TabIndex = 38;
             this.dalOPOs.Enter += new System.EventHandler(this.dalOPOs_Enter);
             this.dalOPOs.Leave += new System.EventHandler(this.dalOPOs_Leave);
@@ -845,9 +885,10 @@
             // 
             // dalOLOs
             // 
-            this.dalOLOs.Location = new System.Drawing.Point(208, 216);
+            this.dalOLOs.Location = new System.Drawing.Point(277, 266);
+            this.dalOLOs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOLOs.Name = "dalOLOs";
-            this.dalOLOs.Size = new System.Drawing.Size(62, 20);
+            this.dalOLOs.Size = new System.Drawing.Size(81, 22);
             this.dalOLOs.TabIndex = 39;
             this.dalOLOs.Enter += new System.EventHandler(this.dalOLOs_Enter);
             this.dalOLOs.Leave += new System.EventHandler(this.dalOLOs_Leave);
@@ -855,9 +896,10 @@
             // 
             // blizOPOs
             // 
-            this.blizOPOs.Location = new System.Drawing.Point(208, 254);
+            this.blizOPOs.Location = new System.Drawing.Point(277, 313);
+            this.blizOPOs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOPOs.Name = "blizOPOs";
-            this.blizOPOs.Size = new System.Drawing.Size(62, 20);
+            this.blizOPOs.Size = new System.Drawing.Size(81, 22);
             this.blizOPOs.TabIndex = 40;
             this.blizOPOs.Enter += new System.EventHandler(this.blizOPOs_Enter);
             this.blizOPOs.Leave += new System.EventHandler(this.blizOPOs_Leave);
@@ -865,9 +907,10 @@
             // 
             // blizOLOs
             // 
-            this.blizOLOs.Location = new System.Drawing.Point(208, 282);
+            this.blizOLOs.Location = new System.Drawing.Point(277, 347);
+            this.blizOLOs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOLOs.Name = "blizOLOs";
-            this.blizOLOs.Size = new System.Drawing.Size(62, 20);
+            this.blizOLOs.Size = new System.Drawing.Size(81, 22);
             this.blizOLOs.TabIndex = 41;
             this.blizOLOs.TextChanged += new System.EventHandler(this.blizOLOs_TextChanged);
             this.blizOLOs.Enter += new System.EventHandler(this.blizOLOs_Enter);
@@ -876,37 +919,42 @@
             // 
             // dalOPPryzma
             // 
-            this.dalOPPryzma.Location = new System.Drawing.Point(276, 190);
+            this.dalOPPryzma.Location = new System.Drawing.Point(368, 234);
+            this.dalOPPryzma.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOPPryzma.Name = "dalOPPryzma";
-            this.dalOPPryzma.Size = new System.Drawing.Size(75, 20);
+            this.dalOPPryzma.Size = new System.Drawing.Size(99, 22);
             this.dalOPPryzma.TabIndex = 42;
             // 
             // dalOLPryzma
             // 
-            this.dalOLPryzma.Location = new System.Drawing.Point(276, 216);
+            this.dalOLPryzma.Location = new System.Drawing.Point(368, 266);
+            this.dalOLPryzma.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOLPryzma.Name = "dalOLPryzma";
-            this.dalOLPryzma.Size = new System.Drawing.Size(75, 20);
+            this.dalOLPryzma.Size = new System.Drawing.Size(99, 22);
             this.dalOLPryzma.TabIndex = 43;
             // 
             // blizOPPryzma
             // 
-            this.blizOPPryzma.Location = new System.Drawing.Point(276, 254);
+            this.blizOPPryzma.Location = new System.Drawing.Point(368, 313);
+            this.blizOPPryzma.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOPPryzma.Name = "blizOPPryzma";
-            this.blizOPPryzma.Size = new System.Drawing.Size(75, 20);
+            this.blizOPPryzma.Size = new System.Drawing.Size(99, 22);
             this.blizOPPryzma.TabIndex = 44;
             // 
             // blizOLPryzma
             // 
-            this.blizOLPryzma.Location = new System.Drawing.Point(277, 281);
+            this.blizOLPryzma.Location = new System.Drawing.Point(369, 346);
+            this.blizOLPryzma.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOLPryzma.Name = "blizOLPryzma";
-            this.blizOLPryzma.Size = new System.Drawing.Size(74, 20);
+            this.blizOLPryzma.Size = new System.Drawing.Size(97, 22);
             this.blizOLPryzma.TabIndex = 45;
             // 
             // dalOPOdl
             // 
-            this.dalOPOdl.Location = new System.Drawing.Point(357, 191);
+            this.dalOPOdl.Location = new System.Drawing.Point(476, 235);
+            this.dalOPOdl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOPOdl.Name = "dalOPOdl";
-            this.dalOPOdl.Size = new System.Drawing.Size(65, 20);
+            this.dalOPOdl.Size = new System.Drawing.Size(85, 22);
             this.dalOPOdl.TabIndex = 46;
             this.dalOPOdl.Enter += new System.EventHandler(this.dalOPOdl_Enter);
             this.dalOPOdl.Leave += new System.EventHandler(this.dalOPOdl_Leave);
@@ -914,9 +962,10 @@
             // 
             // dalOLOdl
             // 
-            this.dalOLOdl.Location = new System.Drawing.Point(357, 217);
+            this.dalOLOdl.Location = new System.Drawing.Point(476, 267);
+            this.dalOLOdl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOLOdl.Name = "dalOLOdl";
-            this.dalOLOdl.Size = new System.Drawing.Size(64, 20);
+            this.dalOLOdl.Size = new System.Drawing.Size(84, 22);
             this.dalOLOdl.TabIndex = 47;
             this.dalOLOdl.Enter += new System.EventHandler(this.dalOLOdl_Enter);
             this.dalOLOdl.Leave += new System.EventHandler(this.dalOLOdl_Leave);
@@ -924,9 +973,10 @@
             // 
             // blizOPOdl
             // 
-            this.blizOPOdl.Location = new System.Drawing.Point(356, 254);
+            this.blizOPOdl.Location = new System.Drawing.Point(475, 313);
+            this.blizOPOdl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOPOdl.Name = "blizOPOdl";
-            this.blizOPOdl.Size = new System.Drawing.Size(65, 20);
+            this.blizOPOdl.Size = new System.Drawing.Size(85, 22);
             this.blizOPOdl.TabIndex = 48;
             this.blizOPOdl.Enter += new System.EventHandler(this.blizOPOdl_Enter);
             this.blizOPOdl.Leave += new System.EventHandler(this.blizOPOdl_Leave);
@@ -934,9 +984,10 @@
             // 
             // blizOLOdl
             // 
-            this.blizOLOdl.Location = new System.Drawing.Point(356, 282);
+            this.blizOLOdl.Location = new System.Drawing.Point(475, 347);
+            this.blizOLOdl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOLOdl.Name = "blizOLOdl";
-            this.blizOLOdl.Size = new System.Drawing.Size(66, 20);
+            this.blizOLOdl.Size = new System.Drawing.Size(87, 22);
             this.blizOLOdl.TabIndex = 49;
             this.blizOLOdl.Enter += new System.EventHandler(this.blizOLOdl_Enter);
             this.blizOLOdl.Leave += new System.EventHandler(this.blizOLOdl_Leave);
@@ -944,47 +995,53 @@
             // 
             // dalOPH
             // 
-            this.dalOPH.Location = new System.Drawing.Point(428, 191);
+            this.dalOPH.Location = new System.Drawing.Point(571, 235);
+            this.dalOPH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOPH.Name = "dalOPH";
-            this.dalOPH.Size = new System.Drawing.Size(58, 20);
+            this.dalOPH.Size = new System.Drawing.Size(76, 22);
             this.dalOPH.TabIndex = 50;
             // 
             // dalOLH
             // 
-            this.dalOLH.Location = new System.Drawing.Point(428, 216);
+            this.dalOLH.Location = new System.Drawing.Point(571, 266);
+            this.dalOLH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOLH.Name = "dalOLH";
-            this.dalOLH.Size = new System.Drawing.Size(58, 20);
+            this.dalOLH.Size = new System.Drawing.Size(76, 22);
             this.dalOLH.TabIndex = 51;
             this.dalOLH.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // blizOPH
             // 
-            this.blizOPH.Location = new System.Drawing.Point(429, 254);
+            this.blizOPH.Location = new System.Drawing.Point(572, 313);
+            this.blizOPH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOPH.Name = "blizOPH";
-            this.blizOPH.Size = new System.Drawing.Size(56, 20);
+            this.blizOPH.Size = new System.Drawing.Size(73, 22);
             this.blizOPH.TabIndex = 52;
             // 
             // blizOLH
             // 
-            this.blizOLH.Location = new System.Drawing.Point(429, 281);
+            this.blizOLH.Location = new System.Drawing.Point(572, 346);
+            this.blizOLH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOLH.Name = "blizOLH";
-            this.blizOLH.Size = new System.Drawing.Size(57, 20);
+            this.blizOLH.Size = new System.Drawing.Size(75, 22);
             this.blizOLH.TabIndex = 53;
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(515, 239);
+            this.label20.Location = new System.Drawing.Point(687, 294);
+            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(32, 13);
+            this.label20.Size = new System.Drawing.Size(41, 17);
             this.label20.TabIndex = 54;
             this.label20.Text = "Cena";
             // 
             // dalOPCena
             // 
-            this.dalOPCena.Location = new System.Drawing.Point(553, 189);
+            this.dalOPCena.Location = new System.Drawing.Point(737, 233);
+            this.dalOPCena.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOPCena.Name = "dalOPCena";
-            this.dalOPCena.Size = new System.Drawing.Size(100, 20);
+            this.dalOPCena.Size = new System.Drawing.Size(132, 22);
             this.dalOPCena.TabIndex = 55;
             this.dalOPCena.Enter += new System.EventHandler(this.dalOPCena_Enter);
             this.dalOPCena.Leave += new System.EventHandler(this.dalOPCena_Leave);
@@ -992,9 +1049,10 @@
             // 
             // dalOLCena
             // 
-            this.dalOLCena.Location = new System.Drawing.Point(553, 216);
+            this.dalOLCena.Location = new System.Drawing.Point(737, 266);
+            this.dalOLCena.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dalOLCena.Name = "dalOLCena";
-            this.dalOLCena.Size = new System.Drawing.Size(100, 20);
+            this.dalOLCena.Size = new System.Drawing.Size(132, 22);
             this.dalOLCena.TabIndex = 56;
             this.dalOLCena.Enter += new System.EventHandler(this.dalOLCena_Enter);
             this.dalOLCena.Leave += new System.EventHandler(this.dalOLCena_Leave);
@@ -1002,9 +1060,10 @@
             // 
             // blizOPCena
             // 
-            this.blizOPCena.Location = new System.Drawing.Point(553, 254);
+            this.blizOPCena.Location = new System.Drawing.Point(737, 313);
+            this.blizOPCena.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOPCena.Name = "blizOPCena";
-            this.blizOPCena.Size = new System.Drawing.Size(100, 20);
+            this.blizOPCena.Size = new System.Drawing.Size(132, 22);
             this.blizOPCena.TabIndex = 57;
             this.blizOPCena.Enter += new System.EventHandler(this.blizOPCena_Enter);
             this.blizOPCena.Leave += new System.EventHandler(this.blizOPCena_Leave);
@@ -1012,9 +1071,10 @@
             // 
             // blizOLCena
             // 
-            this.blizOLCena.Location = new System.Drawing.Point(553, 281);
+            this.blizOLCena.Location = new System.Drawing.Point(737, 346);
+            this.blizOLCena.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.blizOLCena.Name = "blizOLCena";
-            this.blizOLCena.Size = new System.Drawing.Size(100, 20);
+            this.blizOLCena.Size = new System.Drawing.Size(132, 22);
             this.blizOLCena.TabIndex = 58;
             this.blizOLCena.Enter += new System.EventHandler(this.blizOLCena_Enter);
             this.blizOLCena.Leave += new System.EventHandler(this.blizOLCena_Leave);
@@ -1023,32 +1083,36 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(16, 345);
+            this.label21.Location = new System.Drawing.Point(21, 425);
+            this.label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(91, 13);
+            this.label21.Size = new System.Drawing.Size(117, 17);
             this.label21.TabIndex = 59;
             this.label21.Text = "Rodzaj soczewek";
             // 
             // rodzajSoczewek1
             // 
-            this.rodzajSoczewek1.Location = new System.Drawing.Point(132, 331);
+            this.rodzajSoczewek1.Location = new System.Drawing.Point(176, 407);
+            this.rodzajSoczewek1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.rodzajSoczewek1.Name = "rodzajSoczewek1";
-            this.rodzajSoczewek1.Size = new System.Drawing.Size(333, 20);
+            this.rodzajSoczewek1.Size = new System.Drawing.Size(443, 22);
             this.rodzajSoczewek1.TabIndex = 60;
             // 
             // rodzajSoczewek2
             // 
-            this.rodzajSoczewek2.Location = new System.Drawing.Point(132, 358);
+            this.rodzajSoczewek2.Location = new System.Drawing.Point(176, 441);
+            this.rodzajSoczewek2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.rodzajSoczewek2.Name = "rodzajSoczewek2";
-            this.rodzajSoczewek2.Size = new System.Drawing.Size(333, 20);
+            this.rodzajSoczewek2.Size = new System.Drawing.Size(443, 22);
             this.rodzajSoczewek2.TabIndex = 61;
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(485, 334);
+            this.label22.Location = new System.Drawing.Point(647, 411);
+            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(62, 13);
+            this.label22.Size = new System.Drawing.Size(80, 17);
             this.label22.TabIndex = 62;
             this.label22.Text = "Refundacja";
             // 
@@ -1056,52 +1120,58 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Enabled = false;
-            this.label23.Location = new System.Drawing.Point(515, 361);
+            this.label23.Location = new System.Drawing.Point(687, 444);
+            this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(34, 13);
+            this.label23.Size = new System.Drawing.Size(44, 17);
             this.label23.TabIndex = 63;
             this.label23.Text = "Suma";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(500, 392);
+            this.label24.Location = new System.Drawing.Point(667, 482);
+            this.label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(47, 13);
+            this.label24.Size = new System.Drawing.Size(60, 17);
             this.label24.TabIndex = 64;
             this.label24.Text = "Zadatek";
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(490, 445);
+            this.label25.Location = new System.Drawing.Point(653, 599);
+            this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(59, 13);
+            this.label25.Size = new System.Drawing.Size(75, 17);
             this.label25.TabIndex = 65;
             this.label25.Text = "Do zapłaty";
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(13, 416);
+            this.label26.Location = new System.Drawing.Point(17, 512);
+            this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(37, 13);
+            this.label26.Size = new System.Drawing.Size(46, 17);
             this.label26.TabIndex = 66;
             this.label26.Text = "Uwagi";
             // 
             // uwagi
             // 
-            this.uwagi.Location = new System.Drawing.Point(74, 399);
+            this.uwagi.Location = new System.Drawing.Point(99, 491);
+            this.uwagi.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.uwagi.Multiline = true;
             this.uwagi.Name = "uwagi";
-            this.uwagi.Size = new System.Drawing.Size(391, 74);
+            this.uwagi.Size = new System.Drawing.Size(520, 90);
             this.uwagi.TabIndex = 67;
             // 
             // refundacja
             // 
-            this.refundacja.Location = new System.Drawing.Point(553, 330);
+            this.refundacja.Location = new System.Drawing.Point(737, 406);
+            this.refundacja.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.refundacja.Name = "refundacja";
-            this.refundacja.Size = new System.Drawing.Size(100, 20);
+            this.refundacja.Size = new System.Drawing.Size(132, 22);
             this.refundacja.TabIndex = 68;
             this.refundacja.Enter += new System.EventHandler(this.refundacja_Enter);
             this.refundacja.Leave += new System.EventHandler(this.refundacja_Leave);
@@ -1110,16 +1180,18 @@
             // suma
             // 
             this.suma.Enabled = false;
-            this.suma.Location = new System.Drawing.Point(553, 358);
+            this.suma.Location = new System.Drawing.Point(737, 441);
+            this.suma.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.suma.Name = "suma";
-            this.suma.Size = new System.Drawing.Size(100, 20);
+            this.suma.Size = new System.Drawing.Size(132, 22);
             this.suma.TabIndex = 69;
             // 
             // zadatek
             // 
-            this.zadatek.Location = new System.Drawing.Point(553, 389);
+            this.zadatek.Location = new System.Drawing.Point(737, 479);
+            this.zadatek.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.zadatek.Name = "zadatek";
-            this.zadatek.Size = new System.Drawing.Size(100, 20);
+            this.zadatek.Size = new System.Drawing.Size(132, 22);
             this.zadatek.TabIndex = 70;
             this.zadatek.Enter += new System.EventHandler(this.zadatek_Enter);
             this.zadatek.Leave += new System.EventHandler(this.zadatek_Leave);
@@ -1128,16 +1200,18 @@
             // doZaplaty
             // 
             this.doZaplaty.Enabled = false;
-            this.doZaplaty.Location = new System.Drawing.Point(553, 442);
+            this.doZaplaty.Location = new System.Drawing.Point(737, 595);
+            this.doZaplaty.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.doZaplaty.Name = "doZaplaty";
-            this.doZaplaty.Size = new System.Drawing.Size(100, 20);
+            this.doZaplaty.Size = new System.Drawing.Size(132, 22);
             this.doZaplaty.TabIndex = 71;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(472, 470);
+            this.button3.Location = new System.Drawing.Point(629, 629);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(72, 23);
+            this.button3.Size = new System.Drawing.Size(96, 28);
             this.button3.TabIndex = 116;
             this.button3.Text = "Drukuj";
             this.button3.UseVisualStyleBackColor = true;
@@ -1146,9 +1220,10 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(360, 8);
+            this.checkBox1.Location = new System.Drawing.Point(480, 10);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(87, 17);
+            this.checkBox1.Size = new System.Drawing.Size(112, 21);
             this.checkBox1.TabIndex = 117;
             this.checkBox1.Text = "Data odbioru";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -1156,9 +1231,10 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(553, 413);
+            this.button4.Location = new System.Drawing.Point(737, 554);
+            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 23);
+            this.button4.Size = new System.Drawing.Size(133, 28);
             this.button4.TabIndex = 118;
             this.button4.Text = "Dopłaty";
             this.button4.UseVisualStyleBackColor = true;
@@ -1167,17 +1243,37 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(657, 418);
+            this.checkBox2.Location = new System.Drawing.Point(876, 560);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(15, 14);
+            this.checkBox2.Size = new System.Drawing.Size(18, 17);
             this.checkBox2.TabIndex = 119;
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(620, 519);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(108, 17);
+            this.label2.TabIndex = 120;
+            this.label2.Text = "Forma płatności";
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(737, 516);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(132, 24);
+            this.comboBox5.TabIndex = 121;
+            // 
             // Form3
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 508);
+            this.ClientSize = new System.Drawing.Size(921, 697);
+            this.Controls.Add(this.comboBox5);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.checkBox1);
@@ -1253,6 +1349,7 @@
             this.Controls.Add(this.dataZakupu);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.NumerZlecenia);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form3";
             this.Text = "Form3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing);
@@ -1339,5 +1436,7 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBox5;
     }
 }

@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201907190420392_FormaPlatnosci.Designer.cs">
       <DependentUpon>201907190420392_FormaPlatnosci.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907190546531_FormaPlatnosciWBinocle.cs" />
+    <Compile Include="Migrations\201907190546531_FormaPlatnosciWBinocle.Designer.cs">
+      <DependentUpon>201907190546531_FormaPlatnosciWBinocle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Doplata.cs" />
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907190420392_FormaPlatnosci.resx">
       <DependentUpon>201907190420392_FormaPlatnosci.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907190546531_FormaPlatnosciWBinocle.resx">
+      <DependentUpon>201907190546531_FormaPlatnosciWBinocle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Niezbalansowani.resx">
       <DependentUpon>Niezbalansowani.cs</DependentUpon>
