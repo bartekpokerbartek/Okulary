@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using Okulary.Enums;
+
 namespace Okulary
 {
     public partial class Doplaty : Form
@@ -47,23 +49,25 @@ namespace Okulary
 
             dataGridView1.Columns["DoplataId"].Visible = false;
             dataGridView1.Columns["Binocle_BinocleId"].Visible = false;
-            //dataGridView1.Columns["ElementId"].Visible = false;
+            dataGridView1.Columns["Binocle"].Visible = false;
             //dataGridView1.Columns["CannotEdit"].Visible = false;
             //dataGridView1.Columns["Lokalizacja"].ReadOnly = true;
             dataGridView1.Columns["DataDoplaty"].HeaderText = "Data dopłaty";
 
-            //if (!dataGridView1.Columns.Contains("ZakupCol"))
-            //{
-            //    DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-            //    col.UseColumnTextForButtonValue = true;
-            //    col.Visible = true;
-            //    col.Text = "Zakup";
-            //    col.Name = "ZakupCol";
-            //    dataGridView1.Columns.Add(col);
-            //}
+            dataGridView1.Columns["FormaPlatnosci"].Visible = false;
 
-            //dataGridView1.Columns["ZakupCol"].Visible = true;
-            //dataGridView1.Columns["ZakupCol"].HeaderText = "Zakup";
+            if (!dataGridView1.Columns.Contains("FormaPlatnosciCombo"))
+            {
+                var col = new DataGridViewComboBoxColumn();
+                col.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
+                col.ValueType = typeof(FormaPlatnosci);
+                col.Visible = true;
+                col.DataPropertyName = "FormaPlatnosci";
+                col.HeaderText = "Forma";
+                col.Name = "FormaPlatnosciCombo";
+
+                dataGridView1.Columns.Add(col);
+            }
 
             if (!dataGridView1.Columns.Contains("UsunCol"))
             {
@@ -94,6 +98,7 @@ namespace Okulary
 
                 doplata.DataDoplaty = (DateTime)dataGridView1["DataDoplaty", e.RowIndex].Value;
                 doplata.Kwota = (decimal)dataGridView1["Kwota", e.RowIndex].Value;
+                doplata.FormaPlatnosci = (FormaPlatnosci)dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value;
 
                 _context.SaveChanges();
             }
@@ -103,6 +108,7 @@ namespace Okulary
 
                 dataGridView1["DataDoplaty", e.RowIndex].Value = element.DataDoplaty;
                 dataGridView1["Kwota", e.RowIndex].Value = element.Kwota;
+                dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value = element.FormaPlatnosci;
 
                 _context.SaveChanges();
             }

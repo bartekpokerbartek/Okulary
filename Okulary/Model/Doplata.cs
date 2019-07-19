@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using Okulary.Enums;
+
 namespace Okulary.Model
 {
     public class Doplata
@@ -19,5 +21,7 @@ namespace Okulary.Model
 
         [ForeignKey(nameof(Binocle_BinocleId))]
         public Binocle Binocle { get; set; }
+
+        public FormaPlatnosci FormaPlatnosci { get; set; }
     }
 }

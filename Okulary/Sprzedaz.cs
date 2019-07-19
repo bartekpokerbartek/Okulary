@@ -19,6 +19,8 @@ namespace Okulary
 
         private DateTime _dataSelectora;
 
+        private object _cellBeginEditValue;
+
         public Sprzedaz(Lokalizacja lokalizacja)
         {
             InitializeComponent();
@@ -87,7 +89,8 @@ namespace Okulary
                     Ilosc = 1,
                     Nazwa = $"Dopłata {person.FirstName} {person.LastName}",
                     Lokalizacja = person.Lokalizacja,
-                    CannotEdit = true
+                    CannotEdit = true,
+                    FormaPlatnosci = doplata.FormaPlatnosci
                 });
             }
 
@@ -240,17 +243,18 @@ namespace Okulary
             if (e.ColumnIndex < 0)
                 return;
 
+            var elementId = (int)dataGridView1["ElementId", e.RowIndex].Value;
+
             var rowIndex = dataGridView1.CurrentCell.RowIndex;
             var row = (DataGridViewDisableButtonCell)dataGridView1.Rows[rowIndex].Cells["UsunCol"];
 
             if (!row.Enabled)
             {
                 MessageBox.Show("Nie można edytować bezpośrednio wierszy wygenerowanych z zadatku, bądź dopłaty.");
-                Laduj();
+                dataGridView1[e.ColumnIndex, e.RowIndex].Value = _cellBeginEditValue;
+                dataGridView1.Refresh();
                 return;
             }
-
-            var elementId = (int)dataGridView1["ElementId", e.RowIndex].Value;
 
             DialogResult dialogResult = MessageBox.Show("Zapisać zmiany?", "Zapisz", MessageBoxButtons.YesNo);
 
@@ -328,6 +332,11 @@ namespace Okulary
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             MessageBox.Show("Wprowadzono niepoprawne dane!", "OK", MessageBoxButtons.OK);
+        }
+
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            _cellBeginEditValue = dataGridView1[e.ColumnIndex, e.RowIndex].Value;
         }
     }
 }

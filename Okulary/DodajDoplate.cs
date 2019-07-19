@@ -3,6 +3,8 @@ using Okulary.Model;
 using System;
 using System.Windows.Forms;
 
+using Okulary.Enums;
+
 namespace Okulary
 {
     public partial class DodajDoplate : Form
@@ -13,6 +15,7 @@ namespace Okulary
         {
             InitializeComponent();
             _binocleId = binocleId;
+            comboBox1.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,12 +49,16 @@ namespace Okulary
                 }
             }
 
+            FormaPlatnosci formaPlatnosci;
+            Enum.TryParse(comboBox1.SelectedValue.ToString(), out formaPlatnosci);
+
             using (var ctx = new MineContext())
             {
                 ctx.Doplaty.Add(new Doplata {
                     DataDoplaty = dataSprzedazy.Date,
                     Kwota = cenaResult,
-                    Binocle_BinocleId = _binocleId
+                    Binocle_BinocleId = _binocleId,
+                    FormaPlatnosci = formaPlatnosci
                 });
                 ctx.SaveChanges();
             }
