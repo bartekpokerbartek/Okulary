@@ -107,6 +107,7 @@
     <Compile Include="Doplaty.Designer.cs">
       <DependentUpon>Doplaty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Enums\FormaPlatnosci.cs" />
     <Compile Include="Enums\Lokalizacja.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -193,6 +194,10 @@
     <Compile Include="Migrations\201907190252097_DoplataFix.cs" />
     <Compile Include="Migrations\201907190252097_DoplataFix.Designer.cs">
       <DependentUpon>201907190252097_DoplataFix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907190420392_FormaPlatnosci.cs" />
+    <Compile Include="Migrations\201907190420392_FormaPlatnosci.Designer.cs">
+      <DependentUpon>201907190420392_FormaPlatnosci.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
@@ -287,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907190252097_DoplataFix.resx">
       <DependentUpon>201907190252097_DoplataFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907190420392_FormaPlatnosci.resx">
+      <DependentUpon>201907190420392_FormaPlatnosci.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Niezbalansowani.resx">
       <DependentUpon>Niezbalansowani.cs</DependentUpon>

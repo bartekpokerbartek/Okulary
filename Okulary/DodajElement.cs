@@ -21,6 +21,7 @@ namespace Okulary
             _dateSelector = dateSelector;
             dateTimePicker1.Value = dateSelector;
             label6.Text = LokalizacjaHelper.DajLokalizacje(lokalizacja);
+            comboBox1.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -68,6 +69,9 @@ namespace Okulary
 
             using (var ctx = new MineContext())
             {
+                FormaPlatnosci formaPlatnosci;
+                Enum.TryParse(comboBox1.SelectedValue.ToString(), out formaPlatnosci);
+
                 ctx.Elements.Add(new Element
                                      {
                                          Cena = cenaResult,
@@ -75,7 +79,8 @@ namespace Okulary
                                          Nazwa = nazwa,
                                          DataSprzedazy = dataSprzedazy,
                                          DataUtworzenia = DateTime.Now.Date,
-                                         Lokalizacja = _lokalizacja
+                                         Lokalizacja = _lokalizacja,
+                                         FormaPlatnosci = formaPlatnosci
                 });
                 ctx.SaveChanges();
             }

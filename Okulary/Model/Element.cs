@@ -25,5 +25,7 @@ namespace Okulary.Model
         public Lokalizacja Lokalizacja { get; set; }
 
         public bool CannotEdit { get; set; }
+
+        public FormaPlatnosci FormaPlatnosci { get; set; }
     }
 }

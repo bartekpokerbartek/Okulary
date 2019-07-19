@@ -61,7 +61,8 @@ namespace Okulary
                                               Ilosc = 1,
                                               Nazwa = $"Zadatek {person.FirstName} {person.LastName}",
                                               Lokalizacja = person.Lokalizacja,
-                                              CannotEdit = true
+                                              CannotEdit = true,
+                                              //FormaPlatnosci = //Do dodania
                                           });
             }
 
@@ -97,26 +98,38 @@ namespace Okulary
 
             dataGridView1.DataSource = elementList;
 
-            //for (int i = 0; i < dataGridView1.Columns.Count; i++)
-            //{
-            //    dataGridView1.Columns[i].Visible = false;
-            //}
-
+            dataGridView1.Columns["Nazwa"].Width = 240;
             dataGridView1.Columns["DataUtworzenia"].Visible = false;
             dataGridView1.Columns["ElementId"].Visible = false;
             dataGridView1.Columns["CannotEdit"].Visible = false;
             dataGridView1.Columns["Lokalizacja"].ReadOnly = true;
             dataGridView1.Columns["DataUtworzenia"].HeaderText = "Data zakupu";
 
-            //if (!dataGridView1.Columns.Contains("ZakupCol"))
-            //{
-            //    DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-            //    col.UseColumnTextForButtonValue = true;
-            //    col.Visible = true;
-            //    col.Text = "Zakup";
-            //    col.Name = "ZakupCol";
-            //    dataGridView1.Columns.Add(col);
-            //}
+            //Combo kolumna
+
+            dataGridView1.Columns["FormaPlatnosci"].Visible = false;
+
+            if (!dataGridView1.Columns.Contains("FormaPlatnosciCombo"))
+            {
+                var col = new DataGridViewComboBoxColumn();
+                col.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
+                col.ValueType = typeof(FormaPlatnosci);
+                //col.ValueMember = "FormaPlatnosci";
+                col.Visible = true;
+                col.DataPropertyName = "FormaPlatnosci";
+                col.HeaderText = "Forma";
+                col.Name = "FormaPlatnosciCombo";
+                
+                dataGridView1.Columns.Add(col);
+            }
+            //dataGridView1.Bin
+
+            //var column = new DataGridViewComboBoxColumn();
+            //var lista = Enum.GetNames(typeof(Lokalizacja)).ToList();
+            //column.DataSource = lista;
+            //dataGridView1.Columns.Add(column);
+
+            //Combo kolumna
 
             //dataGridView1.Columns["ZakupCol"].Visible = true;
             //dataGridView1.Columns["ZakupCol"].HeaderText = "Zakup";
@@ -143,7 +156,7 @@ namespace Okulary
 
 
             decimal suma = 0.0M;
-            foreach (var element in elementList)
+            foreach (var element in elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
             {
                 suma += element.Cena * element.Ilosc;
             }
@@ -216,7 +229,7 @@ namespace Okulary
             elementListMonthly.AddRange(dodatkoweElementyMonthly);
 
             decimal sumaMonthly = 0.0M;
-            foreach (var element in elementListMonthly)
+            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
             {
                 sumaMonthly += element.Cena * element.Ilosc;
             }
@@ -228,6 +241,16 @@ namespace Okulary
         {
             if (e.ColumnIndex < 0)
                 return;
+
+            var rowIndex = dataGridView1.CurrentCell.RowIndex;
+            var row = (DataGridViewDisableButtonCell)dataGridView1.Rows[rowIndex].Cells["UsunCol"];
+
+            if (!row.Enabled)
+            {
+                MessageBox.Show("Nie można edytować bezpośrednio wierszy wygenerowanych z zadatku, bądź dopłaty.");
+                Laduj();
+                return;
+            }
 
             var elementId = (int)dataGridView1["ElementId", e.RowIndex].Value;
 
@@ -241,6 +264,7 @@ namespace Okulary
                 element.DataSprzedazy = (DateTime)dataGridView1["DataSprzedazy", e.RowIndex].Value;
                 element.Ilosc = (int)dataGridView1["Ilosc", e.RowIndex].Value;
                 element.Cena = (decimal)dataGridView1["Cena", e.RowIndex].Value;
+                element.FormaPlatnosci = (FormaPlatnosci)dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value;
 
                 _context.SaveChanges();
             }
@@ -252,6 +276,7 @@ namespace Okulary
                 dataGridView1["DataSprzedazy", e.RowIndex].Value = element.DataSprzedazy;
                 dataGridView1["Ilosc", e.RowIndex].Value = element.Ilosc;
                 dataGridView1["Cena", e.RowIndex].Value = element.Cena;
+                dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value = element.FormaPlatnosci;
 
                 _context.SaveChanges();
             }
@@ -300,6 +325,11 @@ namespace Okulary
         private void Sprzedaz_FormClosing(object sender, FormClosingEventArgs e)
         {
             _context.Dispose();
+        }
+
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            MessageBox.Show("Wprowadzono niepoprawne dane!", "OK", MessageBoxButtons.OK);
         }
     }
 }
