@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Okulary.Model
 {
@@ -15,5 +16,8 @@ namespace Okulary.Model
         public decimal Kwota { get; set; }
 
         public DateTime DataDoplaty { get; set; }
+
+        [ForeignKey(nameof(Binocle_BinocleId))]
+        public Binocle Binocle { get; set; }
     }
 }

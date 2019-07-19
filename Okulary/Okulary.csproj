@@ -190,6 +190,10 @@
     <Compile Include="Migrations\201907180647278_TestBin.Designer.cs">
       <DependentUpon>201907180647278_TestBin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907190252097_DoplataFix.cs" />
+    <Compile Include="Migrations\201907190252097_DoplataFix.Designer.cs">
+      <DependentUpon>201907190252097_DoplataFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Doplata.cs" />
@@ -274,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907180647278_TestBin.resx">
       <DependentUpon>201907180647278_TestBin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907190252097_DoplataFix.resx">
+      <DependentUpon>201907190252097_DoplataFix.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
