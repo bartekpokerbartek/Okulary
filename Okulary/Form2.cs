@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -41,7 +41,7 @@ namespace Okulary
 
             //using (var ctx = new MineContext())
             //{
-            binocleList = _context.Binocles.Where(x => x.Person_PersonId == _personId).ToList();
+            binocleList = _context.Binocles.Include(x => x.Doplaty).Where(x => x.Person_PersonId == _personId).ToList();
             //}
 
             dataGridView1.DataSource = binocleList;

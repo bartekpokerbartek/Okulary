@@ -39,7 +39,7 @@ namespace Okulary
                 personList = ctx.Persons.Include(x => x.Binocles).Include(y => y.Binocles.Select(z => z.Doplaty)).Where(x => lokalizacje.Contains(x.Lokalizacja)).ToList();
             }
 
-            //TODO: refactor above query
+            //TODO: refactor above query???
             //https://stackoverflow.com/questions/7259567/linq-to-entities-does-not-recognize-the-method/7259649
             var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => _priceHelper.CzyZbalansowany(y))).ToList();
 

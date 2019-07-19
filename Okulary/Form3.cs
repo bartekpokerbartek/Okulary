@@ -5,7 +5,7 @@ using Okulary.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -84,7 +84,7 @@ namespace Okulary
                 _binocleId = binocle.BinocleId;
             }
             
-            _zakup = _context.Binocles.Where(x => x.BinocleId == _binocleId).FirstOrDefault();
+            _zakup = _context.Binocles.Include(x => x.Doplaty).Where(x => x.BinocleId == _binocleId).FirstOrDefault();
 
             Mapuj();
         }
