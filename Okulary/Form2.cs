@@ -1,14 +1,12 @@
-﻿using Okulary.Model;
-using Okulary.Repo;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Okulary.Helpers;
+using Okulary.Model;
+using Okulary.Repo;
 
 namespace Okulary
 {
@@ -16,6 +14,7 @@ namespace Okulary
     {
         int _personId;
         MineContext _context;
+        private PriceHelper _priceHelper = new PriceHelper();
 
         public Form2()
         {
@@ -80,6 +79,12 @@ namespace Okulary
 
             dataGridView1.Columns["UsunCol"].Visible = true;
             dataGridView1.Columns["UsunCol"].HeaderText = "Usuń";
+
+            foreach (var row in dataGridView1.Rows)
+            {
+                if (_priceHelper.CzyZbalansowany((Binocle)((DataGridViewRow)row).DataBoundItem))
+                    ((DataGridViewRow)row).DefaultCellStyle.BackColor = Color.Crimson;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

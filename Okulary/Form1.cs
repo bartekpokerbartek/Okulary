@@ -1,12 +1,12 @@
-﻿using Okulary.Enums;
-using Okulary.Helpers;
-using Okulary.Model;
-using Okulary.Repo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using Okulary.Enums;
+using Okulary.Helpers;
+using Okulary.Model;
+using Okulary.Repo;
 
 namespace Okulary
 {
@@ -187,6 +187,8 @@ namespace Okulary
 
             //dataGridView1.Columns["ZapiszCol"].Visible = true;
             //dataGridView1.Columns["ZapiszCol"].HeaderText = "Usu";
+
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -209,7 +211,7 @@ namespace Okulary
                     person.BirthDate = (DateTime)dataGridView1["BirthDate", e.RowIndex].Value;
                     person.Lokalizacja = (Lokalizacja)dataGridView1["Lokalizacja", e.RowIndex].Value;
                     ctx.SaveChanges();
-                    //Search();
+                    Search();
                 }
             }
             else if (dialogResult == DialogResult.No)
@@ -249,6 +251,13 @@ namespace Okulary
         private void button3_Click(object sender, EventArgs e)
         {
             var childForm = new Sprzedaz(_lokalizacja);
+            //childForm.FormClosing += new FormClosingEventHandler();
+            childForm.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var childForm = new Niezbalansowani(_lokalizacja);
             //childForm.FormClosing += new FormClosingEventHandler();
             childForm.Show();
         }

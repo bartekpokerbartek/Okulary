@@ -27,5 +27,10 @@ namespace Okulary.Helpers
 
             return DajSume(_zakup) - _zakup.Zadatek - doplaty;
         }
+
+        public bool CzyZbalansowany(Binocle zakup)
+        {
+            return DajDoZaplaty(zakup) != 0M;
+        }
     }
 }
