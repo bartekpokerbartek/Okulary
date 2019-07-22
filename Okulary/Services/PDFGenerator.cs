@@ -17,6 +17,7 @@ using iText.Layout.Properties;
 using Okulary.Helpers;
 using Okulary.Model;
 using Okulary.Repo;
+using System.Data.Entity;
 
 namespace Okulary.Services
 {
@@ -29,11 +30,13 @@ namespace Okulary.Services
         public string format = "dd.MM.yyyy";
         public string osFormat = "N0";
 
-        public void Generate(Binocle okulary, Person osoba)
+        public void Generate(Binocle okularyy, Person osoba)
         {
+            var okulary = new Binocle();
             using (var context = new MineContext())
             {
-                _czySaDoplaty = context.Doplaty.Any(x => x.Binocle_BinocleId == okulary.BinocleId);
+                okulary = context.Binocles.Include(x => x.Doplaty).First(x => x.BinocleId == okularyy.BinocleId);
+                _czySaDoplaty = okulary.Doplaty.Any(x => x.Binocle_BinocleId == okulary.BinocleId);
             }
 
             var DEST = ConfigurationManager.AppSettings["PdfFolder"].ToString() + osoba.LastName + "_" + osoba.FirstName + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".pdf";
