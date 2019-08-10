@@ -188,7 +188,8 @@ namespace Okulary
             //dataGridView1.Columns["ZapiszCol"].Visible = true;
             //dataGridView1.Columns["ZapiszCol"].HeaderText = "Usu";
 
-            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+            if (dataGridView1.RowCount > 0)
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
