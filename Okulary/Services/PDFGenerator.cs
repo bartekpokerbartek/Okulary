@@ -277,9 +277,21 @@ namespace Okulary.Services
             );
             table.SetWidth(new UnitValue(UnitValue.PERCENT, 100));
 
+            var tableTop = new Table(new UnitValue[]
+            {
+                new UnitValue(UnitValue.PERCENT, 50),
+                new UnitValue(UnitValue.PERCENT, 50)
+            }
+            );
+            tableTop.SetWidth(new UnitValue(UnitValue.PERCENT, 100));
+
+            tableTop.AddHeaderCell(new Cell().Add(new Paragraph("Lokalizacja: " + person.Lokalizacja.ToString()).SetFont(font).SetTextAlignment(TextAlignment.LEFT)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER).SetBorderLeft(Border.NO_BORDER).SetBorderRight(Border.NO_BORDER));
+            tableTop.AddHeaderCell(new Cell().Add(new Paragraph(person.FirstName + " " + person.LastName).SetFont(font).SetTextAlignment(TextAlignment.RIGHT)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER).SetBorderLeft(Border.NO_BORDER).SetBorderRight(Border.NO_BORDER));
+            document.Add(tableTop);
+
             //table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)));
-            document.Add(new Paragraph("Lokalizacja: " + person.Lokalizacja.ToString()).SetFont(font).SetTextAlignment(TextAlignment.LEFT));
-            document.Add(new Paragraph(person.FirstName + " " + person.LastName).SetFont(font).SetTextAlignment(TextAlignment.RIGHT));
+            //document.Add(new Paragraph().SetFont(font));
+            //document.Add(new Paragraph(person.FirstName + " " + person.LastName).SetFont(font).SetTextAlignment(TextAlignment.RIGHT));
             table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderBottom(Border.NO_BORDER));
             table.AddHeaderCell(new Cell().Add(new Paragraph().SetFont(font)).SetBorderTop(Border.NO_BORDER).SetBorderBottom(Border.NO_BORDER));
             table.AddHeaderCell(new Cell().Add(new Paragraph("Numer telefonu").SetFont(font)));

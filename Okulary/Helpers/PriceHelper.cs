@@ -1,5 +1,7 @@
 ﻿using Okulary.Model;
 using Okulary.Repo;
+using System;
+using System.Configuration;
 using System.Linq;
 
 namespace Okulary.Helpers
@@ -28,7 +30,8 @@ namespace Okulary.Helpers
 
         public bool CzyZbalansowany(Binocle zakup)
         {
-            return DajDoZaplaty(zakup) != 0M;
+            DateTime.TryParse(ConfigurationManager.AppSettings["DataNiezbalansowani"].ToString(), out DateTime dataNiezbalansowani);
+            return DajDoZaplaty(zakup) != 0M && zakup.BuyDate >= dataNiezbalansowani;
         }
     }
 }
