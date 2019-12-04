@@ -156,19 +156,29 @@ namespace Okulary
             dataGridView1.Refresh();
 
 
-            decimal suma = 0.0M;
+            decimal sumaKarta = 0.0M;
+            decimal sumaGotowka = 0.0M;
+
             foreach (var element in elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
             {
-                suma += element.Cena * element.Ilosc;
+                sumaGotowka += element.Cena * element.Ilosc;
             }
 
-            label3.Text = suma.ToString();
+            foreach (var element in elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta))
+            {
+                sumaKarta += element.Cena * element.Ilosc;
+            }
+
+            label3.Text = sumaGotowka.ToString();
+            label10.Text = sumaKarta.ToString();
+            label11.Text = (sumaKarta + sumaGotowka).ToString();
 
             //TODO: zmiana lokalizacji osoby powinna zmienić lokalizację w ELEMENCIE!!!??? Chyba nie, bo elementy były dodane bezpośrednio do tabeli, a te obliczone z zadatków będą miały wartości jak person.Lokalizacja
             var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
 
             //TODO: dodać filtr na lokalizację? Done niżej!?
-            var okularyMonthly = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && x.Zadatek > 0).ToList();
+            var okularyMonthlyBezZadatku = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month).ToList();
+            var okularyMonthly = okularyMonthlyBezZadatku.Where(x => x.Zadatek > 0);
             var dodatkoweElementyMonthly = new List<Element>();
 
             var personyIdsMiesiac = okularyMonthly.Select(x => x.Person_PersonId).ToList();
@@ -224,18 +234,31 @@ namespace Okulary
                 });
             }
 
-            //
-
             elementListMonthly.AddRange(dodatkoweDoplatyMonthly);
             elementListMonthly.AddRange(dodatkoweElementyMonthly);
 
-            decimal sumaMonthly = 0.0M;
+            decimal sumaMonthlyGotowka = 0.0M;
+            decimal sumaMonthlyKarta = 0.0M;
+
             foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
             {
-                sumaMonthly += element.Cena * element.Ilosc;
+                sumaMonthlyGotowka += element.Cena * element.Ilosc;
             }
 
-            label7.Text = sumaMonthly.ToString();
+            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta))
+            {
+                sumaMonthlyKarta += element.Cena * element.Ilosc;
+            }
+
+            label7.Text = sumaMonthlyGotowka.ToString();
+            label14.Text = sumaMonthlyKarta.ToString();
+            label15.Text = (sumaMonthlyGotowka + sumaMonthlyKarta).ToString();
+
+            label17.Text = (okularyMonthlyBezZadatku.Count(x => x.CenaOprawekBliz > 0) + okularyMonthlyBezZadatku.Count(x => x.CenaOprawekDal > 0)).ToString();
+            label19.Text = (okularyMonthlyBezZadatku.Count(x => x.BlizOL.Cena > 0) +
+                            okularyMonthlyBezZadatku.Count(x => x.BlizOP.Cena > 0) +
+                            okularyMonthlyBezZadatku.Count(x => x.DalOL.Cena > 0) +
+                            okularyMonthlyBezZadatku.Count(x => x.DalOP.Cena > 0)).ToString();
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -269,6 +292,8 @@ namespace Okulary
                 element.FormaPlatnosci = (FormaPlatnosci)dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value;
 
                 _context.SaveChanges();
+
+                Laduj();
             }
             else if (dialogResult == DialogResult.No)
             {
