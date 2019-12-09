@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,21 +13,15 @@ using Okulary.Repo;
 
 namespace Okulary
 {
-    public partial class Niezbalansowani : Form
+    public partial class Nieodebrane : Form
     {
         private Lokalizacja _lokalizacja;
-        private PriceHelper _priceHelper = new PriceHelper();
+        private OrderHelper _orderHelper = new OrderHelper();
 
-        public Niezbalansowani(Lokalizacja lokalizacja)
+        public Nieodebrane(Lokalizacja lokalizacja)
         {
             InitializeComponent();
             _lokalizacja = lokalizacja;
-        }
-
-        private void Niezbalansowani_Load(object sender, EventArgs e)
-        {
-            label2.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
-            Search();
         }
 
         private void Search()
@@ -37,12 +32,12 @@ namespace Okulary
 
             using (var ctx = new MineContext())
             {
-                personList = ctx.Persons.Include(x => x.Binocles).Include(y => y.Binocles.Select(z => z.Doplaty)).Where(x => lokalizacje.Contains(x.Lokalizacja)).ToList();
+                personList = ctx.Persons.Include(x => x.Binocles).Where(x => lokalizacje.Contains(x.Lokalizacja)).ToList();
             }
 
             //TODO: refactor above query???
             //https://stackoverflow.com/questions/7259567/linq-to-entities-does-not-recognize-the-method/7259649
-            var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => _priceHelper.CzyZbalansowany(y))).ToList();
+            var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => !_orderHelper.CzyOdebrany(y))).ToList();
 
             dataGridView1.DataSource = doWyswietlenia;
             dataGridView1.Columns["Binocles"].Visible = false;
@@ -81,11 +76,6 @@ namespace Okulary
             dataGridView1.Columns["UsunCol"].HeaderText = "Usuń";
 
             SetRowNumber(dataGridView1);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Search();
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -147,7 +137,7 @@ namespace Okulary
             {
                 // button clicked - do some logic
                 var personId = (int)dataGridView1["PersonId", e.RowIndex].Value;
-                var childForm = new Form2(personId, FromWhereConsts.ZBALANSOWANI);
+                var childForm = new Form2(personId, FromWhereConsts.ODEBRANIE);
                 childForm.Show();
             }
 
@@ -174,6 +164,17 @@ namespace Okulary
                     //do something else
                 }
             }
+        }
+
+        private void Nieodebrane_Load(object sender, EventArgs e)
+        {
+            label2.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
+            Search();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Search();
         }
     }
 }

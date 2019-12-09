@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+
+using Okulary.Consts;
 using Okulary.Enums;
 using Okulary.Helpers;
 using Okulary.Model;
@@ -89,7 +91,7 @@ namespace Okulary
             {
                 // button clicked - do some logic
                 var personId = (int)dataGridView1["PersonId", e.RowIndex].Value;
-                var childForm = new Form2(personId);
+                var childForm = new Form2(personId, FromWhereConsts.ZBALANSOWANI);
                 childForm.Show();
             }
 
@@ -259,6 +261,13 @@ namespace Okulary
         private void button4_Click(object sender, EventArgs e)
         {
             var childForm = new Niezbalansowani(_lokalizacja);
+            //childForm.FormClosing += new FormClosingEventHandler();
+            childForm.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var childForm = new Nieodebrane(_lokalizacja);
             //childForm.FormClosing += new FormClosingEventHandler();
             childForm.Show();
         }

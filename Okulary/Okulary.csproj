@@ -89,6 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consts\FromWhereConsts.cs" />
     <Compile Include="DodajDoplate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +131,7 @@
     <Compile Include="Helpers\DisableRowsButtons.cs" />
     <Compile Include="Helpers\LokalizacjaHelper.cs" />
     <Compile Include="Helpers\Mapper.cs" />
+    <Compile Include="Helpers\OrderHelper.cs" />
     <Compile Include="Helpers\PriceHelper.cs" />
     <Compile Include="Migrations\201711260808009_InitialCreate.cs" />
     <Compile Include="Migrations\201711260808009_InitialCreate.Designer.cs">
@@ -213,6 +215,12 @@
     <Compile Include="Model\Element.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Soczewka.cs" />
+    <Compile Include="Nieodebrane.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Nieodebrane.Designer.cs">
+      <DependentUpon>Nieodebrane.cs</DependentUpon>
+    </Compile>
     <Compile Include="Niezbalansowani.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -309,6 +317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907190653173_FormaPlatnosciWDoplatach.resx">
       <DependentUpon>201907190653173_FormaPlatnosciWDoplatach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Nieodebrane.resx">
+      <DependentUpon>Nieodebrane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Niezbalansowani.resx">
       <DependentUpon>Niezbalansowani.cs</DependentUpon>

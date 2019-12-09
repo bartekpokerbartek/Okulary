@@ -231,6 +231,7 @@ namespace Okulary.Services
                 new UnitValue(UnitValue.PERCENT, 33)
             }
             );
+
             table.SetWidth(new UnitValue(UnitValue.PERCENT, 100));
 
             table.AddHeaderCell(new Cell().Add(new Paragraph("Data przyjęcia").SetFont(font)));
@@ -238,7 +239,7 @@ namespace Okulary.Services
             table.AddHeaderCell(new Cell().Add(new Paragraph("Numer telefonu").SetFont(font)));
 
             table.AddCell(new Cell().Add(new Paragraph(DateTime.Today.ToString(format)).SetFont(font)));
-            table.AddCell(new Cell().Add(new Paragraph(okulary.DataOdbioru.ToString(format)).SetFont(font)));
+            table.AddCell(new Cell().Add(new Paragraph((okulary.IsDataOdbioru ? okulary.DataOdbioru.ToString(format) : string.Empty)).SetFont(font)));
             table.AddCell(new Cell().Add(new Paragraph(okulary.NumerZlecenia).SetFont(font)));
 
             document.Add(table);
@@ -250,6 +251,7 @@ namespace Okulary.Services
                 new UnitValue(UnitValue.PERCENT, 100)
             }
             );
+
             table2.SetWidth(new UnitValue(UnitValue.PERCENT, 100));
 
             table2.AddHeaderCell(new Cell().Add(new Paragraph("Imię i nazwisko").SetFont(font)).SetBorderBottom(Border.NO_BORDER));

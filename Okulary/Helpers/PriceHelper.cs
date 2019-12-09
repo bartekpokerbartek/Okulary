@@ -8,7 +8,7 @@ namespace Okulary.Helpers
 {
     public class PriceHelper
     {
-        private readonly DateTime _dataNiezbalansowani = DateTime.Parse(ConfigurationManager.AppSettings["DataNiezbalansowani"].ToString());
+        private readonly DateTime _dataNiezbalansowani = DateTime.Parse(ConfigurationManager.AppSettings["DataNiezbalansowani"]);
 
         public decimal DajSume(Binocle _zakup)
         {
@@ -30,6 +30,7 @@ namespace Okulary.Helpers
             return DajSume(_zakup) - _zakup.Zadatek - doplaty;
         }
 
+        //Odwrócona logika w użyciach?
         public bool CzyZbalansowany(Binocle zakup)
         {
             return DajDoZaplaty(zakup) != 0M && zakup.BuyDate >= _dataNiezbalansowani;

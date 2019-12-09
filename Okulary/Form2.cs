@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
+using Okulary.Consts;
 using Okulary.Helpers;
 using Okulary.Model;
 using Okulary.Repo;
@@ -15,17 +17,21 @@ namespace Okulary
         int _personId;
         MineContext _context;
         private PriceHelper _priceHelper = new PriceHelper();
+        private OrderHelper _orderHelper = new OrderHelper();
+
+        private string _fromWhereOpened;
 
         public Form2()
         {
             InitializeComponent();
         }
 
-        public Form2(int personId)
+        public Form2(int personId, string fromWhere)
         {
             _personId = personId;
             InitializeComponent();
             _context = new MineContext();
+            _fromWhereOpened = fromWhere;
         }
 
         public int PersonId { get; set; }
@@ -82,8 +88,17 @@ namespace Okulary
 
             foreach (var row in dataGridView1.Rows)
             {
-                if (_priceHelper.CzyZbalansowany((Binocle)((DataGridViewRow)row).DataBoundItem))
-                    ((DataGridViewRow)row).DefaultCellStyle.BackColor = Color.Crimson;
+                if (_fromWhereOpened == FromWhereConsts.ZBALANSOWANI)
+                {
+                    if (_priceHelper.CzyZbalansowany((Binocle)((DataGridViewRow)row).DataBoundItem))
+                        ((DataGridViewRow)row).DefaultCellStyle.BackColor = Color.Crimson;
+                }
+
+                if (_fromWhereOpened == FromWhereConsts.ODEBRANIE)
+                {
+                    if (!_orderHelper.CzyOdebrany((Binocle)((DataGridViewRow)row).DataBoundItem))
+                        ((DataGridViewRow)row).DefaultCellStyle.BackColor = Color.DarkViolet;
+                }
             }
         }
 
