@@ -21,7 +21,7 @@ namespace Okulary
         private void button1_Click(object sender, EventArgs e)
         {
             var koszt = textBox1.Text;
-            var dataSprzedazy = dateTimePicker1.Value.Date;
+            var dataSprzedazy = dateTimePicker1.Value.Date + dateTimePicker2.Value.TimeOfDay;
 
             if (string.IsNullOrEmpty(koszt))
             {
@@ -36,7 +36,7 @@ namespace Okulary
                 return;
             }
 
-            if (dataSprzedazy != DateTime.Today.Date)
+            if (dataSprzedazy.Date != DateTime.Today.Date)
             {
                 DialogResult dialogResult = MessageBox.Show("Data dopłaty nie jest datą dzisiejszą. Czy na pewno chcesz dodać dopłatę w tej dacie?", "Dodaj", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -55,7 +55,7 @@ namespace Okulary
             using (var ctx = new MineContext())
             {
                 ctx.Doplaty.Add(new Doplata {
-                    DataDoplaty = dataSprzedazy.Date,
+                    DataDoplaty = dataSprzedazy,
                     Kwota = cenaResult,
                     Binocle_BinocleId = _binocleId,
                     FormaPlatnosci = formaPlatnosci

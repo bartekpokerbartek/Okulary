@@ -42,9 +42,9 @@ namespace Okulary
 
             var dozwoloneLokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
-            var elementList = _context.Elements.Where(x => x.DataSprzedazy == data && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+            var elementList = _context.Elements.Where(x => EntityFunctions.TruncateTime(x.DataSprzedazy) == data.Date && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
             
-            var okulary = _context.Binocles.Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data && x.Zadatek > 0).ToList();
+            var okulary = _context.Binocles.Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data.Date && x.Zadatek > 0).ToList();
             var dodatkoweElementy = new List<Element>();
 
             foreach (var okular in okulary)
@@ -56,7 +56,7 @@ namespace Okulary
 
                 dodatkoweElementy.Add(new Element
                                           {
-                                              DataSprzedazy = data,
+                                              DataSprzedazy = okular.BuyDate,
                                               Cena = okular.Zadatek,
                                               Ilosc = 1,
                                               Nazwa = $"Zadatek {person.FirstName} {person.LastName}",
@@ -68,7 +68,7 @@ namespace Okulary
 
             var dodatkoweDoplaty = new List<Element>();
 
-            var doplaty = _context.Doplaty.Where(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data).ToList();
+            var doplaty = _context.Doplaty.Where(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data.Date).ToList();
 
             foreach (var doplata in doplaty)
             {
@@ -84,7 +84,7 @@ namespace Okulary
 
                 dodatkoweDoplaty.Add(new Element
                 {
-                    DataSprzedazy = data,
+                    DataSprzedazy = doplata.DataDoplaty,
                     Cena = doplata.Kwota,
                     Ilosc = 1,
                     Nazwa = $"Dopłata {person.FirstName} {person.LastName}",
@@ -193,7 +193,7 @@ namespace Okulary
 
                 dodatkoweElementyMonthly.Add(new Element
                                           {
-                                              DataSprzedazy = data,
+                                              DataSprzedazy = okular.BuyDate,
                                               Cena = okular.Zadatek,
                                               Ilosc = 1
                                           });

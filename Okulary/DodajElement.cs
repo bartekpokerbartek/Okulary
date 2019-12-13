@@ -20,6 +20,7 @@ namespace Okulary
             _lokalizacja = lokalizacja;
             _dateSelector = dateSelector;
             dateTimePicker1.Value = dateSelector;
+            dateTimePicker2.Value = DateTime.Now;
             label6.Text = LokalizacjaHelper.DajLokalizacje(lokalizacja);
             comboBox1.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
         }
@@ -32,7 +33,7 @@ namespace Okulary
             var nazwa = textBox1.Text;
             var ilosc = textBox2.Text;
             var cena = textBox3.Text;
-            var dataSprzedazy = dateTimePicker1.Value.Date;
+            var dataSprzedazy = dateTimePicker1.Value.Date + dateTimePicker2.Value.TimeOfDay;
 
             if (string.IsNullOrEmpty(nazwa) || string.IsNullOrEmpty(ilosc) || string.IsNullOrEmpty(cena))
             {
@@ -54,7 +55,7 @@ namespace Okulary
                 return;
             }
 
-            if (dataSprzedazy != DateTime.Today.Date)
+            if (dataSprzedazy.Date != DateTime.Today.Date)
             {
                 DialogResult dialogResult = MessageBox.Show("Data sprzedaży nie jest datą dzisiejszą. Czy na pewno chcesz dodać sprzedaż w tej dacie?", "Dodaj", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -78,7 +79,7 @@ namespace Okulary
                                          Ilosc = iloscResult,
                                          Nazwa = nazwa,
                                          DataSprzedazy = dataSprzedazy,
-                                         DataUtworzenia = DateTime.Now.Date,
+                                         DataUtworzenia = DateTime.Now,
                                          Lokalizacja = _lokalizacja,
                                          FormaPlatnosci = formaPlatnosci
                 });
