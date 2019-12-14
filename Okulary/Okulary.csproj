@@ -102,6 +102,12 @@
     <Compile Include="DodajElement.Designer.cs">
       <DependentUpon>DodajElement.cs</DependentUpon>
     </Compile>
+    <Compile Include="DodajStanKasy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DodajStanKasy.Designer.cs">
+      <DependentUpon>DodajStanKasy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Doplaty.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,10 +215,15 @@
     <Compile Include="Migrations\201907190653173_FormaPlatnosciWDoplatach.Designer.cs">
       <DependentUpon>201907190653173_FormaPlatnosciWDoplatach.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912131308487_MonyCunt aded.cs" />
+    <Compile Include="Migrations\201912131308487_MonyCunt aded.Designer.cs">
+      <DependentUpon>201912131308487_MonyCunt aded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Doplata.cs" />
     <Compile Include="Model\Element.cs" />
+    <Compile Include="Model\MoneyCount.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Soczewka.cs" />
     <Compile Include="Nieodebrane.cs">
@@ -248,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DodajElement.resx">
       <DependentUpon>DodajElement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DodajStanKasy.resx">
+      <DependentUpon>DodajStanKasy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Doplaty.resx">
       <DependentUpon>Doplaty.cs</DependentUpon>
@@ -317,6 +331,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907190653173_FormaPlatnosciWDoplatach.resx">
       <DependentUpon>201907190653173_FormaPlatnosciWDoplatach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912131308487_MonyCunt aded.resx">
+      <DependentUpon>201912131308487_MonyCunt aded.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Nieodebrane.resx">
       <DependentUpon>Nieodebrane.cs</DependentUpon>

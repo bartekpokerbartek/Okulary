@@ -16,5 +16,7 @@ namespace Okulary.Repo
         public DbSet<Element> Elements { get; set; }
 
         public DbSet<Doplata> Doplaty { get; set; }
+
+        public DbSet<MoneyCount> Kasa { get; set; }
     }
 }

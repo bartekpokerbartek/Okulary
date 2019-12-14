@@ -177,7 +177,7 @@ namespace Okulary
             var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
 
             //TODO: dodać filtr na lokalizację? Done niżej!?
-            var okularyMonthlyBezZadatku = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month).ToList();
+            var okularyMonthlyBezZadatku = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).ToList();
             var okularyMonthly = okularyMonthlyBezZadatku.Where(x => x.Zadatek > 0);
             var dodatkoweElementyMonthly = new List<Element>();
 
@@ -259,6 +259,32 @@ namespace Okulary
                             okularyMonthlyBezZadatku.Count(x => x.BlizOP.Cena > 0) +
                             okularyMonthlyBezZadatku.Count(x => x.DalOL.Cena > 0) +
                             okularyMonthlyBezZadatku.Count(x => x.DalOP.Cena > 0)).ToString();
+
+            var aktualizacjaKasy = _context.Kasa.OrderByDescending(x => x.CreatedOn).FirstOrDefault();
+
+            if (aktualizacjaKasy == null)
+            {
+                label21.Text = "Nie podano stanu początkowego kasy";
+            }
+            else
+            {
+                var doplatyOdDaty = _context.Doplaty.Where(x => x.DataDoplaty > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja));
+                var doplatyOdDatySuma = 0.0M;
+                if (doplatyOdDaty != null && doplatyOdDaty.Count() > 0)
+                    doplatyOdDatySuma = doplatyOdDaty.Sum(x => x.Kwota);
+
+                var elementyOdDaty = _context.Elements.Where(x => x.DataUtworzenia > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && dozwoloneLokalizacje.Contains(x.Lokalizacja));
+                var elementyOdDatySuma = 0.0M;
+                if (elementyOdDaty != null && elementyOdDaty.Count() > 0)
+                    elementyOdDatySuma = elementyOdDaty.Sum(x => x.Cena * x.Ilosc);
+
+                var sprzedazOdDaty = _context.Binocles.Where(x => x.BuyDate > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && dozwoloneLokalizacje.Contains(x.Person.Lokalizacja));
+                var sprzedazOdDatySuma = 0.0M;
+                if (sprzedazOdDaty != null && sprzedazOdDaty.Count() > 0)
+                    sprzedazOdDatySuma = sprzedazOdDaty.Sum(x => x.Zadatek);
+
+                label21.Text = (aktualizacjaKasy.Amount + doplatyOdDatySuma + elementyOdDatySuma + sprzedazOdDatySuma).ToString();
+            }
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -362,6 +388,14 @@ namespace Okulary
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             _cellBeginEditValue = dataGridView1[e.ColumnIndex, e.RowIndex].Value;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var childForm = new DodajStanKasy();
+
+            childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
+            childForm.Show();
         }
     }
 }
