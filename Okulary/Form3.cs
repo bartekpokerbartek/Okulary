@@ -1089,7 +1089,7 @@ namespace Okulary
             var childForm = new Doplaty(_binocleId);
 
             childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
-            childForm.Show();
+            childForm.ShowDialog();
         }
 
         private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)

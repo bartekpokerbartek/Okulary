@@ -148,7 +148,7 @@ namespace Okulary
                 // button clicked - do some logic
                 var personId = (int)dataGridView1["PersonId", e.RowIndex].Value;
                 var childForm = new Form2(personId, FromWhereConsts.ZBALANSOWANI);
-                childForm.Show();
+                childForm.ShowDialog();
             }
 
             if (e.ColumnIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "UsunCol")

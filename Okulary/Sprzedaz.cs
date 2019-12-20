@@ -371,7 +371,7 @@ namespace Okulary
             var childForm = new DodajElement(_lokalizacja, _dataSelectora);
 
             childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
-            childForm.Show();
+            childForm.ShowDialog();
         }
 
         private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
@@ -404,7 +404,7 @@ namespace Okulary
             var childForm = new DodajStanKasy();
 
             childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
-            childForm.Show();
+            childForm.ShowDialog();
         }
     }
 }

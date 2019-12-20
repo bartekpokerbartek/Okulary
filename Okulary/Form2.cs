@@ -106,7 +106,7 @@ namespace Okulary
         {
             var childForm = new Form3(-1, _personId);
             childForm.FormClosing += new FormClosingEventHandler(this.Form2_Refresh);
-            childForm.Show();
+            childForm.ShowDialog();
 
             //button1.Enabled = false;
             //button2.Enabled = false;
@@ -184,7 +184,7 @@ namespace Okulary
                 var binocleId = (int)dataGridView1["BinocleId", e.RowIndex].Value;
                 var childForm = new Form3(binocleId, _personId);
                 childForm.FormClosing += new FormClosingEventHandler(this.Form2_Refresh);
-                childForm.Show();
+                childForm.ShowDialog();
             }
 
             if (e.ColumnIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "UsunCol")
