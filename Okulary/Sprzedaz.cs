@@ -309,12 +309,21 @@ namespace Okulary
 
             if (dialogResult == DialogResult.Yes)
             {
+                var cena = (decimal)dataGridView1["Cena", e.RowIndex].Value;
+                var ilosc = (int)dataGridView1["Ilosc", e.RowIndex].Value;
+
+                if (cena <= 0 || ilosc <= 0)
+                {
+                    MessageBox.Show("Cena i ilość muszą być większe od zera. Nie zapisano, popraw dane.");
+                    return;
+                }
+
                 var element = _context.Elements.First(x => x.ElementId == elementId);
 
                 element.Nazwa = (string)dataGridView1["Nazwa", e.RowIndex].Value;
                 element.DataSprzedazy = (DateTime)dataGridView1["DataSprzedazy", e.RowIndex].Value;
-                element.Ilosc = (int)dataGridView1["Ilosc", e.RowIndex].Value;
-                element.Cena = (decimal)dataGridView1["Cena", e.RowIndex].Value;
+                element.Ilosc = ilosc;
+                element.Cena = cena;
                 element.FormaPlatnosci = (FormaPlatnosci)dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value;
 
                 _context.SaveChanges();

@@ -48,10 +48,22 @@ namespace Okulary
                 return;
             }
 
+            if (iloscResult <= 0)
+            {
+                MessageBox.Show("Ilość musi być większa od zera.");
+                return;
+            }
+
             decimal cenaResult;
             if (!decimal.TryParse(cena, out cenaResult))
             {
                 MessageBox.Show("Cena ma niewłaściwy format.");
+                return;
+            }
+
+            if (cenaResult <= 0)
+            {
+                MessageBox.Show("Cena musi być większa od zera.");
                 return;
             }
 
