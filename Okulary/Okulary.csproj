@@ -219,6 +219,10 @@
     <Compile Include="Migrations\201912131308487_MonyCunt aded.Designer.cs">
       <DependentUpon>201912131308487_MonyCunt aded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912231246262_lokalizacja_w_kasie.cs" />
+    <Compile Include="Migrations\201912231246262_lokalizacja_w_kasie.Designer.cs">
+      <DependentUpon>201912231246262_lokalizacja_w_kasie.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Doplata.cs" />
@@ -334,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912131308487_MonyCunt aded.resx">
       <DependentUpon>201912131308487_MonyCunt aded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912231246262_lokalizacja_w_kasie.resx">
+      <DependentUpon>201912231246262_lokalizacja_w_kasie.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Nieodebrane.resx">
       <DependentUpon>Nieodebrane.cs</DependentUpon>

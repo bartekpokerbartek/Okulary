@@ -260,7 +260,7 @@ namespace Okulary
                             okularyMonthlyBezZadatku.Count(x => x.DalOL.Cena > 0) +
                             okularyMonthlyBezZadatku.Count(x => x.DalOP.Cena > 0)).ToString();
 
-            var aktualizacjaKasy = _context.Kasa.OrderByDescending(x => x.CreatedOn).FirstOrDefault();
+            var aktualizacjaKasy = _context.Kasa.Where(y => y.Lokalizacja == _lokalizacja).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
 
             if (aktualizacjaKasy == null)
             {
@@ -401,7 +401,7 @@ namespace Okulary
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var childForm = new DodajStanKasy();
+            var childForm = new DodajStanKasy(_lokalizacja);
 
             childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
             childForm.ShowDialog();

@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Okulary.Enums;
+
 namespace Okulary.Model
 {
     public class MoneyCount
@@ -13,5 +15,7 @@ namespace Okulary.Model
         public decimal Amount { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public Lokalizacja Lokalizacja { get; set; }
     }
 }

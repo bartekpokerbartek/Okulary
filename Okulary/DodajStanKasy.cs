@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using Okulary.Enums;
 using Okulary.Model;
 using Okulary.Repo;
 
@@ -8,9 +9,12 @@ namespace Okulary
 {
     public partial class DodajStanKasy : Form
     {
-        public DodajStanKasy()
+        private readonly Lokalizacja _lokalizacja;
+
+        public DodajStanKasy(Lokalizacja lokalizacja)
         {
             InitializeComponent();
+            _lokalizacja = lokalizacja;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -28,6 +32,12 @@ namespace Okulary
                 return;
             }
 
+            if (_lokalizacja != Lokalizacja.Dynow && _lokalizacja != Lokalizacja.Dubiecko)
+            {
+                MessageBox.Show("Dodajesz stan kasy dla złej lokalizacji.");
+                return;
+            }
+
             DialogResult dialogResult = MessageBox.Show("Czy na pewno chcesz zaktualizować stan kasy?", "Tak", MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
@@ -37,7 +47,8 @@ namespace Okulary
                     ctx.Kasa.Add(new MoneyCount()
                                         {
                                             Amount = stanKasy,
-                                            CreatedOn = DateTime.Now
+                                            CreatedOn = DateTime.Now,
+                                            Lokalizacja = _lokalizacja
                     });
 
                     ctx.SaveChanges();
