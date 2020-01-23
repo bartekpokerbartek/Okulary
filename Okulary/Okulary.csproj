@@ -108,6 +108,12 @@
     <Compile Include="DodajStanKasy.Designer.cs">
       <DependentUpon>DodajStanKasy.cs</DependentUpon>
     </Compile>
+    <Compile Include="DodajWyplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DodajWyplate.Designer.cs">
+      <DependentUpon>DodajWyplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Doplaty.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,11 +229,16 @@
     <Compile Include="Migrations\201912231246262_lokalizacja_w_kasie.Designer.cs">
       <DependentUpon>201912231246262_lokalizacja_w_kasie.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001161351234_WyplatyIBugFixPlatnosciKartaKwota.cs" />
+    <Compile Include="Migrations\202001161351234_WyplatyIBugFixPlatnosciKartaKwota.Designer.cs">
+      <DependentUpon>202001161351234_WyplatyIBugFixPlatnosciKartaKwota.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Doplata.cs" />
     <Compile Include="Model\Element.cs" />
     <Compile Include="Model\MoneyCount.cs" />
+    <Compile Include="Model\Payout.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Soczewka.cs" />
     <Compile Include="Nieodebrane.cs">
@@ -258,6 +269,12 @@
     <Compile Include="StartupFormForm.Designer.cs">
       <DependentUpon>StartupFormForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Wyplaty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Wyplaty.Designer.cs">
+      <DependentUpon>Wyplaty.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DodajDoplate.resx">
       <DependentUpon>DodajDoplate.cs</DependentUpon>
     </EmbeddedResource>
@@ -266,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DodajStanKasy.resx">
       <DependentUpon>DodajStanKasy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DodajWyplate.resx">
+      <DependentUpon>DodajWyplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Doplaty.resx">
       <DependentUpon>Doplaty.cs</DependentUpon>
@@ -342,6 +362,9 @@
     <EmbeddedResource Include="Migrations\201912231246262_lokalizacja_w_kasie.resx">
       <DependentUpon>201912231246262_lokalizacja_w_kasie.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001161351234_WyplatyIBugFixPlatnosciKartaKwota.resx">
+      <DependentUpon>202001161351234_WyplatyIBugFixPlatnosciKartaKwota.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Nieodebrane.resx">
       <DependentUpon>Nieodebrane.cs</DependentUpon>
     </EmbeddedResource>
@@ -362,6 +385,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StartupFormForm.resx">
       <DependentUpon>StartupFormForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wyplaty.resx">
+      <DependentUpon>Wyplaty.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -195,7 +195,8 @@ namespace Okulary
                                           {
                                               DataSprzedazy = okular.BuyDate,
                                               Cena = okular.Zadatek,
-                                              Ilosc = 1
+                                              Ilosc = 1,
+                                              FormaPlatnosci = okular.FormaPlatnosci
                                           });
             }
 
@@ -230,7 +231,8 @@ namespace Okulary
                 {
                     DataSprzedazy = doplata.DataDoplaty,
                     Cena = doplata.Kwota,
-                    Ilosc = 1
+                    Ilosc = 1,
+                    FormaPlatnosci = doplata.FormaPlatnosci
                 });
             }
 
@@ -283,7 +285,12 @@ namespace Okulary
                 if (sprzedazOdDaty != null && sprzedazOdDaty.Count() > 0)
                     sprzedazOdDatySuma = sprzedazOdDaty.Sum(x => x.Zadatek);
 
-                label21.Text = (aktualizacjaKasy.Amount + doplatyOdDatySuma + elementyOdDatySuma + sprzedazOdDatySuma).ToString();
+                var wyplatyOdDaty = _context.Wyplaty.Where(x => x.CreatedOn > aktualizacjaKasy.CreatedOn && dozwoloneLokalizacje.Contains(x.Lokalizacja));
+                var wyplatyOdDatySuma = 0.0M;
+                if (wyplatyOdDaty != null && wyplatyOdDaty.Count() > 0)
+                    wyplatyOdDatySuma = wyplatyOdDaty.Sum(x => x.Amount);
+
+                label21.Text = (aktualizacjaKasy.Amount + doplatyOdDatySuma + elementyOdDatySuma + sprzedazOdDatySuma - wyplatyOdDatySuma).ToString();
             }
         }
 
@@ -402,6 +409,14 @@ namespace Okulary
         private void button2_Click(object sender, EventArgs e)
         {
             var childForm = new DodajStanKasy(_lokalizacja);
+
+            childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
+            childForm.ShowDialog();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var childForm = new Wyplaty(_lokalizacja);
 
             childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
             childForm.ShowDialog();
