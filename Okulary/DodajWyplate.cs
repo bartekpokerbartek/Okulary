@@ -59,7 +59,8 @@ namespace Okulary
                                     {
                                         CreatedOn = dataWyplaty,
                                         Amount = cenaResult,
-                                        Lokalizacja = _lokalizacja
+                                        Lokalizacja = _lokalizacja,
+                                        Description = textBox2.Text
                 });
                 ctx.SaveChanges();
             }

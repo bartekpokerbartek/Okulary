@@ -46,6 +46,7 @@ namespace Okulary
 
             dataGridView1.Columns["PayoutId"].Visible = false;
             dataGridView1.Columns["CreatedOn"].HeaderText = "Data wypłaty";
+            dataGridView1.Columns["Description"].HeaderText = "Opis";
             dataGridView1.Columns["Lokalizacja"].Visible = false;
 
             if (!dataGridView1.Columns.Contains("UsunCol"))

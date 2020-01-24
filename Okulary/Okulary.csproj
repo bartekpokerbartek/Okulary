@@ -233,6 +233,10 @@
     <Compile Include="Migrations\202001161351234_WyplatyIBugFixPlatnosciKartaKwota.Designer.cs">
       <DependentUpon>202001161351234_WyplatyIBugFixPlatnosciKartaKwota.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001231122480_PayoutDescription.cs" />
+    <Compile Include="Migrations\202001231122480_PayoutDescription.Designer.cs">
+      <DependentUpon>202001231122480_PayoutDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Binocle.cs" />
     <Compile Include="Model\Doplata.cs" />
@@ -364,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001161351234_WyplatyIBugFixPlatnosciKartaKwota.resx">
       <DependentUpon>202001161351234_WyplatyIBugFixPlatnosciKartaKwota.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001231122480_PayoutDescription.resx">
+      <DependentUpon>202001231122480_PayoutDescription.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Nieodebrane.resx">
       <DependentUpon>Nieodebrane.cs</DependentUpon>

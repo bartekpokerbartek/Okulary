@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Windows.Forms;
@@ -94,6 +93,24 @@ namespace Okulary
                 });
             }
 
+            var wyplaty = _context.Wyplaty.Where(x => EntityFunctions.TruncateTime(x.CreatedOn) == data.Date).ToList();
+            var dodatkoweWyplaty = new List<Element>();
+
+            foreach (var wyplata in wyplaty)
+            {
+                dodatkoweWyplaty.Add(new Element
+                                         {
+                                             DataSprzedazy = wyplata.CreatedOn,
+                                             Cena = wyplata.Amount,
+                                             Ilosc = 1,
+                                             Nazwa = $"Wypłata: {wyplata.Description}",
+                                             Lokalizacja = wyplata.Lokalizacja,
+                                             CannotEdit = true,
+                                             FormaPlatnosci = FormaPlatnosci.Gotowka
+                                         });
+            }
+
+            elementList.AddRange(dodatkoweWyplaty);
             elementList.AddRange(dodatkoweElementy);
             elementList.AddRange(dodatkoweDoplaty);
 
@@ -169,9 +186,10 @@ namespace Okulary
                 sumaKarta += element.Cena * element.Ilosc;
             }
 
-            label3.Text = sumaGotowka.ToString();
+            var sumaWyplatDzien = dodatkoweWyplaty.Sum(x => x.Cena);
+            label3.Text = (sumaGotowka - sumaWyplatDzien).ToString();
             label10.Text = sumaKarta.ToString();
-            label11.Text = (sumaKarta + sumaGotowka).ToString();
+            label11.Text = (sumaKarta + sumaGotowka - sumaWyplatDzien).ToString();
 
             //TODO: zmiana lokalizacji osoby powinna zmienić lokalizację w ELEMENCIE!!!??? Chyba nie, bo elementy były dodane bezpośrednio do tabeli, a te obliczone z zadatków będą miały wartości jak person.Lokalizacja
             var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
@@ -306,7 +324,7 @@ namespace Okulary
 
             if (!row.Enabled)
             {
-                MessageBox.Show("Nie można edytować bezpośrednio wierszy wygenerowanych z zadatku, bądź dopłaty.");
+                MessageBox.Show("Nie można edytować wierszy bezpośrednio wygenerowanych z zadatku, wypłaty, bądź dopłaty.");
                 dataGridView1[e.ColumnIndex, e.RowIndex].Value = _cellBeginEditValue;
                 dataGridView1.Refresh();
                 return;

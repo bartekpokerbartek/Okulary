@@ -11,6 +11,8 @@ namespace Okulary.Model
 
         public int PayoutId { get; set; }
 
+        public string Description { get; set; }
+
         public decimal Amount { get; set; }
 
         public DateTime CreatedOn { get; set; }
