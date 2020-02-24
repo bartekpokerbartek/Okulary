@@ -7,6 +7,8 @@ using Okulary.Enums;
 using Okulary.Helpers;
 using Okulary.Model;
 using Okulary.Repo;
+using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace Okulary
 {
@@ -16,70 +18,201 @@ namespace Okulary
 
         private Lokalizacja _lokalizacja;
 
-        private DateTime _dataSelectora;
+        private List<Lokalizacja> _dozwoloneLokalizacje;
+
+        private DateTime _dataSelectora = DateTime.MinValue;
 
         private object _cellBeginEditValue;
+
+        private decimal _dzienGotowka;
+
+        private decimal _dzienKarta;
 
         public Sprzedaz(Lokalizacja lokalizacja)
         {
             InitializeComponent();
             _context = new MineContext();
+            _context.Database.Log = Console.WriteLine;
             _lokalizacja = lokalizacja;
-        }
 
-        private void Sprzedaz_Load(object sender, EventArgs e)
-        {
-            Laduj();
-        }
-
-        private void Laduj()
-        {
             label5.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
+            _dozwoloneLokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
+        }
+
+        private async void Sprzedaz_Load(object sender, EventArgs e)
+        {
+            await Laduj();
+        }
+
+        private async Task Laduj(bool ladujDzien = true, bool ladujMiesiac = true, bool aktualizujKase = true)
+        {
+            var nowyMiesiac = false;
 
             var data = dateTimePicker1.Value.Date;
+
+            if (_dataSelectora == DateTime.MinValue || (_dataSelectora.Month != data.Month || _dataSelectora.Year != data.Year))
+                nowyMiesiac = true;
+
             _dataSelectora = data;
 
-            var dozwoloneLokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
+            if (ladujDzien)
+                LadujDzien(data);
 
-            var elementList = _context.Elements.Where(x => EntityFunctions.TruncateTime(x.DataSprzedazy) == data.Date && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
-            
-            var okulary = _context.Binocles.Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data.Date && x.Zadatek > 0).ToList();
+            if (ladujMiesiac || nowyMiesiac)
+                LadujMiesiac(data);
+
+            if (aktualizujKase || nowyMiesiac)
+                AktualizujKase();
+
+            //var task1 = LadujDzien(data);
+            //var task2 = LadujMiesiac(data);
+            //var task3 = AktualizujKase();
+            //await Task.WhenAll(task1, task2, task3);
+        }
+
+        private async Task LadujMiesiac(DateTime data)
+        {
+            //TODO: zmiana lokalizacji osoby powinna zmienić lokalizację w ELEMENCIE!!!??? Chyba nie, bo elementy były dodane bezpośrednio do tabeli, a te obliczone z zadatków będą miały wartości jak person.Lokalizacja
+            var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+
+            //TODO: dodać filtr na lokalizację? Done niżej!?
+            var okularyMonthlyBezZadatku = _context.Binocles.Include(x => x.Person).Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).ToList();
+            var okularyMonthly = okularyMonthlyBezZadatku.Where(x => x.Zadatek > 0);
+            var dodatkoweElementyMonthly = new List<Element>();
+
+            //var personyIdsMiesiac = okularyMonthly.Select(x => x.Person_PersonId).ToList();
+            //var persony = _context.Persons.Where(x => personyIdsMiesiac.Contains(x.PersonId) && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList(); //??
+
+            foreach (var okular in okularyMonthly)
+            {
+                //var person = persony.FirstOrDefault(x => x.PersonId == okular.Person_PersonId);
+
+                //if (person == null)
+                //    continue;
+
+                dodatkoweElementyMonthly.Add(new Element
+                {
+                    DataSprzedazy = okular.BuyDate,
+                    Cena = okular.Zadatek,
+                    Ilosc = 1,
+                    FormaPlatnosci = okular.FormaPlatnosci
+                });
+            }
+
+            // miesięczne dopłaty
+            var doplatyMonthly = _context.Doplaty.Include(x => x.Binocle).Include(x => x.Binocle.Person)
+                .Where(x => x.DataDoplaty.Year == data.Year && x.DataDoplaty.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)).ToList();
+            var dodatkoweDoplatyMonthly = new List<Element>();
+
+            //var okularyPersonyIdsMiesiac = doplatyMonthly.Select(x => x.Binocle_BinocleId);
+            //var binoklePersonyIdsMiesiac = _context.Binocles.Where(x => okularyPersonyIdsMiesiac.Contains(x.BinocleId));
+            //var personyPersonyIdsMiesiac = binoklePersonyIdsMiesiac.Select(x => x.Person_PersonId).ToList();
+
+            //var personyZDoplat = _context.Persons.Where(x => personyPersonyIdsMiesiac.Contains(x.PersonId) && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+
+            foreach (var doplata in doplatyMonthly)
+            {
+                //var okularkiId = okularyPersonyIdsMiesiac.FirstOrDefault(x => x == doplata.Binocle_BinocleId);
+
+                //if (okularkiId == null)
+                //    continue;
+
+                //var personkaId = binoklePersonyIdsMiesiac.FirstOrDefault(x => x.BinocleId == okularkiId);
+
+                //if (personkaId == null)
+                //    continue;
+
+                //var personka = personyZDoplat.Any(x => x.PersonId == personkaId.Person_PersonId);
+
+                //if (!personka)
+                //    continue;
+
+                dodatkoweDoplatyMonthly.Add(new Element
+                {
+                    DataSprzedazy = doplata.DataDoplaty,
+                    Cena = doplata.Kwota,
+                    Ilosc = 1,
+                    FormaPlatnosci = doplata.FormaPlatnosci
+                });
+            }
+
+            elementListMonthly.AddRange(dodatkoweDoplatyMonthly);
+            elementListMonthly.AddRange(dodatkoweElementyMonthly);
+
+            decimal sumaMonthlyGotowka = 0.0M;
+            decimal sumaMonthlyKarta = 0.0M;
+
+            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
+            {
+                sumaMonthlyGotowka += element.Cena * element.Ilosc;
+            }
+
+            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta))
+            {
+                sumaMonthlyKarta += element.Cena * element.Ilosc;
+            }
+
+            label7.Text = sumaMonthlyGotowka.ToString();
+            label14.Text = sumaMonthlyKarta.ToString();
+            label15.Text = (sumaMonthlyGotowka + sumaMonthlyKarta).ToString();
+
+            label17.Text = (okularyMonthlyBezZadatku.Count(x => x.CenaOprawekBliz > 0) + okularyMonthlyBezZadatku.Count(x => x.CenaOprawekDal > 0)).ToString();
+            label19.Text = (okularyMonthlyBezZadatku.Count(x => x.BlizOL.Cena > 0) +
+                            okularyMonthlyBezZadatku.Count(x => x.BlizOP.Cena > 0) +
+                            okularyMonthlyBezZadatku.Count(x => x.DalOL.Cena > 0) +
+                            okularyMonthlyBezZadatku.Count(x => x.DalOP.Cena > 0)).ToString();
+        }
+
+        private async Task AktualizujKase()
+        {
+            var aktualizacjaKasy = _context.Kasa.Where(y => y.Lokalizacja == _lokalizacja).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
+
+            if (aktualizacjaKasy == null)
+            {
+                label21.Text = "Nie podano stanu początkowego kasy";
+            }
+            else
+            {
+                var doplatyOdDaty = _context.Doplaty.Where(x => x.DataDoplaty > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)).Sum(x => x.Kwota);
+
+                var elementyOdDaty = _context.Elements.Where(x => x.DataUtworzenia > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).Sum(x => x.Cena * x.Ilosc);
+
+                var sprzedazOdDaty = _context.Binocles.Where(x => x.BuyDate > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).Sum(x => x.Zadatek);
+
+                var wyplatyOdDaty = _context.Wyplaty.Where(x => x.CreatedOn > aktualizacjaKasy.CreatedOn && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).Sum(x => x.Amount);
+
+                label21.Text = (aktualizacjaKasy.Amount + doplatyOdDaty + elementyOdDaty + sprzedazOdDaty - wyplatyOdDaty).ToString();
+            }
+        }
+
+        private async Task LadujDzien(DateTime data)
+        {
+            var elementList = _context.Elements.Where(x => EntityFunctions.TruncateTime(x.DataSprzedazy) == data.Date && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+
+            var okulary = _context.Binocles.Include(x => x.Person).Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data.Date && x.Zadatek > 0 && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).ToList();
             var dodatkoweElementy = new List<Element>();
 
             foreach (var okular in okulary)
             {
-                var person = _context.Persons.FirstOrDefault(x => x.PersonId == okular.Person_PersonId && dozwoloneLokalizacje.Contains(x.Lokalizacja));
-
-                if (person == null)
-                    continue;
-
                 dodatkoweElementy.Add(new Element
-                                          {
-                                              DataSprzedazy = okular.BuyDate,
-                                              Cena = okular.Zadatek,
-                                              Ilosc = 1,
-                                              Nazwa = $"Zadatek {person.FirstName} {person.LastName}",
-                                              Lokalizacja = person.Lokalizacja,
-                                              CannotEdit = true,
-                                              FormaPlatnosci = okular.FormaPlatnosci
-                                          });
+                {
+                    DataSprzedazy = okular.BuyDate,
+                    Cena = okular.Zadatek,
+                    Ilosc = 1,
+                    Nazwa = $"Zadatek {okular.Person.FirstName} {okular.Person.LastName}",
+                    Lokalizacja = okular.Person.Lokalizacja,
+                    CannotEdit = true,
+                    FormaPlatnosci = okular.FormaPlatnosci
+                });
             }
 
             var dodatkoweDoplaty = new List<Element>();
 
-            var doplaty = _context.Doplaty.Where(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data.Date).ToList();
+            var doplaty = _context.Doplaty.Include(x => x.Binocle).Include(x => x.Binocle.Person).Where(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data.Date && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)).ToList();
 
             foreach (var doplata in doplaty)
             {
-                var okular = _context.Binocles.FirstOrDefault(x => x.BinocleId == doplata.Binocle_BinocleId);
-
-                if (okular == null)
-                    continue;
-                
-                var person = _context.Persons.FirstOrDefault(x => x.PersonId == okular.Person_PersonId && dozwoloneLokalizacje.Contains(x.Lokalizacja));
-
-                if (person == null)
-                    continue;
+                var person = doplata.Binocle.Person;
 
                 dodatkoweDoplaty.Add(new Element
                 {
@@ -93,21 +226,21 @@ namespace Okulary
                 });
             }
 
-            var wyplaty = _context.Wyplaty.Where(x => EntityFunctions.TruncateTime(x.CreatedOn) == data.Date).ToList();
+            var wyplaty = _context.Wyplaty.Where(x => EntityFunctions.TruncateTime(x.CreatedOn) == data.Date && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
             var dodatkoweWyplaty = new List<Element>();
 
             foreach (var wyplata in wyplaty)
             {
                 dodatkoweWyplaty.Add(new Element
-                                         {
-                                             DataSprzedazy = wyplata.CreatedOn,
-                                             Cena = wyplata.Amount,
-                                             Ilosc = 1,
-                                             Nazwa = $"Wypłata: {wyplata.Description}",
-                                             Lokalizacja = wyplata.Lokalizacja,
-                                             CannotEdit = true,
-                                             FormaPlatnosci = FormaPlatnosci.Gotowka
-                                         });
+                {
+                    DataSprzedazy = wyplata.CreatedOn,
+                    Cena = wyplata.Amount,
+                    Ilosc = 1,
+                    Nazwa = $"Wypłata: {wyplata.Description}",
+                    Lokalizacja = wyplata.Lokalizacja,
+                    CannotEdit = true,
+                    FormaPlatnosci = FormaPlatnosci.Gotowka
+                });
             }
 
             elementList.AddRange(dodatkoweWyplaty);
@@ -137,20 +270,9 @@ namespace Okulary
                 col.DataPropertyName = "FormaPlatnosci";
                 col.HeaderText = "Forma";
                 col.Name = "FormaPlatnosciCombo";
-                
+
                 dataGridView1.Columns.Add(col);
             }
-            //dataGridView1.Bin
-
-            //var column = new DataGridViewComboBoxColumn();
-            //var lista = Enum.GetNames(typeof(Lokalizacja)).ToList();
-            //column.DataSource = lista;
-            //dataGridView1.Columns.Add(column);
-
-            //Combo kolumna
-
-            //dataGridView1.Columns["ZakupCol"].Visible = true;
-            //dataGridView1.Columns["ZakupCol"].HeaderText = "Zakup";
 
             if (!dataGridView1.Columns.Contains("UsunCol"))
             {
@@ -190,126 +312,6 @@ namespace Okulary
             label3.Text = (sumaGotowka - sumaWyplatDzien).ToString();
             label10.Text = sumaKarta.ToString();
             label11.Text = (sumaKarta + sumaGotowka - sumaWyplatDzien).ToString();
-
-            //TODO: zmiana lokalizacji osoby powinna zmienić lokalizację w ELEMENCIE!!!??? Chyba nie, bo elementy były dodane bezpośrednio do tabeli, a te obliczone z zadatków będą miały wartości jak person.Lokalizacja
-            var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
-
-            //TODO: dodać filtr na lokalizację? Done niżej!?
-            var okularyMonthlyBezZadatku = _context.Binocles.Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).ToList();
-            var okularyMonthly = okularyMonthlyBezZadatku.Where(x => x.Zadatek > 0);
-            var dodatkoweElementyMonthly = new List<Element>();
-
-            var personyIdsMiesiac = okularyMonthly.Select(x => x.Person_PersonId).ToList();
-            var persony = _context.Persons.Where(x => personyIdsMiesiac.Contains(x.PersonId) && dozwoloneLokalizacje.Contains(x.Lokalizacja));
-
-            foreach (var okular in okularyMonthly)
-            {
-                var person = persony.FirstOrDefault(x => x.PersonId == okular.Person_PersonId);
-
-                if (person == null)
-                    continue;
-
-                dodatkoweElementyMonthly.Add(new Element
-                                          {
-                                              DataSprzedazy = okular.BuyDate,
-                                              Cena = okular.Zadatek,
-                                              Ilosc = 1,
-                                              FormaPlatnosci = okular.FormaPlatnosci
-                                          });
-            }
-
-            // miesięczne dopłaty
-            var doplatyMonthly = _context.Doplaty.Where(x => x.DataDoplaty.Year == data.Year && x.DataDoplaty.Month == data.Month).ToList();
-            var dodatkoweDoplatyMonthly = new List<Element>();
-
-            var okularyPersonyIdsMiesiac = doplatyMonthly.Select(x => x.Binocle_BinocleId);
-            var binoklePersonyIdsMiesiac = _context.Binocles.Where(x => okularyPersonyIdsMiesiac.Contains(x.BinocleId));
-            var personyPersonyIdsMiesiac = binoklePersonyIdsMiesiac.Select(x => x.Person_PersonId).ToList();
-
-            var personyZDoplat = _context.Persons.Where(x => personyPersonyIdsMiesiac.Contains(x.PersonId) && dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
-            
-            foreach(var doplata in doplatyMonthly)
-            {
-                var okularkiId = okularyPersonyIdsMiesiac.FirstOrDefault(x => x == doplata.Binocle_BinocleId);
-
-                if (okularkiId == null)
-                    continue;
-
-                var personkaId = binoklePersonyIdsMiesiac.FirstOrDefault(x => x.BinocleId == okularkiId);
-
-                if (personkaId == null)
-                    continue;
-
-                var personka = personyZDoplat.Any(x => x.PersonId == personkaId.Person_PersonId);
-
-                if (!personka)
-                    continue;
-
-                dodatkoweDoplatyMonthly.Add(new Element
-                {
-                    DataSprzedazy = doplata.DataDoplaty,
-                    Cena = doplata.Kwota,
-                    Ilosc = 1,
-                    FormaPlatnosci = doplata.FormaPlatnosci
-                });
-            }
-
-            elementListMonthly.AddRange(dodatkoweDoplatyMonthly);
-            elementListMonthly.AddRange(dodatkoweElementyMonthly);
-
-            decimal sumaMonthlyGotowka = 0.0M;
-            decimal sumaMonthlyKarta = 0.0M;
-
-            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
-            {
-                sumaMonthlyGotowka += element.Cena * element.Ilosc;
-            }
-
-            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta))
-            {
-                sumaMonthlyKarta += element.Cena * element.Ilosc;
-            }
-
-            label7.Text = sumaMonthlyGotowka.ToString();
-            label14.Text = sumaMonthlyKarta.ToString();
-            label15.Text = (sumaMonthlyGotowka + sumaMonthlyKarta).ToString();
-
-            label17.Text = (okularyMonthlyBezZadatku.Count(x => x.CenaOprawekBliz > 0) + okularyMonthlyBezZadatku.Count(x => x.CenaOprawekDal > 0)).ToString();
-            label19.Text = (okularyMonthlyBezZadatku.Count(x => x.BlizOL.Cena > 0) +
-                            okularyMonthlyBezZadatku.Count(x => x.BlizOP.Cena > 0) +
-                            okularyMonthlyBezZadatku.Count(x => x.DalOL.Cena > 0) +
-                            okularyMonthlyBezZadatku.Count(x => x.DalOP.Cena > 0)).ToString();
-
-            var aktualizacjaKasy = _context.Kasa.Where(y => y.Lokalizacja == _lokalizacja).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
-
-            if (aktualizacjaKasy == null)
-            {
-                label21.Text = "Nie podano stanu początkowego kasy";
-            }
-            else
-            {
-                var doplatyOdDaty = _context.Doplaty.Where(x => x.DataDoplaty > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja));
-                var doplatyOdDatySuma = 0.0M;
-                if (doplatyOdDaty != null && doplatyOdDaty.Count() > 0)
-                    doplatyOdDatySuma = doplatyOdDaty.Sum(x => x.Kwota);
-
-                var elementyOdDaty = _context.Elements.Where(x => x.DataUtworzenia > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && dozwoloneLokalizacje.Contains(x.Lokalizacja));
-                var elementyOdDatySuma = 0.0M;
-                if (elementyOdDaty != null && elementyOdDaty.Count() > 0)
-                    elementyOdDatySuma = elementyOdDaty.Sum(x => x.Cena * x.Ilosc);
-
-                var sprzedazOdDaty = _context.Binocles.Where(x => x.BuyDate > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && dozwoloneLokalizacje.Contains(x.Person.Lokalizacja));
-                var sprzedazOdDatySuma = 0.0M;
-                if (sprzedazOdDaty != null && sprzedazOdDaty.Count() > 0)
-                    sprzedazOdDatySuma = sprzedazOdDaty.Sum(x => x.Zadatek);
-
-                var wyplatyOdDaty = _context.Wyplaty.Where(x => x.CreatedOn > aktualizacjaKasy.CreatedOn && dozwoloneLokalizacje.Contains(x.Lokalizacja));
-                var wyplatyOdDatySuma = 0.0M;
-                if (wyplatyOdDaty != null && wyplatyOdDaty.Count() > 0)
-                    wyplatyOdDatySuma = wyplatyOdDaty.Sum(x => x.Amount);
-
-                label21.Text = (aktualizacjaKasy.Amount + doplatyOdDatySuma + elementyOdDatySuma + sprzedazOdDatySuma - wyplatyOdDatySuma).ToString();
-            }
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -406,7 +408,7 @@ namespace Okulary
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            Laduj();
+            //Laduj();
         }
 
         private void Sprzedaz_FormClosing(object sender, FormClosingEventArgs e)
@@ -438,6 +440,11 @@ namespace Okulary
 
             childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
             childForm.ShowDialog();
+        }
+
+        private void dateTimePicker1_CloseUp(object sender, EventArgs e)
+        {
+            Laduj(aktualizujKase: false, ladujMiesiac: false);
         }
     }
 }
