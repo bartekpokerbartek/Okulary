@@ -1,11 +1,8 @@
-﻿using Okulary.Model;
-using Okulary.Repo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using Okulary.Enums;
+using Okulary.Repo;
 
 namespace Okulary
 {
@@ -13,45 +10,28 @@ namespace Okulary
     {
         private int _binocleId;
 
-        private MineContext _context;
+        private readonly DoplataService _doplataService = new DoplataService();
 
         public Doplaty(int binocleId)
         {
             InitializeComponent();
             _binocleId = binocleId;
-            _context = new MineContext();
         }
 
-        private void Doplaty_Load(object sender, System.EventArgs e)
+        private async void Doplaty_Load(object sender, System.EventArgs e)
         {
-            Laduj();
+            await Laduj();
         }
 
-        private void Laduj()
+        private async Task Laduj()
         {
-            var doplatyLista = new List<Doplata>
-            {
-                new Doplata
-                {
-                    DataDoplaty = DateTime.Now.Date,
-                    Kwota = 1.5M
-                }
-            };
-
-            doplatyLista = _context.Doplaty.Where(x => x.Binocle_BinocleId == _binocleId).ToList();
+            var doplatyLista = await _doplataService.GetWithFilter(x => x.Binocle_BinocleId == _binocleId);
 
             dataGridView1.DataSource = doplatyLista;
-
-            //for (int i = 0; i < dataGridView1.Columns.Count; i++)
-            //{
-            //    dataGridView1.Columns[i].Visible = false;
-            //}
 
             dataGridView1.Columns["DoplataId"].Visible = false;
             dataGridView1.Columns["Binocle_BinocleId"].Visible = false;
             dataGridView1.Columns["Binocle"].Visible = false;
-            //dataGridView1.Columns["CannotEdit"].Visible = false;
-            //dataGridView1.Columns["Lokalizacja"].ReadOnly = true;
             dataGridView1.Columns["DataDoplaty"].HeaderText = "Data dopłaty";
 
             dataGridView1.Columns["FormaPlatnosci"].Visible = false;
@@ -83,7 +63,7 @@ namespace Okulary
             dataGridView1.Columns["UsunCol"].HeaderText = "Usuń";
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0)
                 return;
@@ -94,27 +74,25 @@ namespace Okulary
 
             if (dialogResult == DialogResult.Yes)
             {
-                var doplata = _context.Doplaty.First(x => x.DoplataId == doplataId);
+                var doplata = await _doplataService.GetById(doplataId);
 
                 doplata.DataDoplaty = (DateTime)dataGridView1["DataDoplaty", e.RowIndex].Value;
                 doplata.Kwota = (decimal)dataGridView1["Kwota", e.RowIndex].Value;
                 doplata.FormaPlatnosci = (FormaPlatnosci)dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value;
 
-                _context.SaveChanges();
+                await _doplataService.Update(doplata);
             }
             else if (dialogResult == DialogResult.No)
             {
-                var element = _context.Doplaty.First(x => x.DoplataId == doplataId);
+                var doplata = await _doplataService.GetById(doplataId);
 
-                dataGridView1["DataDoplaty", e.RowIndex].Value = element.DataDoplaty;
-                dataGridView1["Kwota", e.RowIndex].Value = element.Kwota;
-                dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value = element.FormaPlatnosci;
-
-                _context.SaveChanges();
+                dataGridView1["DataDoplaty", e.RowIndex].Value = doplata.DataDoplaty;
+                dataGridView1["Kwota", e.RowIndex].Value = doplata.Kwota;
+                dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value = doplata.FormaPlatnosci;
             }
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "UsunCol")
             {
@@ -122,12 +100,11 @@ namespace Okulary
                 var doplataId = (int)dataGridView1["DoplataId", e.RowIndex].Value;
 
                 DialogResult dialogResult = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć dopłatę?", "Usuń", MessageBoxButtons.YesNo);
+
                 if (dialogResult == DialogResult.Yes)
                 {
-                    var doplata = _context.Doplaty.First(x => x.DoplataId == doplataId);
-                    _context.Doplaty.Remove(doplata);
-                    _context.SaveChanges();
-                    Laduj();
+                    await _doplataService.Delete(doplataId);
+                    await Laduj();
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -144,19 +121,19 @@ namespace Okulary
             childForm.ShowDialog();
         }
 
-        private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
+        private async void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
         {
-            Laduj();
+            await Laduj();
         }
 
         private void Doplaty_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _context.Dispose();
+            //_context.Dispose();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

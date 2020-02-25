@@ -1,14 +1,15 @@
-﻿using Okulary.Repo;
-using Okulary.Model;
-using System;
+﻿using System;
 using System.Windows.Forms;
-
 using Okulary.Enums;
+using Okulary.Model;
+using Okulary.Repo;
 
 namespace Okulary
 {
     public partial class DodajDoplate : Form
     {
+        private readonly DoplataService _doplataService = new DoplataService();
+
         private int _binocleId;
 
         public DodajDoplate(int binocleId)
@@ -29,8 +30,7 @@ namespace Okulary
                 return;
             }
 
-            decimal cenaResult;
-            if (!decimal.TryParse(koszt, out cenaResult))
+            if (!decimal.TryParse(koszt, out var cenaResult))
             {
                 MessageBox.Show("Koszt ma niewłaściwy format.");
                 return;
@@ -39,36 +39,31 @@ namespace Okulary
             if (dataSprzedazy.Date != DateTime.Today.Date)
             {
                 DialogResult dialogResult = MessageBox.Show("Data dopłaty nie jest datą dzisiejszą. Czy na pewno chcesz dodać dopłatę w tej dacie?", "Dodaj", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
 
-                }
-                else if (dialogResult == DialogResult.No)
+                if (dialogResult == DialogResult.No)
                 {
                     return;
                 }
             }
 
-            FormaPlatnosci formaPlatnosci;
-            Enum.TryParse(comboBox1.SelectedValue.ToString(), out formaPlatnosci);
+            Enum.TryParse(comboBox1.SelectedValue.ToString(), out FormaPlatnosci formaPlatnosci);
 
-            using (var ctx = new MineContext())
-            {
-                ctx.Doplaty.Add(new Doplata {
-                    DataDoplaty = dataSprzedazy,
-                    Kwota = cenaResult,
-                    Binocle_BinocleId = _binocleId,
-                    FormaPlatnosci = formaPlatnosci
-                });
-                ctx.SaveChanges();
-            }
+            var doplata = new Doplata
+                              {
+                                  DataDoplaty = dataSprzedazy,
+                                  Kwota = cenaResult,
+                                  Binocle_BinocleId = _binocleId,
+                                  FormaPlatnosci = formaPlatnosci
+                              };
 
-            this.Close();
+            _doplataService.Create(doplata);
+
+            Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Okulary
 {
     public partial class DodajStanKasy : Form
     {
+        private readonly MoneyCountService _moneyCountService = new MoneyCountService();
+
         private readonly Lokalizacja _lokalizacja;
 
         public DodajStanKasy(Lokalizacja lokalizacja)
@@ -19,14 +21,14 @@ namespace Okulary
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             var koszt = textBox1.Text;
 
-            if (!decimal.TryParse(koszt, out decimal stanKasy))
+            if (!decimal.TryParse(koszt, out var stanKasy))
             {
                 MessageBox.Show("Koszt ma niewłaściwy format.");
                 return;
@@ -38,21 +40,18 @@ namespace Okulary
                 return;
             }
 
-            DialogResult dialogResult = MessageBox.Show("Czy na pewno chcesz zaktualizować stan kasy?", "Tak", MessageBoxButtons.YesNo);
+            var dialogResult = MessageBox.Show("Czy na pewno chcesz zaktualizować stan kasy?", "Tak", MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
-                using (var ctx = new MineContext())
-                {
-                    ctx.Kasa.Add(new MoneyCount()
-                                        {
-                                            Amount = stanKasy,
-                                            CreatedOn = DateTime.Now,
-                                            Lokalizacja = _lokalizacja
-                    });
+                var kasa = new MoneyCount
+                               {
+                                   Amount = stanKasy,
+                                   CreatedOn = DateTime.Now,
+                                   Lokalizacja = _lokalizacja
+                               };
 
-                    ctx.SaveChanges();
-                }
+                await _moneyCountService.Create(kasa);
             }
             else if (dialogResult == DialogResult.No)
             {

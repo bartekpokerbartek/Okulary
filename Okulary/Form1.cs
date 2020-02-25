@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Okulary.Consts;
@@ -14,63 +15,61 @@ namespace Okulary
 {
     public partial class Form1 : Form
     {
+        private readonly PersonService _personService = new PersonService();
+
         private Lokalizacja _lokalizacja;
+
         public Form1()
         {
             InitializeComponent();
-            //this.dataGridView1.Columns["Binocles"].Visible = false;
         }
 
         public Form1(Lokalizacja lokalizacja)
         {
             InitializeComponent();
             _lokalizacja = lokalizacja;
-            //this.dataGridView1.Columns["Binocles"].Visible = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             button1.Enabled = false;
             button2.Enabled = false;
-            Search();
+            await Search();
             button1.Enabled = true;
             button2.Enabled = true;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             button1.Enabled = false;
             button2.Enabled = false;
 
-            using (var ctx = new MineContext())
+            var firstName = textBox1.Text;
+            var lastName = textBox2.Text;
+            var address = textBox3.Text;
+            var birthDate = dateTimePicker1.Value.Date;
+
+            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+                MessageBox.Show("Imię i nazwisko nie mogą być puste");
+            else
             {
-                var firstName = textBox1.Text;
-                var lastName = textBox2.Text;
-                var address = textBox3.Text;
-                var birthDate = dateTimePicker1.Value.Date;
-
-                if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
-                    MessageBox.Show("Imię i nazwisko nie mogą być puste");
-                else
+                if (!await _personService.Exists(firstName, lastName, birthDate))
                 {
-                    if (!Exists(firstName, lastName, birthDate, ctx))
-                    {
-                        ctx.Persons.Add(new Person
-                        {
-                            FirstName = firstName,
-                            LastName = lastName,
-                            BirthDate = birthDate,
-                            Address = address,
-                            Binocles = new List<Binocle>(),
-                            Lokalizacja = _lokalizacja
-                        });
+                    var person = new Person
+                                     {
+                                         FirstName = firstName,
+                                         LastName = lastName,
+                                         BirthDate = birthDate,
+                                         Address = address,
+                                         Binocles = new List<Binocle>(),
+                                         Lokalizacja = _lokalizacja
+                                     };
 
-                        ctx.SaveChanges();
-                    }
+                    _personService.Create(person);
                 }
             }
 
-            Search();
+            await Search();
 
             textBox1.Text = string.Empty;
             textBox2.Text = string.Empty;
@@ -80,12 +79,7 @@ namespace Okulary
             button2.Enabled = true;
         }
 
-        private bool Exists(string firstName, string LastName, DateTime birth, MineContext ctx)
-        {
-            return ctx.Persons.Any(x => x.FirstName == firstName && x.LastName == LastName && x.BirthDate == birth.Date);
-        }
-
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dataGridView1.Columns[e.ColumnIndex].Name == "ZamowieniaNazwa")
             {
@@ -100,39 +94,34 @@ namespace Okulary
                 // button clicked - do some logic
                 var personId = (int)dataGridView1["PersonId", e.RowIndex].Value;
 
-                DialogResult dialogResult = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć klienta?", "Usuń", MessageBoxButtons.YesNo);
+                var dialogResult = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć klienta?", "Usuń", MessageBoxButtons.YesNo);
+
                 if (dialogResult == DialogResult.Yes)
                 {
+                    //cascade delete?
                     using (var ctx = new MineContext())
                     {
                         var person = ctx.Persons.First(x => x.PersonId == personId);
                         var zakupy = ctx.Binocles.Where(x => x.Person_PersonId == personId);
+                        //TODO: Czy nie brakuje usuwania doplat?
                         ctx.Binocles.RemoveRange(zakupy);
                         ctx.Persons.Remove(person);
                         ctx.SaveChanges();
-                        Search();
                     }
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    //do something else
+
+                    await Search();
                 }
             }
         }
 
-        private void Search()
+        private async Task Search()
         {
-            var personList = new List<Person>();
-
             var firstName = textBox1.Text;
             var lastName = textBox2.Text;
 
             var lokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
-            using (var ctx = new MineContext())
-            {
-                personList = ctx.Persons.Where(x => (string.IsNullOrEmpty(firstName) || x.FirstName.Contains(firstName)) && (string.IsNullOrEmpty(lastName) || x.LastName.Contains(lastName)) && (lokalizacje.Contains(x.Lokalizacja))).ToList();
-            }
+            var personList = await _personService.GetWithFilter(x => (string.IsNullOrEmpty(firstName) || x.FirstName.Contains(firstName)) && (string.IsNullOrEmpty(lastName) || x.LastName.Contains(lastName)) && lokalizacje.Contains(x.Lokalizacja));
 
             dataGridView1.DataSource = personList;
             dataGridView1.Columns["Binocles"].Visible = false;
@@ -145,14 +134,6 @@ namespace Okulary
             dataGridView1.Columns["Address"].Width = 240;
             dataGridView1.Columns["BirthDate"].HeaderText = "Data urodzenia";
             dataGridView1.Columns["Lokalizacja"].Width = 75;
-
-            //DODANIE KOLUMNY Z COMBO!!!
-            //var column = new DataGridViewComboBoxColumn();
-            //var lista = Enum.GetNames(typeof(Lokalizacja)).ToList();
-            //column.DataSource = lista;
-            //dataGridView1.Columns.Add(column);
-
-            //dataGridView1.Columns["Lokalizacja"].
 
             if (!dataGridView1.Columns.Contains("ZamowieniaNazwa"))
             {
@@ -177,24 +158,11 @@ namespace Okulary
             dataGridView1.Columns["UsunCol"].Visible = true;
             dataGridView1.Columns["UsunCol"].HeaderText = "Usuń";
 
-            //if (!dataGridView1.Columns.Contains("ZapiszCol"))
-            //{
-            //    DataGridViewButtonColumn col = new DataGridViewButtonColumn();
-            //    col.UseColumnTextForButtonValue = true;
-            //    col.Visible = true;
-            //    col.Text = "Zapisz";
-            //    col.Name = "ZapiszCol";
-            //    dataGridView1.Columns.Add(col);
-            //}
-
-            //dataGridView1.Columns["ZapiszCol"].Visible = true;
-            //dataGridView1.Columns["ZapiszCol"].HeaderText = "Usu";
-
             if (dataGridView1.RowCount > 0)
                 dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0)
                 return;
@@ -204,41 +172,36 @@ namespace Okulary
             DialogResult dialogResult = MessageBox.Show("Zapisać zmiany?", "Zapisz", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                using (var ctx = new MineContext())
-                {
-                    var person = ctx.Persons.First(x => x.PersonId == personId);
+                var person = await _personService.GetById(personId);
 
-                    person.Address = (string)dataGridView1["Address", e.RowIndex].Value;
-                    person.FirstName = (string)dataGridView1["FirstName", e.RowIndex].Value;
-                    person.LastName = (string)dataGridView1["LastName", e.RowIndex].Value;
-                    person.BirthDate = (DateTime)dataGridView1["BirthDate", e.RowIndex].Value;
-                    person.Lokalizacja = (Lokalizacja)dataGridView1["Lokalizacja", e.RowIndex].Value;
-                    ctx.SaveChanges();
-                    Search();
-                }
+                person.Address = (string)dataGridView1["Address", e.RowIndex].Value;
+                person.FirstName = (string)dataGridView1["FirstName", e.RowIndex].Value;
+                person.LastName = (string)dataGridView1["LastName", e.RowIndex].Value;
+                person.BirthDate = (DateTime)dataGridView1["BirthDate", e.RowIndex].Value;
+                person.Lokalizacja = (Lokalizacja)dataGridView1["Lokalizacja", e.RowIndex].Value;
+
+                await _personService.Update(person);
+
+                await Search();
             }
             else if (dialogResult == DialogResult.No)
             {
-                using (var ctx = new MineContext())
-                {
-                    var person = ctx.Persons.First(x => x.PersonId == personId);
+                var person = await _personService.GetById(personId);
 
-                    dataGridView1["Address", e.RowIndex].Value = person.Address;
-                    dataGridView1["FirstName", e.RowIndex].Value = person.FirstName;
-                    dataGridView1["LastName", e.RowIndex].Value = person.LastName;
-                    dataGridView1["BirthDate", e.RowIndex].Value = person.BirthDate;
-                    dataGridView1["Lokalizacja", e.RowIndex].Value = person.Lokalizacja;
-                    ctx.SaveChanges();
-                    //Search();
-                }
+                dataGridView1["Address", e.RowIndex].Value = person.Address;
+                dataGridView1["FirstName", e.RowIndex].Value = person.FirstName;
+                dataGridView1["LastName", e.RowIndex].Value = person.LastName;
+                dataGridView1["BirthDate", e.RowIndex].Value = person.BirthDate;
+                dataGridView1["Lokalizacja", e.RowIndex].Value = person.Lokalizacja;
             }
-
-            //Search();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
             label6.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
+
+            //Dummy call do bazy z migracjami
+            await _personService.Exists("dsfasdfsdf", "vtpoacasf", DateTime.Now);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)

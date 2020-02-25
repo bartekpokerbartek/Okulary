@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Entity.Core.Objects;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,7 +11,9 @@ namespace Okulary
 {
     public partial class Wyplaty : Form
     {
-        private MineContext _context;
+        private readonly PayoutService _payoutService = new PayoutService();
+
+        private readonly MoneyCountService _moneyCountService = new MoneyCountService();
 
         private Lokalizacja _lokalizacja;
 
@@ -26,21 +22,21 @@ namespace Okulary
         public Wyplaty(Lokalizacja lokalizacja)
         {
             InitializeComponent();
-            _context = new MineContext();
             _lokalizacja = lokalizacja;
-            _aktualizacjaKasy = _context.Kasa.Where(y => y.Lokalizacja == _lokalizacja).OrderByDescending(x => x.CreatedOn).FirstOrDefault().CreatedOn;
         }
 
-        private void Wyplaty_Load(object sender, EventArgs e)
+        private async void Wyplaty_Load(object sender, EventArgs e)
         {
-            Laduj();
+            _aktualizacjaKasy = (await _moneyCountService.GetWithFilter(y => y.Lokalizacja == _lokalizacja)).OrderByDescending(x => x.CreatedOn).FirstOrDefault().CreatedOn;
+
+            await Laduj();
         }
 
-        private void Laduj()
+        private async Task Laduj()
         {
             var dozwoloneLokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
-            var elementList = _context.Wyplaty.Where(x => x.CreatedOn > _aktualizacjaKasy).ToList();
+            var elementList = await _payoutService.GetWithFilter(x => x.CreatedOn > _aktualizacjaKasy && dozwoloneLokalizacje.Contains(_lokalizacja));
 
             dataGridView1.DataSource = elementList;
 
@@ -65,17 +61,17 @@ namespace Okulary
 
         private void Wyplaty_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _context.Dispose();
+            //_context.Dispose();
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0)
                 return;
 
             var wyplataId = (int)dataGridView1["PayoutId", e.RowIndex].Value;
 
-            DialogResult dialogResult = MessageBox.Show("Zapisać zmiany?", "Zapisz", MessageBoxButtons.YesNo);
+            var dialogResult = MessageBox.Show("Zapisać zmiany?", "Zapisz", MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
@@ -85,27 +81,29 @@ namespace Okulary
                     return;
                 }
 
-                var doplata = _context.Wyplaty.First(x => x.PayoutId == wyplataId);
+                var wyplata = await _payoutService.GetById(wyplataId);
 
-                doplata.CreatedOn = (DateTime)dataGridView1["CreatedOn", e.RowIndex].Value;
-                doplata.Amount = (decimal)dataGridView1["Amount", e.RowIndex].Value;
+                wyplata.CreatedOn = (DateTime)dataGridView1["CreatedOn", e.RowIndex].Value;
+                wyplata.Amount = (decimal)dataGridView1["Amount", e.RowIndex].Value;
 
-                _context.SaveChanges();
+                var descriptionValue = dataGridView1["Description", e.RowIndex].Value;
 
-                Laduj();
+                wyplata.Description = descriptionValue == null ? string.Empty : descriptionValue.ToString();
+
+                await _payoutService.Update(wyplata);
+
+                await Laduj();
             }
             else if (dialogResult == DialogResult.No)
             {
-                var element = _context.Wyplaty.First(x => x.PayoutId == wyplataId);
+                var element = await _payoutService.GetById(wyplataId);
 
                 dataGridView1["CreatedOn", e.RowIndex].Value = element.CreatedOn;
                 dataGridView1["Amount", e.RowIndex].Value = element.Amount;
-
-                _context.SaveChanges();
             }
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "UsunCol")
             {
@@ -115,22 +113,20 @@ namespace Okulary
                 DialogResult dialogResult = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć dopłatę?", "Usuń", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    var wyplata = _context.Wyplaty.First(x => x.PayoutId == wyplataId);
-                    _context.Wyplaty.Remove(wyplata);
-                    _context.SaveChanges();
-                    Laduj();
+                    await _payoutService.Delete(wyplataId);
+
+                    await Laduj();
                 }
                 else if (dialogResult == DialogResult.No)
                 {
-                    Laduj();
-                    //do something else
+                    await Laduj();
                 }
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -141,9 +137,9 @@ namespace Okulary
             childForm.ShowDialog();
         }
 
-        private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
+        private async void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
         {
-            Laduj();
+            await Laduj();
         }
     }
 }

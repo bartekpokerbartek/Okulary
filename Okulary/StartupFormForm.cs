@@ -1,13 +1,6 @@
-﻿using Okulary.Enums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+using Okulary.Enums;
 
 namespace Okulary
 {
@@ -36,7 +29,7 @@ namespace Okulary
             var childForm = new Form1(lokalizacja);
 
             childForm.Show();
-            this.Hide();
+            Hide();
         }
     }
 }

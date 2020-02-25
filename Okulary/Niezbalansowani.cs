@@ -42,7 +42,7 @@ namespace Okulary
 
             //TODO: refactor above query???
             //https://stackoverflow.com/questions/7259567/linq-to-entities-does-not-recognize-the-method/7259649
-            var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => _priceHelper.CzyZbalansowany(y))).ToList();
+            var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => _priceHelper.CzyZbalansowany(y))).ToList(); //zmienić jak w Nieodebrane...czyli przenieść logikę do pobrania wyżej zamiast pobierać wszystkich ludzi
 
             dataGridView1.DataSource = doWyswietlenia;
             dataGridView1.Columns["Binocles"].Visible = false;

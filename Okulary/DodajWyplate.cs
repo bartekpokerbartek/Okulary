@@ -9,7 +9,9 @@ namespace Okulary
 {
     public partial class DodajWyplate : Form
     {
-        private Lokalizacja _lokalizacja;
+        private readonly PayoutService _payoutService = new PayoutService();
+
+        private readonly Lokalizacja _lokalizacja;
 
         public DodajWyplate(Lokalizacja lokalizacja)
         {
@@ -19,22 +21,29 @@ namespace Okulary
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             var koszt = textBox1.Text;
             var dataWyplaty = dateTimePicker1.Value.Date + dateTimePicker2.Value.TimeOfDay;
 
             if (string.IsNullOrEmpty(koszt))
             {
-                MessageBox.Show("Pole kwota nie może być puste");
+                MessageBox.Show("Pole kwota nie może być puste.");
                 return;
             }
 
-            decimal cenaResult;
-            if (!decimal.TryParse(koszt, out cenaResult))
+            var opis = textBox2.Text;
+
+            if (string.IsNullOrEmpty(opis))
+            {
+                MessageBox.Show("Pole opis nie może być puste.");
+                return;
+            }
+
+            if (!decimal.TryParse(koszt, out var cenaResult))
             {
                 MessageBox.Show("Kwota ma niewłaściwy format.");
                 return;
@@ -42,30 +51,25 @@ namespace Okulary
 
             if (dataWyplaty.Date != DateTime.Today.Date)
             {
-                DialogResult dialogResult = MessageBox.Show("Data wypłaty nie jest datą dzisiejszą. Czy na pewno chcesz dodać wypłatę w tej dacie?", "Dodaj", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
+                var dialogResult = MessageBox.Show("Data wypłaty nie jest datą dzisiejszą. Czy na pewno chcesz dodać wypłatę w tej dacie?", "Dodaj", MessageBoxButtons.YesNo);
 
-                }
-                else if (dialogResult == DialogResult.No)
+                if (dialogResult == DialogResult.No)
                 {
                     return;
                 }
             }
 
-            using (var ctx = new MineContext())
-            {
-                ctx.Wyplaty.Add(new Payout
-                                    {
-                                        CreatedOn = dataWyplaty,
-                                        Amount = cenaResult,
-                                        Lokalizacja = _lokalizacja,
-                                        Description = textBox2.Text
-                });
-                ctx.SaveChanges();
-            }
+            var payout = new Payout
+                             {
+                                 CreatedOn = dataWyplaty,
+                                 Amount = cenaResult,
+                                 Lokalizacja = _lokalizacja,
+                                 Description = opis
+                             };
 
-            this.Close();
+            await _payoutService.Create(payout);
+
+            Close();
         }
     }
 }

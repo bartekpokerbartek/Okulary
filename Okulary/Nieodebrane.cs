@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -16,7 +17,10 @@ namespace Okulary
     public partial class Nieodebrane : Form
     {
         private Lokalizacja _lokalizacja;
+
         private OrderHelper _orderHelper = new OrderHelper();
+
+        private readonly DateTime _dataOdbioru = DateTime.Parse(ConfigurationManager.AppSettings["DataOdbioru"]);
 
         public Nieodebrane(Lokalizacja lokalizacja)
         {
@@ -32,14 +36,13 @@ namespace Okulary
 
             using (var ctx = new MineContext())
             {
-                personList = ctx.Persons.Include(x => x.Binocles).Where(x => lokalizacje.Contains(x.Lokalizacja)).ToList();
+                personList = ctx.Persons.Include(x => x.Binocles).Where(x => lokalizacje.Contains(x.Lokalizacja) && x.Binocles.Any(y => !(y.IsDataOdbioru || y.BuyDate <= _dataOdbioru))).ToList();
             }
 
-            //TODO: refactor above query???
             //https://stackoverflow.com/questions/7259567/linq-to-entities-does-not-recognize-the-method/7259649
-            var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => !_orderHelper.CzyOdebrany(y))).ToList();
+            //var doWyswietlenia = personList.Where(x => x.Binocles.Any(y => !_orderHelper.CzyOdebrany(y))).ToList();
 
-            dataGridView1.DataSource = doWyswietlenia;
+            dataGridView1.DataSource = personList;
             dataGridView1.Columns["Binocles"].Visible = false;
             dataGridView1.Columns["PersonId"].Visible = false;
             dataGridView1.RowHeadersVisible = true;

@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Okulary.Enums;
 using Okulary.Helpers;
 using Okulary.Model;
 using Okulary.Repo;
-using System.Data.Entity;
-using System.Threading.Tasks;
 
 namespace Okulary
 {
     public partial class Sprzedaz : Form
     {
-        private MineContext _context;
+        private readonly PayoutService _payoutService = new PayoutService();
+
+        private readonly DoplataService _doplataService = new DoplataService();
+
+        private readonly MoneyCountService _moneyCountService = new MoneyCountService();
+
+        private readonly ElementsService _elementService = new ElementsService();
+
+        private readonly BinocleService _binocleService = new BinocleService();
 
         private Lokalizacja _lokalizacja;
 
@@ -31,8 +39,6 @@ namespace Okulary
         public Sprzedaz(Lokalizacja lokalizacja)
         {
             InitializeComponent();
-            _context = new MineContext();
-            _context.Database.Log = Console.WriteLine;
             _lokalizacja = lokalizacja;
 
             label5.Text = LokalizacjaHelper.DajLokalizacje(_lokalizacja);
@@ -55,41 +61,42 @@ namespace Okulary
 
             _dataSelectora = data;
 
+            var allTasks = new List<Task>();
+
             if (ladujDzien)
-                LadujDzien(data);
+            {
+                allTasks.Add(LadujDzien(data));
+                //await LadujDzien(data);
+            }
 
             if (ladujMiesiac || nowyMiesiac)
-                LadujMiesiac(data);
+            {
+                allTasks.Add(LadujMiesiac(data));
+                //await LadujMiesiac(data);
+            }
+
 
             if (aktualizujKase || nowyMiesiac)
-                AktualizujKase();
+            {
+                allTasks.Add(AktualizujKase());
+                //await AktualizujKase();
+            }
 
-            //var task1 = LadujDzien(data);
-            //var task2 = LadujMiesiac(data);
-            //var task3 = AktualizujKase();
-            //await Task.WhenAll(task1, task2, task3);
+            await Task.WhenAll(allTasks);
         }
 
         private async Task LadujMiesiac(DateTime data)
         {
             //TODO: zmiana lokalizacji osoby powinna zmienić lokalizację w ELEMENCIE!!!??? Chyba nie, bo elementy były dodane bezpośrednio do tabeli, a te obliczone z zadatków będą miały wartości jak person.Lokalizacja
-            var elementListMonthly = _context.Elements.Where(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+            var elementListMonthly = await _elementService.GetWithFilter(x => x.DataSprzedazy.Year == data.Year && x.DataSprzedazy.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Lokalizacja));
 
             //TODO: dodać filtr na lokalizację? Done niżej!?
-            var okularyMonthlyBezZadatku = _context.Binocles.Include(x => x.Person).Where(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).ToList();
+            var okularyMonthlyBezZadatku = await _binocleService.GetWithFilterWithIncludes(x => x.BuyDate.Year == data.Year && x.BuyDate.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja));
             var okularyMonthly = okularyMonthlyBezZadatku.Where(x => x.Zadatek > 0);
             var dodatkoweElementyMonthly = new List<Element>();
 
-            //var personyIdsMiesiac = okularyMonthly.Select(x => x.Person_PersonId).ToList();
-            //var persony = _context.Persons.Where(x => personyIdsMiesiac.Contains(x.PersonId) && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList(); //??
-
             foreach (var okular in okularyMonthly)
             {
-                //var person = persony.FirstOrDefault(x => x.PersonId == okular.Person_PersonId);
-
-                //if (person == null)
-                //    continue;
-
                 dodatkoweElementyMonthly.Add(new Element
                 {
                     DataSprzedazy = okular.BuyDate,
@@ -100,33 +107,11 @@ namespace Okulary
             }
 
             // miesięczne dopłaty
-            var doplatyMonthly = _context.Doplaty.Include(x => x.Binocle).Include(x => x.Binocle.Person)
-                .Where(x => x.DataDoplaty.Year == data.Year && x.DataDoplaty.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)).ToList();
+            var doplatyMonthly = await _doplataService.GetWithFilterWithIncludes(x => x.DataDoplaty.Year == data.Year && x.DataDoplaty.Month == data.Month && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja));
             var dodatkoweDoplatyMonthly = new List<Element>();
-
-            //var okularyPersonyIdsMiesiac = doplatyMonthly.Select(x => x.Binocle_BinocleId);
-            //var binoklePersonyIdsMiesiac = _context.Binocles.Where(x => okularyPersonyIdsMiesiac.Contains(x.BinocleId));
-            //var personyPersonyIdsMiesiac = binoklePersonyIdsMiesiac.Select(x => x.Person_PersonId).ToList();
-
-            //var personyZDoplat = _context.Persons.Where(x => personyPersonyIdsMiesiac.Contains(x.PersonId) && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
 
             foreach (var doplata in doplatyMonthly)
             {
-                //var okularkiId = okularyPersonyIdsMiesiac.FirstOrDefault(x => x == doplata.Binocle_BinocleId);
-
-                //if (okularkiId == null)
-                //    continue;
-
-                //var personkaId = binoklePersonyIdsMiesiac.FirstOrDefault(x => x.BinocleId == okularkiId);
-
-                //if (personkaId == null)
-                //    continue;
-
-                //var personka = personyZDoplat.Any(x => x.PersonId == personkaId.Person_PersonId);
-
-                //if (!personka)
-                //    continue;
-
                 dodatkoweDoplatyMonthly.Add(new Element
                 {
                     DataSprzedazy = doplata.DataDoplaty,
@@ -139,18 +124,9 @@ namespace Okulary
             elementListMonthly.AddRange(dodatkoweDoplatyMonthly);
             elementListMonthly.AddRange(dodatkoweElementyMonthly);
 
-            decimal sumaMonthlyGotowka = 0.0M;
-            decimal sumaMonthlyKarta = 0.0M;
+            var sumaMonthlyGotowka = elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka).Sum(element => element.Cena * element.Ilosc);
 
-            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
-            {
-                sumaMonthlyGotowka += element.Cena * element.Ilosc;
-            }
-
-            foreach (var element in elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta))
-            {
-                sumaMonthlyKarta += element.Cena * element.Ilosc;
-            }
+            var sumaMonthlyKarta = elementListMonthly.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta).Sum(element => element.Cena * element.Ilosc);
 
             label7.Text = sumaMonthlyGotowka.ToString();
             label14.Text = sumaMonthlyKarta.ToString();
@@ -165,7 +141,7 @@ namespace Okulary
 
         private async Task AktualizujKase()
         {
-            var aktualizacjaKasy = _context.Kasa.Where(y => y.Lokalizacja == _lokalizacja).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
+            var aktualizacjaKasy = (await _moneyCountService.GetWithFilter(x => x.Lokalizacja == _lokalizacja)).OrderByDescending(x => x.CreatedOn).FirstOrDefault();
 
             if (aktualizacjaKasy == null)
             {
@@ -173,13 +149,17 @@ namespace Okulary
             }
             else
             {
-                var doplatyOdDaty = _context.Doplaty.Where(x => x.DataDoplaty > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)).Sum(x => x.Kwota);
+                var doplatyOdDaty = (await _doplataService.GetWithFilterWithIncludes(
+                                            x => x.DataDoplaty > aktualizacjaKasy.CreatedOn
+                                                 && x.FormaPlatnosci == FormaPlatnosci.Gotowka
+                                                 && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)))
+                    .Sum(x => x.Kwota);
 
-                var elementyOdDaty = _context.Elements.Where(x => x.DataUtworzenia > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).Sum(x => x.Cena * x.Ilosc);
+                var elementyOdDaty = (await _elementService.GetWithFilter(x => x.DataUtworzenia > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Lokalizacja))).Sum(x => x.Cena * x.Ilosc);
 
-                var sprzedazOdDaty = _context.Binocles.Where(x => x.BuyDate > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).Sum(x => x.Zadatek);
+                var sprzedazOdDaty = (await _binocleService.GetWithFilterWithIncludes(x => x.BuyDate > aktualizacjaKasy.CreatedOn && x.FormaPlatnosci == FormaPlatnosci.Gotowka && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja))).Sum(x => x.Zadatek);
 
-                var wyplatyOdDaty = _context.Wyplaty.Where(x => x.CreatedOn > aktualizacjaKasy.CreatedOn && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).Sum(x => x.Amount);
+                var wyplatyOdDaty = (await _payoutService.GetWithFilter(x => x.CreatedOn > aktualizacjaKasy.CreatedOn && _dozwoloneLokalizacje.Contains(x.Lokalizacja))).Sum(x => x.Amount);
 
                 label21.Text = (aktualizacjaKasy.Amount + doplatyOdDaty + elementyOdDaty + sprzedazOdDaty - wyplatyOdDaty).ToString();
             }
@@ -187,9 +167,9 @@ namespace Okulary
 
         private async Task LadujDzien(DateTime data)
         {
-            var elementList = _context.Elements.Where(x => EntityFunctions.TruncateTime(x.DataSprzedazy) == data.Date && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+            var elementList = await _elementService.GetWithFilter(x => EntityFunctions.TruncateTime(x.DataSprzedazy) == data.Date && _dozwoloneLokalizacje.Contains(x.Lokalizacja));
 
-            var okulary = _context.Binocles.Include(x => x.Person).Where(x => EntityFunctions.TruncateTime(x.BuyDate) == data.Date && x.Zadatek > 0 && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja)).ToList();
+            var okulary = await _binocleService.GetWithFilterWithIncludes(x => EntityFunctions.TruncateTime(x.BuyDate) == data.Date && x.Zadatek > 0 && _dozwoloneLokalizacje.Contains(x.Person.Lokalizacja));
             var dodatkoweElementy = new List<Element>();
 
             foreach (var okular in okulary)
@@ -208,7 +188,7 @@ namespace Okulary
 
             var dodatkoweDoplaty = new List<Element>();
 
-            var doplaty = _context.Doplaty.Include(x => x.Binocle).Include(x => x.Binocle.Person).Where(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data.Date && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja)).ToList();
+            var doplaty = await _doplataService.GetWithFilterWithIncludes(x => EntityFunctions.TruncateTime(x.DataDoplaty) == data.Date && _dozwoloneLokalizacje.Contains(x.Binocle.Person.Lokalizacja));
 
             foreach (var doplata in doplaty)
             {
@@ -226,7 +206,8 @@ namespace Okulary
                 });
             }
 
-            var wyplaty = _context.Wyplaty.Where(x => EntityFunctions.TruncateTime(x.CreatedOn) == data.Date && _dozwoloneLokalizacje.Contains(x.Lokalizacja)).ToList();
+            var wyplaty = await _payoutService.GetWithFilter(x => EntityFunctions.TruncateTime(x.CreatedOn) == data.Date && _dozwoloneLokalizacje.Contains(x.Lokalizacja));
+
             var dodatkoweWyplaty = new List<Element>();
 
             foreach (var wyplata in wyplaty)
@@ -255,9 +236,6 @@ namespace Okulary
             dataGridView1.Columns["CannotEdit"].Visible = false;
             dataGridView1.Columns["Lokalizacja"].ReadOnly = true;
             dataGridView1.Columns["DataUtworzenia"].HeaderText = "Data zakupu";
-
-            //Combo kolumna
-
             dataGridView1.Columns["FormaPlatnosci"].Visible = false;
 
             if (!dataGridView1.Columns.Contains("FormaPlatnosciCombo"))
@@ -265,7 +243,6 @@ namespace Okulary
                 var col = new DataGridViewComboBoxColumn();
                 col.DataSource = Enum.GetValues(typeof(FormaPlatnosci));
                 col.ValueType = typeof(FormaPlatnosci);
-                //col.ValueMember = "FormaPlatnosci";
                 col.Visible = true;
                 col.DataPropertyName = "FormaPlatnosci";
                 col.HeaderText = "Forma";
@@ -292,29 +269,20 @@ namespace Okulary
                 ((DataGridViewDisableButtonCell)row.Cells["UsunCol"]).Enabled = !((Element)row.DataBoundItem).CannotEdit;
                 ((DataGridViewDisableButtonCell)row.Cells["UsunCol"]).ReadOnly = !((Element)row.DataBoundItem).CannotEdit;
             }
+
             dataGridView1.Refresh();
 
+            var sumaGotowka = elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka).Sum(element => element.Cena * element.Ilosc);
 
-            decimal sumaKarta = 0.0M;
-            decimal sumaGotowka = 0.0M;
+            var sumaKarta = elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta).Sum(element => element.Cena * element.Ilosc);
 
-            foreach (var element in elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Gotowka))
-            {
-                sumaGotowka += element.Cena * element.Ilosc;
-            }
-
-            foreach (var element in elementList.Where(x => x.FormaPlatnosci == FormaPlatnosci.Karta))
-            {
-                sumaKarta += element.Cena * element.Ilosc;
-            }
-
-            var sumaWyplatDzien = dodatkoweWyplaty.Sum(x => x.Cena);
-            label3.Text = (sumaGotowka - sumaWyplatDzien).ToString();
+            var sumaWyplatDzien = dodatkoweWyplaty.Sum(x => x.Cena); 
+            label3.Text = (sumaGotowka - sumaWyplatDzien).ToString(); // Nie bierzemy wypłat pod uwagę w podsumowaniu
             label10.Text = sumaKarta.ToString();
             label11.Text = (sumaKarta + sumaGotowka - sumaWyplatDzien).ToString();
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex < 0)
                 return;
@@ -332,7 +300,7 @@ namespace Okulary
                 return;
             }
 
-            DialogResult dialogResult = MessageBox.Show("Zapisać zmiany?", "Zapisz", MessageBoxButtons.YesNo);
+            var dialogResult = MessageBox.Show("Zapisać zmiany?", "Zapisz", MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
@@ -345,7 +313,7 @@ namespace Okulary
                     return;
                 }
 
-                var element = _context.Elements.First(x => x.ElementId == elementId);
+                var element = await _elementService.GetById(elementId);
 
                 element.Nazwa = (string)dataGridView1["Nazwa", e.RowIndex].Value;
                 element.DataSprzedazy = (DateTime)dataGridView1["DataSprzedazy", e.RowIndex].Value;
@@ -353,43 +321,39 @@ namespace Okulary
                 element.Cena = cena;
                 element.FormaPlatnosci = (FormaPlatnosci)dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value;
 
-                _context.SaveChanges();
+                await _elementService.Update(element);
 
-                Laduj();
+                await Laduj();
             }
             else if (dialogResult == DialogResult.No)
             {
-                var element = _context.Elements.First(x => x.ElementId == elementId);
+                var element = await _elementService.GetById(elementId);
 
                 dataGridView1["Nazwa", e.RowIndex].Value = element.Nazwa;
                 dataGridView1["DataSprzedazy", e.RowIndex].Value = element.DataSprzedazy;
                 dataGridView1["Ilosc", e.RowIndex].Value = element.Ilosc;
                 dataGridView1["Cena", e.RowIndex].Value = element.Cena;
                 dataGridView1["FormaPlatnosciCombo", e.RowIndex].Value = element.FormaPlatnosci;
-
-                _context.SaveChanges();
             }
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex >= 0 && dataGridView1.Columns[e.ColumnIndex].Name == "UsunCol" && ((DataGridViewDisableButtonCell)dataGridView1.CurrentCell).Enabled)
+            if (e.ColumnIndex < 0 || dataGridView1.Columns[e.ColumnIndex].Name != "UsunCol"
+                                  || !((DataGridViewDisableButtonCell)dataGridView1.CurrentCell).Enabled)
             {
-                // button clicked - do some logic
-                var elementId = (int)dataGridView1["ElementId", e.RowIndex].Value;
+                return;
+            }
 
-                DialogResult dialogResult = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć zakup?", "Usuń", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    var element = _context.Elements.First(x => x.ElementId == elementId);
-                    _context.Elements.Remove(element);
-                    _context.SaveChanges();
-                    Laduj();
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    //do something else
-                }
+            // button clicked - do some logic
+            var elementId = (int)dataGridView1["ElementId", e.RowIndex].Value;
+
+            var dialogResult = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć zakup?", "Usuń", MessageBoxButtons.YesNo);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                await _elementService.Delete(elementId);
+                await Laduj();
             }
         }
 
@@ -401,9 +365,9 @@ namespace Okulary
             childForm.ShowDialog();
         }
 
-        private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
+        private async void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
         {
-            Laduj();
+            await Laduj();
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -413,7 +377,7 @@ namespace Okulary
 
         private void Sprzedaz_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _context.Dispose();
+            //_context.Dispose();
         }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -442,9 +406,9 @@ namespace Okulary
             childForm.ShowDialog();
         }
 
-        private void dateTimePicker1_CloseUp(object sender, EventArgs e)
+        private async void dateTimePicker1_CloseUp(object sender, EventArgs e)
         {
-            Laduj(aktualizujKase: false, ladujMiesiac: false);
+            await Laduj(aktualizujKase: false, ladujMiesiac: false);
         }
     }
 }
