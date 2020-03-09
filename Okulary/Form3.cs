@@ -1,18 +1,15 @@
-﻿using Okulary.Helpers;
-using Okulary.Model;
-using Okulary.Repo;
-using Okulary.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
-using System.Drawing;
+using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using Okulary.Enums;
+using Okulary.Helpers;
+using Okulary.Model;
+using Okulary.Repo;
+using Okulary.Services;
 
 namespace Okulary
 {
@@ -79,19 +76,23 @@ namespace Okulary
                     BlizOP = new Soczewka(),
                     DataOdbioru = DateTime.Now
                 };
-                _context.Binocles.Add(binocle);
-                _context.SaveChanges();
-                _binocleId = binocle.BinocleId;
+
+                _zakup = binocle;
+                //_context.Binocles.Add(binocle);
+                //_context.SaveChanges();
+                //_binocleId = binocle.BinocleId;
             }
-            
-            _zakup = _context.Binocles.Include(x => x.Doplaty).Where(x => x.BinocleId == _binocleId).FirstOrDefault();
+            else
+            {
+                _zakup = _context.Binocles.Include(x => x.Doplaty).Where(x => x.BinocleId == _binocleId).FirstOrDefault();
+            }
 
             Mapuj();
         }
 
         private void Mapuj()
         {
-            checkBox2.Checked = _context.Doplaty.Any(x => x.Binocle_BinocleId == _binocleId);
+            checkBox2.Checked = _zakup.Doplaty.Any();
             checkBox2.Enabled = false;
             checkBox2.Visible = checkBox2.Checked;
 
@@ -276,8 +277,7 @@ namespace Okulary
             suma.Text = (sumka).ToString();
             doZaplaty.Text = (sumka - zadatekCena).ToString();
 
-            FormaPlatnosci formaPlatnosci;
-            Enum.TryParse(comboBox5.SelectedValue.ToString(), out formaPlatnosci);
+            Enum.TryParse(comboBox5.SelectedValue.ToString(), out FormaPlatnosci formaPlatnosci);
             _zakup.FormaPlatnosci = formaPlatnosci;
 
             if (bledy.Any())
@@ -291,6 +291,9 @@ namespace Okulary
             }
             else
             {
+                _context.Binocles.AddOrUpdate(_zakup);
+
+                //var changes = _context.ChangeTracker.Entries();
                 _context.SaveChanges();
                 this.Close();
             }
@@ -482,55 +485,48 @@ namespace Okulary
         private void UpdateSuma()
         {
             var dobraSuma = true;
-            decimal cenaOprawek1;
-            if (!decimal.TryParse(RodzajOprawekBlizCena.Text, out cenaOprawek1))
+
+            if (!decimal.TryParse(RodzajOprawekBlizCena.Text, out var rodzajOprawekBlizCena))
             {
                 dobraSuma = false;
             }
 
-            decimal cenaOprawek2;
-            if (!decimal.TryParse(RodzajOprawekDalCena.Text, out cenaOprawek2))
+            if (!decimal.TryParse(RodzajOprawekDalCena.Text, out var rodzajOprawekDalCena))
             {
                 dobraSuma = false;
             }
 
-            decimal robociznaCena;
-            if (!decimal.TryParse(robocizna.Text, out robociznaCena))
+            if (!decimal.TryParse(robocizna.Text, out var robociznaCena))
             {
                 dobraSuma = false;
             }
 
-            decimal soczewkiDalOPCena;
-            if (!decimal.TryParse(dalOPCena.Text, out soczewkiDalOPCena))
+            if (!decimal.TryParse(dalOPCena.Text, out var soczewkiDalOPCena))
             {
                 dobraSuma = false;
             }
 
-            decimal soczewkiDalOLCena;
-            if (!decimal.TryParse(dalOLCena.Text, out soczewkiDalOLCena))
+            if (!decimal.TryParse(dalOLCena.Text, out var soczewkiDalOLCena))
             {
                 dobraSuma = false;
             }
 
-            decimal soczewkiBlizOPCena;
-            if (!decimal.TryParse(blizOPCena.Text, out soczewkiBlizOPCena))
+            if (!decimal.TryParse(blizOPCena.Text, out var soczewkiBlizOPCena))
             {
                 dobraSuma = false;
             }
 
-            decimal soczewkiBlizOLCena;
-            if (!decimal.TryParse(blizOLCena.Text, out soczewkiBlizOLCena))
+            if (!decimal.TryParse(blizOLCena.Text, out var soczewkiBlizOLCena))
             {
                 dobraSuma = false;
             }
 
-            decimal refundacjaCena;
-            if (!decimal.TryParse(refundacja.Text, out refundacjaCena))
+            if (!decimal.TryParse(refundacja.Text, out var refundacjaCena))
             {
                 dobraSuma = false;
             }
 
-            var sumka = cenaOprawek1 + cenaOprawek2 + robociznaCena + soczewkiDalOPCena
+            var sumka = rodzajOprawekDalCena + rodzajOprawekBlizCena + robociznaCena + soczewkiDalOPCena
                 + soczewkiDalOLCena + soczewkiBlizOPCena + soczewkiBlizOLCena - refundacjaCena;
 
             if (dobraSuma)
@@ -538,28 +534,172 @@ namespace Okulary
             else
                 suma.Text = "Błąd";
 
-            decimal zadatekCena;
-            if (!decimal.TryParse(zadatek.Text, out zadatekCena))
+            if (!decimal.TryParse(zadatek.Text, out var zadatekCena))
             {
                 dobraSuma = false;
             }
 
-            var help = _context.Doplaty.Where(x => x.Binocle_BinocleId == _binocleId);
-            decimal doplaty;
-            if (help.Any())
-                doplaty = help.Sum(x => x.Kwota);
-            else
-                doplaty = 0.0M;
+            var doplaty = _zakup.Doplaty.Sum(x => x.Kwota);
 
             var doZaplatyCena = sumka - zadatekCena - doplaty;
 
-            if (dobraSuma)
-                doZaplaty.Text = doZaplatyCena.ToString();
-            else
-                doZaplaty.Text = "Błąd";
+            doZaplaty.Text = dobraSuma ? doZaplatyCena.ToString() : "Błąd";
 
             if (doZaplatyCena < 0)
+            {
                 MessageBox.Show("Ujemna kwota do zapłaty. Zweryfikuj czy wszystko jest w porządku.");
+            }
+
+            _zakup.NumerZlecenia = NumerZlecenia.Text;
+
+            _zakup.RodzajOprawekDal = RodzajOprawekDal.Text;
+            _zakup.RodzajOprawekBliz = RodzajOprawekBliz.Text;
+            _zakup.CenaOprawekDal = rodzajOprawekDalCena;
+            _zakup.CenaOprawekBliz = rodzajOprawekBlizCena;
+            _zakup.Robocizna = robociznaCena;
+
+            if (!decimal.TryParse(comboBox1.Text, out var dalOpSfera))
+            {
+                dalOpSfera = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(comboBox2.Text, out var dalOlSfera))
+            {
+                dalOlSfera = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOPCylinder.Text, out var dalOpCylinder))
+            {
+                dalOpCylinder = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOLCylinder.Text, out var dalOlCylinder))
+            {
+                dalOlCylinder = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOPOs.Text, out var dalOpOs))
+            {
+                dalOpOs = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOLOs.Text, out var dalOlOs))
+            {
+                dalOlOs = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOPOdl.Text, out var dalOpOdl))
+            {
+                dalOpOdl = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOLOdl.Text, out var dalOlOdl))
+            {
+                dalOlOdl = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOPCena.Text, out var dalOpCena))
+            {
+                dalOpOdl = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(dalOLCena.Text, out var dalOlCena))
+            {
+                dalOlOdl = decimal.Zero;
+            }
+
+            _zakup.DalOP.Sfera = dalOpSfera;
+            _zakup.DalOP.Cylinder = dalOpCylinder;
+            _zakup.DalOP.Os = dalOpOs;
+            _zakup.DalOP.Pryzma = dalOPPryzma.Text;
+            _zakup.DalOP.OdlegloscZrenic = dalOpOdl;
+            _zakup.DalOP.H = dalOPH.Text;
+            _zakup.DalOP.Cena = dalOpCena;
+            _zakup.DalOL.Sfera = dalOlSfera;
+            _zakup.DalOL.Cylinder = dalOlCylinder;
+            _zakup.DalOL.Os = dalOlOs;
+            _zakup.DalOL.Pryzma = dalOLPryzma.Text;
+            _zakup.DalOL.OdlegloscZrenic = dalOlOdl;
+            _zakup.DalOL.H = dalOLH.Text;
+            _zakup.DalOL.Cena = dalOlCena;
+
+            // bliż
+
+            if (!decimal.TryParse(comboBox1.Text, out var blizOpSfera))
+            {
+                blizOpSfera = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(comboBox2.Text, out var blizOlSfera))
+            {
+                blizOlSfera = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOPCylinder.Text, out var blizOpCylinder))
+            {
+                blizOpCylinder = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOLCylinder.Text, out var blizOlCylinder))
+            {
+                blizOlCylinder = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOPOs.Text, out var blizOpOs))
+            {
+                blizOpOs = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOLOs.Text, out var blizOlOs))
+            {
+                blizOlOs = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOPOdl.Text, out var blizOpOdl))
+            {
+                blizOpOdl = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOLOdl.Text, out var blizOlOdl))
+            {
+                blizOlOdl = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOPCena.Text, out var blizOpCena))
+            {
+                blizOpOdl = decimal.Zero;
+            }
+
+            if (!decimal.TryParse(blizOLCena.Text, out var blizOlCena))
+            {
+                blizOlOdl = decimal.Zero;
+            }
+
+            _zakup.BlizOP.Sfera = blizOpSfera;
+            _zakup.BlizOP.Cylinder = blizOpCylinder;
+            _zakup.BlizOP.Os = blizOpOs;
+            _zakup.BlizOP.Pryzma = blizOPPryzma.Text;
+            _zakup.BlizOP.OdlegloscZrenic = blizOpOdl;
+            _zakup.BlizOP.H = blizOPH.Text;
+            _zakup.BlizOP.Cena = blizOpCena;
+            _zakup.BlizOL.Sfera = blizOlSfera;
+            _zakup.BlizOL.Cylinder = blizOlCylinder;
+            _zakup.BlizOL.Os = blizOlOs;
+            _zakup.BlizOL.Pryzma = blizOLPryzma.Text;
+            _zakup.BlizOL.OdlegloscZrenic = blizOlOdl;
+            _zakup.BlizOL.H = blizOLH.Text;
+            _zakup.BlizOL.Cena = blizOlCena;
+
+            _zakup.RodzajSoczewek1 = rodzajSoczewek1.Text;
+            _zakup.RodzajSoczewek2 = rodzajSoczewek2.Text;
+            _zakup.Refundacja = refundacjaCena;
+
+            _zakup.Zadatek = zadatekCena;
+            Enum.TryParse(comboBox5.SelectedValue.ToString(), out FormaPlatnosci formaPlatnosci);
+            _zakup.FormaPlatnosci = formaPlatnosci;
+
+            _zakup.IsDataOdbioru = checkBox1.Checked;
+            _zakup.Description = uwagi.Text;
         }
 
         private void RodzajOprawekDalCena_Leave(object sender, EventArgs e)
@@ -1078,23 +1218,28 @@ namespace Okulary
 
         private void SetCheckbox()
         {
-            if (checkBox1.Checked)
-                dataOdbioru.Enabled = true;
-            else
-                dataOdbioru.Enabled = false;
+            dataOdbioru.Enabled = checkBox1.Checked;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var childForm = new Doplaty(_binocleId);
+            using (var childForm = new Doplaty(_binocleId, _zakup.Doplaty))
+            {
+                childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
+                var result = childForm.ShowDialog();
 
-            childForm.FormClosing += new FormClosingEventHandler(Sprzedaz_Refresh);
-            childForm.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    _zakup.Doplaty = new List<Doplata>(childForm.DoplatyZakup);
+                    UpdateSuma();
+                    Mapuj();
+                }
+            }
         }
 
         private void Sprzedaz_Refresh(object sender, FormClosingEventArgs e)
         {
-            Mapuj();
+            //Mapuj();
         }
     }
 }

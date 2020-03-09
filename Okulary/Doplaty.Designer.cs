@@ -37,20 +37,19 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(17, 16);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Location = new System.Drawing.Point(13, 13);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(888, 153);
+            this.dataGridView1.Size = new System.Drawing.Size(666, 124);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(17, 188);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Location = new System.Drawing.Point(13, 153);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(175, 28);
+            this.button1.Size = new System.Drawing.Size(131, 23);
             this.button1.TabIndex = 1;
             this.button1.Text = "Dodaj dopłatę";
             this.button1.UseVisualStyleBackColor = true;
@@ -58,10 +57,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(223, 188);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Location = new System.Drawing.Point(167, 153);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 28);
+            this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
             this.button2.Text = "Zamknij";
             this.button2.UseVisualStyleBackColor = true;
@@ -69,13 +67,12 @@
             // 
             // Doplaty
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(918, 228);
+            this.ClientSize = new System.Drawing.Size(688, 185);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Doplaty";
             this.Text = "Doplaty";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Doplaty_FormClosing);

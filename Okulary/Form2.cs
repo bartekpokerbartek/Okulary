@@ -34,8 +34,6 @@ namespace Okulary
             _fromWhereOpened = fromWhere;
         }
 
-        public int PersonId { get; set; }
-
         private void Form2_Load(object sender, EventArgs e)
         {
             Laduj();
@@ -205,6 +203,11 @@ namespace Okulary
                     //do something else
                 }
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

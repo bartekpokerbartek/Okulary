@@ -8,9 +8,11 @@ namespace Okulary
 {
     public partial class DodajDoplate : Form
     {
-        private readonly DoplataService _doplataService = new DoplataService();
+        //private readonly DoplataService _doplataService = new DoplataService();
 
         private int _binocleId;
+
+        public Doplata Doplata;
 
         public DodajDoplate(int binocleId)
         {
@@ -48,16 +50,16 @@ namespace Okulary
 
             Enum.TryParse(comboBox1.SelectedValue.ToString(), out FormaPlatnosci formaPlatnosci);
 
-            var doplata = new Doplata
+            Doplata = new Doplata
                               {
                                   DataDoplaty = dataSprzedazy,
                                   Kwota = cenaResult,
-                                  Binocle_BinocleId = _binocleId,
+                                  //Binocle_BinocleId = _binocleId,
                                   FormaPlatnosci = formaPlatnosci
                               };
 
-            _doplataService.Create(doplata);
-
+            //_doplataService.Create(doplata);
+            DialogResult = DialogResult.OK;
             Close();
         }
 
