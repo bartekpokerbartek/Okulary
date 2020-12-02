@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Okulary.Enums;
 using Okulary.Helpers;
 using Okulary.Model;
 using Okulary.Repo;
+using PagedList;
 
 namespace Okulary
 {
@@ -19,9 +21,14 @@ namespace Okulary
 
         private Lokalizacja _lokalizacja;
 
+        private IPagedList<Person> _personsToDisplay;
+        private int _pageNumber = 1;
+        private int _pageSize = int.Parse(ConfigurationManager.AppSettings["RozmiarStrony"]);
+
         public Form1()
         {
             InitializeComponent();
+            textBox4.Text = _pageNumber.ToString();
         }
 
         public Form1(Lokalizacja lokalizacja)
@@ -121,9 +128,14 @@ namespace Okulary
 
             var lokalizacje = LokalizacjaHelper.DajDozwoloneLokalizacje(_lokalizacja);
 
-            var personList = await _personService.GetWithFilter(x => (string.IsNullOrEmpty(firstName) || x.FirstName.Contains(firstName)) && (string.IsNullOrEmpty(lastName) || x.LastName.Contains(lastName)) && lokalizacje.Contains(x.Lokalizacja));
+            _personsToDisplay = await _personService.GetWithFilter(x => (string.IsNullOrEmpty(firstName) || x.FirstName.Contains(firstName)) && (string.IsNullOrEmpty(lastName) || x.LastName.Contains(lastName)) && lokalizacje.Contains(x.Lokalizacja), _pageNumber, _pageSize);
 
-            dataGridView1.DataSource = personList;
+            labelZIlu.Text = _personsToDisplay.PageCount.ToString();
+            textBox4.Text = _pageNumber.ToString();
+            btnPrevious.Enabled = _personsToDisplay.HasPreviousPage;
+            btnNext.Enabled = _personsToDisplay.HasNextPage;
+
+            dataGridView1.DataSource = _personsToDisplay.ToList();
             dataGridView1.Columns["Binocles"].Visible = false;
             dataGridView1.Columns["PersonId"].Visible = false;
             dataGridView1.RowHeadersVisible = false;
@@ -158,8 +170,8 @@ namespace Okulary
             dataGridView1.Columns["UsunCol"].Visible = true;
             dataGridView1.Columns["UsunCol"].HeaderText = "Usuń";
 
-            if (dataGridView1.RowCount > 0)
-                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+            //if (dataGridView1.RowCount > 0)
+            //    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
         }
 
         private async void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -234,5 +246,62 @@ namespace Okulary
             //childForm.FormClosing += new FormClosingEventHandler();
             childForm.ShowDialog();
         }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            if (_personsToDisplay.HasPreviousPage)
+            {
+                _pageNumber--;
+                Search();
+                btnPrevious.Enabled = _personsToDisplay.HasPreviousPage;
+                btnNext.Enabled = _personsToDisplay.HasNextPage;
+            }
+        }
+
+        private void Button6_Click_1(object sender, EventArgs e)
+        {
+            if (_personsToDisplay.HasNextPage)
+            {
+                _pageNumber++;
+                Search();
+                btnPrevious.Enabled = _personsToDisplay.HasPreviousPage;
+                btnNext.Enabled = _personsToDisplay.HasNextPage;
+            }
+        }
+
+        private void TextBox4_Leave(object sender, EventArgs e)
+        {
+            var wynik = int.TryParse(textBox4.Text, out var somePageNumber);
+
+            if (!wynik)
+            {
+                MessageBox.Show("Niepoprawna wartość", "OK", MessageBoxButtons.OK);
+                return;
+            }
+
+            if (_personsToDisplay == null)
+            {
+                MessageBox.Show("Brak wyników wyszukiwania", "OK", MessageBoxButtons.OK);
+                return;
+            }
+
+            if (_pageNumber < 1 || _pageNumber > _personsToDisplay.PageCount)
+            {
+                MessageBox.Show("Wartość musi być z zakresu od 1 do maksymalnej ilości stron", "OK", MessageBoxButtons.OK);
+                return;
+            }
+
+            _pageNumber = somePageNumber;
+            Search();
+        }
+
+        private void TextBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13){
+                e.Handled = true;
+
+            SelectNextControl(labelZIlu, true, true, true, true);
+        }
+    }
     }
 }

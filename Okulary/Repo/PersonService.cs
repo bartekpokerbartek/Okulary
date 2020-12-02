@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Okulary.Model;
+using PagedList;
 
 namespace Okulary.Repo
 {
@@ -35,17 +36,36 @@ namespace Okulary.Repo
             }
         }
 
-        public async Task<List<Person>> GetWithFilter(Expression<Func<Person, bool>> filter)
+        public async Task<IPagedList<Person>> GetWithFilter(Expression<Func<Person, bool>> filter, int pageNumber = 1, int pageSize = 10)
         {
-            using (var context = new MineContext())
+            //using (var context = new MineContext())
+            //{
+            //    return context
+            //               .Persons
+            //               .OrderByDescending(x => x.BirthDate)
+            //               .ThenBy(x => x.LastName)
+            //               .AsNoTracking()
+            //               .AsQueryable()
+            //               .Where(filter)
+            //               .ToPagedList(pageNumber, pageSize);
+            //}
+
+            return await Task.Factory.StartNew(() =>
             {
-                return await context
-                           .Persons
-                           .AsNoTracking()
-                           .AsQueryable()
-                           .Where(filter)
-                           .ToListAsync();
-            }
+                using (var context = new MineContext())
+                {
+                    //context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
+                    return context
+                               .Persons
+                               .OrderByDescending(x => x.BirthDate)
+                               .ThenBy(x => x.LastName)
+                               .AsNoTracking()
+                               .AsQueryable()
+                               .Where(filter)
+                               .ToPagedList(pageNumber, pageSize);
+                }
+            });
         }
 
         public async Task<List<Person>> GetWithFilterWithIncludes(Expression<Func<Person, bool>> filter)
